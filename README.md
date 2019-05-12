@@ -14,15 +14,35 @@ If the implementation fulfills these test cases, then the implementation fulfill
 If the implementation does not fulfill these test cases, the implementation deviates from the specification. 
 With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
 
-# Naming conventions
-## Issues
-Schema: #xxx-lowercase-lowercase
+# Conventions
+## Repository language
+English
 
-A # is followed by the three-digit issue ID, a hyphen, and the name of the issue. 
-The name consists of lowercase letters. If necessary, a hyphen separates several words from each other.
+## Review process
+A pull request addresses a single issue. 
 
-## Branches
-Branches are named after issues.
+A pull request must be approved by two reviewers.
+
+A pull request is squashed before the merge.
+
+## Naming Conventions: Issues, branches, pull requests, squashed merge commits
+Issues describe project work such as tasks, bugs, and feature requests. 
+Example: ```Implement task XYZ```
+
+The branch name follows the issue name. 
+The automatically generated issue ID is succeeded by the issue name in lowercase letters, with hyphens separating multiple words.
+Example: ```#1-implement-task-xyz```
+
+The pull request name is the issue name plus the issue id.
+Example: ```Implement task XYZ (Issue #1)```
+
+The squashed merge commit name is the issue name plus the issue id plus the pull request id. 
+Example: ```Implement task XYZ (Closes #1) (PR #2)```
+
+If a pull request addresses several issues, the pull request name is a summary of the issues plus the issue ids.
+The squashed merge commit name is a summary of the issues plus the issue ids plus the pull request id.
+Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
+Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
 # Technology and frameworks
 ## PlantUML
