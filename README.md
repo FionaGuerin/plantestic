@@ -26,7 +26,7 @@ Branches are named after issues.
 
 # Technology and frameworks
 ## PlantUML
-Link: www.plantuml.com
+Website: [www.plantuml.com](www.plantuml.com)
 
 ## Cucumber
-Link: https://cucumber.io
+Website: [https://cucumber.io](https://cucumber.io)
