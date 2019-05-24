@@ -1,5 +1,5 @@
 # Model-driven Software Engineering
-This test case generator produces test cases from plantUML diagrams.
+This code generator produces Java code from plantUML diagrams.
 
 # Motivation
 The implementation of user requirements often deviates from the specification of the same user requirements. 
@@ -8,11 +8,11 @@ For example, requirements may be misinterpreted or overlooked.
 Teamwork, especially with multiple teams, causes interface errors. 
 For example, subsystems of the same product may use conflicting technologies or conflicting data formats.
 
-Our test case generator detects deviations at an early stage: 
-The test case generator derives test cases directly from the specification. 
-If the implementation fulfills these test cases, then the implementation fulfills the specification. 
-If the implementation does not fulfill these test cases, the implementation deviates from the specification. 
-With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
+Our code generator detects deviations at an early stage: 
+The code generator derives Java code directly from the specification. 
+If the implementation and the generated code produce the same output from the same inputs, then the implementation fulfills the specification. 
+If the implementation and the generated code do not produce the same output from the same inputs, the implementation deviates from the specification. 
+With our code generator, developers can quickly uncover inconsistencies, fix them, and save costs.
 
 # Conventions
 ## Repository language
@@ -47,6 +47,12 @@ Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3
 # Technology and frameworks
 ## PlantUML
 Website: [www.plantuml.com](www.plantuml.com)
+
+## REST-assured
+Website: [http://rest-assured.io](http://rest-assured.io)
+
+## Acceleo
+Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
 ## Cucumber
 Website: [https://cucumber.io](https://cucumber.io)
