@@ -1,5 +1,5 @@
 # Model-driven Software Engineering
-This code generator produces Java code from plantUML diagrams.
+This test case generator produces test cases from plantUML diagrams.
 
 # Motivation
 The implementation of user requirements often deviates from the specification of the same user requirements. 
@@ -8,11 +8,11 @@ For example, requirements may be misinterpreted or overlooked.
 Teamwork, especially with multiple teams, causes interface errors. 
 For example, subsystems of the same product may use conflicting technologies or conflicting data formats.
 
-Our code generator detects deviations at an early stage: 
-The code generator derives Java code directly from the specification. 
-If the implementation and the generated code produce the same output from the same inputs, then the implementation fulfills the specification. 
-If the implementation and the generated code do not produce the same output from the same inputs, the implementation deviates from the specification. 
-With our code generator, developers can quickly uncover inconsistencies, fix them, and save costs.
+Our test case generator detects deviations at an early stage: 
+The test case generator derives test cases directly from the specification. 
+If the implementation fulfills these test cases, then the implementation fulfills the specification. 
+If the implementation does not fulfill these test cases, the implementation deviates from the specification. 
+With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
 
 # Conventions
 ## Repository language
@@ -44,15 +44,25 @@ The squashed merge commit name is a summary of the issues plus the issue ids plu
 Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
-# Technology and frameworks
-## PlantUML
-Website: [www.plantuml.com](www.plantuml.com)
+# Frameworks, libraries, standards
+## Eclipse Modelling Framework (EMF)
+The Eclipse Modeling Framework serves modeling and code generation. 
+From a model specification in XMI it produces an equivalent set of classes in Kotlin.
+Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
 
 ## REST-assured
+The Rest-assured library simplifies the verification and validation of REST APIs. 
+As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
+The library offers all standardized HTTP operations.
 Website: [http://rest-assured.io](http://rest-assured.io)
 
-## Acceleo
-Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
-
 ## Cucumber
+The Cucumber tool tests the behavior of software. 
+The test case that tests this behavior is defined in natural language. 
+For this, Cucumber uses the plain language parser Gherkin.
 Website: [https://cucumber.io](https://cucumber.io)
+
+## XML Metadata Interchange (XMI)
+XML Metadata Interchange is an exchange format among software development tools. 
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
