@@ -42,7 +42,6 @@ object Main {
         aClass.eStructuralFeatures.add(aReference)
 
         val stringWriter = StringWriter()
-
         try {
             Resource.Factory.Registry.INSTANCE.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
             val resourceSet: ResourceSet = ResourceSetImpl()
