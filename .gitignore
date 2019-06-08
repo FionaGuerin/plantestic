@@ -1,2 +1,21 @@
-.DS_Store
+.gradle
+/build/
+/out/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
 .idea
+*.iws
+*.iml
+*.ipr
+
+### Misc ###
+.DS_Store
