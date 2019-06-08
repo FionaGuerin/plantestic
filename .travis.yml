@@ -1,0 +1,11 @@
+matrix:
+  include:
+    - language: java
+      jdk: openjdk8
+      env:
+        - TERM=dumb
+
+notifications:
+  slack: s-e-13:s-e-13:4f8DodGExfbSm7ZGVSwOneOn
+    on_success: always
+    on_failure: never
