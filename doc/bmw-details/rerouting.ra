@@ -1,0 +1,21 @@
+void MGU_redirect(CCC ccc, CRS crs, VoiceManager vm, String eventId){
+		
+		ValidatableResponse rerouteOptions = RestAssured.given()
+		   .auth().basic(crs.username(ccc), crs.password(ccc))
+		  .param("countryCode", ccc.countryCode).and
+		  .param("positionCountryCode", ccc.positionCountryCode).and
+		  .param("sourceEventType", ccc.sourceEventType)
+		.when()
+		  .post(crs.path + "/ccc/rerouteOptions")
+		.then()
+			.assertThat().statusCode(200).
+			and().body("rerouteOptions", contains("UI_SWITCH"));
+		
+		ValidatableResponse isConnected = RestAssured.given()
+		   .auth().basic(vm.username(ccc), vm.password(ccc))
+		  .param("eventId", eventId)
+		 .when()
+		  .get(vm.path + "ccc/events/{eventId}/isconnected")
+		.then()
+		.assertThat().statusCode(in(200,400,404,500));
+	}
