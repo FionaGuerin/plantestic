@@ -32,7 +32,7 @@ compileTestKotlin {
 }
 
 jar {
-    baseName = 'se13-mdd-team'
+    baseName = "se13-mdd-team"
     version = '0.1.0'
     manifest {
         attributes 'Main-Class': 'de.unia.se.mdd.MainKt'
