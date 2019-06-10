@@ -21,7 +21,7 @@ apply plugin: "idea"
 apply plugin: "application"
 mainClassName = "de.unia.se.mdd.Main"
 
-group = 'de.unia.se'
+group = "de.unia.se"
 version = "${version}"
 sourceCompatibility = 1.8
 compileKotlin {
