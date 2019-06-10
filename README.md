@@ -44,25 +44,9 @@ The squashed merge commit name is a summary of the issues plus the issue ids plu
 Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
-# Frameworks, libraries, standards
-## Eclipse Modelling Framework (EMF)
-The Eclipse Modeling Framework serves modeling and code generation. 
-From a model specification in XMI it produces an equivalent set of classes in Kotlin.
-Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
-
-## REST-assured
-The Rest-assured library simplifies the verification and validation of REST APIs. 
-As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
-The library offers all standardized HTTP operations.
-Website: [http://rest-assured.io](http://rest-assured.io)
+# Technology and frameworks
+## PlantUML
+Website: [www.plantuml.com](www.plantuml.com)
 
 ## Cucumber
-The Cucumber tool tests the behavior of software. 
-The test case that tests this behavior is defined in natural language. 
-For this, Cucumber uses the plain language parser Gherkin.
 Website: [https://cucumber.io](https://cucumber.io)
-
-## XML Metadata Interchange (XMI)
-XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
-Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)

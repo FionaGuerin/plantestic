@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/greeting"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "greeting": {
+        "firstName": "Johan",
+        "lastName": "Haleby"
+      }
+    }
+  }
+}
