@@ -15,7 +15,7 @@ buildscript {
     }
 }
 
-apply plugin: 'kotlin' // Required for Kotlin integration
+apply plugin: "kotlin" // Required for Kotlin integration
 apply plugin: "com.palantir.jacoco-coverage"
 apply plugin: "idea"
 apply plugin:'application'
