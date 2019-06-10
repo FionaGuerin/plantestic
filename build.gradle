@@ -18,7 +18,7 @@ buildscript {
 apply plugin: "kotlin" // Required for Kotlin integration
 apply plugin: "com.palantir.jacoco-coverage"
 apply plugin: "idea"
-apply plugin:'application'
+apply plugin: "application"
 mainClassName = "de.unia.se.mdd.Main"
 
 group = 'de.unia.se'
