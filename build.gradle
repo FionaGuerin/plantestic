@@ -103,3 +103,11 @@ jacocoTestCoverageVerification {
 check.dependsOn jacocoTestCoverageVerification
 // To run ktlint during the build (and fail when appropriate)
 check.dependsOn ktlint
+
+// Start a WireMock mock server for testing the generated output.
+// New routes can be defined in ./mockserver/mappings/
+task startMockServer(type: JavaExec) {
+    workingDir = 'mockserver'
+    main = '-jar'
+    args('wiremock-standalone-2.23.2.jar', '--port', '8888')
+}
