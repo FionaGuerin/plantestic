@@ -68,8 +68,12 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile 'org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.15.0'
 
+    testImplementation 'io.cucumber:cucumber-java8:4.3.1'
+    testImplementation 'io.cucumber:cucumber-junit:4.3.1'
     testCompile 'io.kotlintest:kotlintest-runner-junit5:3.1.7'
     testCompile "io.mockk:mockk:1.8.9"
+    testCompile 'io.rest-assured:rest-assured:4.0.0'
+
 
     ktlint "com.github.shyiko:ktlint:0.29.0"
 }
