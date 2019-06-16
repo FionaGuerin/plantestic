@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/ccc/rerouteOptions",
+    "basicAuthCredentials": {
+      "username": "reg@example.com",
+      "password": "thecakeisalie"
+    },
+    "headers": {
+      "Content-Type": {
+        "contains": "application/x-www-form-urlencoded"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "contains": "countryCode="
+      },
+      {
+        "contains": "positionCountryCode="
+      },
+      {
+        "contains": "sourceEventType="
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "rerouteOptions": [
+        "UI_SWITCH"
+      ]
+    }
+  }
+}
