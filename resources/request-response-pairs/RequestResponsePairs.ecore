@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RequestResponsePairs" nsURI="http://www.example.org/RequestResponsePairs"
+    nsPrefix="RequestResponsePairs">
+  <eClassifiers xsi:type="ecore:EClass" name="Scenario" instanceClassName="java.lang.Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="request" upperBound="-1"
+        eType="#//Request" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="response" upperBound="-1"
+        eType="#//Response" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Request">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Method" eType="#//Method"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="url" lowerBound="1" eType="#//URL"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestresponse" lowerBound="1"
+        eType="#//Response"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//Encodeable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Protocol"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Method" instanceClassName="Method">
+    <eLiterals name="GET"/>
+    <eLiterals name="POST" value="1"/>
+    <eLiterals name="PUT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Encodeable" instanceTypeName="Encodeable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Body" instanceClassName="Body">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keywords" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="URL" instanceClassName="URL">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Response" instanceClassName="Response">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//Body" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="OK" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="NOT_FOUND" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="BAD_REQUEST" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="INTERNAL_SERVER_ERROR"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+  </eClassifiers>
+</ecore:EPackage>

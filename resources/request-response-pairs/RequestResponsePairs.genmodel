@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/request-response-pairs/src-gen" creationIcons="false"
+    editDirectory="/request-response-pairs.edit/src-gen" editorDirectory="/request-response-pairs.editor/src-gen"
+    modelPluginID="request-response-pairs" modelName="RequestResponsePairs" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>RequestResponsePairs.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="RequestResponsePairs" basePackage="request-response-pairs"
+      disposableProviderFactory="true" ecorePackage="RequestResponsePairs.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RequestResponsePairs.ecore#//Method">
+      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/GET"/>
+      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/POST"/>
+      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/PUT"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="RequestResponsePairs.ecore#//Encodeable"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//NewEClass1"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/request"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/response"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/Method"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/url"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/requestresponse"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Protocol"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Body">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Body/keywords"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//URL">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//URL/path"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/OK"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/NOT_FOUND"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/BAD_REQUEST"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/INTERNAL_SERVER_ERROR"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
