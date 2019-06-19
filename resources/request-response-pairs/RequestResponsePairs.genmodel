@@ -15,35 +15,36 @@
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/POST"/>
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/PUT"/>
     </genEnums>
-    <genDataTypes ecoreDataType="RequestResponsePairs.ecore#//Encodeable"/>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//NewEClass1"/>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/request"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/response"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/Method"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/parameter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/url"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/requestresponse"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Parameter">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/value"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//RequestParam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/value"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Protocol"/>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Body">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Body/keywords"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Body/extractparam"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//URL">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//URL/path"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/body"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/OK"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/NOT_FOUND"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/BAD_REQUEST"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/INTERNAL_SERVER_ERROR"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/status"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//ExtractParam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ExtractParam/keywords"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Param">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Param/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
