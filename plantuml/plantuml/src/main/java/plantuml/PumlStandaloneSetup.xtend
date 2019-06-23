@@ -7,9 +7,9 @@ package plantuml
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */
-class PumlLanguageStandaloneSetup extends PumlLanguageStandaloneSetupGenerated {
+class PumlStandaloneSetup extends PumlStandaloneSetupGenerated {
 
 	def static void doSetup() {
-		new PumlLanguageStandaloneSetup().createInjectorAndDoEMFRegistration()
+		new PumlStandaloneSetup().createInjectorAndDoEMFRegistration()
 	}
 }

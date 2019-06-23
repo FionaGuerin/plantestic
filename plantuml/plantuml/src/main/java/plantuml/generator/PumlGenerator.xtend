@@ -10,13 +10,13 @@ import org.eclipse.xtext.generator.IGeneratorContext
 
 /**
  * Generates code from your model files on save.
- * 
+ *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class PumlLanguageGenerator extends AbstractGenerator {
+class PumlGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
+//		fsa.generateFile('greetings.txt', 'People to greet: ' +
 //			resource.allContents
 //				.filter(Greeting)
 //				.map[name]
