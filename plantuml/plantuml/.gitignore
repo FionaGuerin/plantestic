@@ -4,5 +4,6 @@ generated/
 generated-sources/
 src-gen/
 xtend-gen/
+xtext-gen/
 .antlr-generator-*.jar
 .DS_Store
