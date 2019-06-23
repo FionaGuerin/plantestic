@@ -1,4 +1,4 @@
-grammar plantuml.eclipse.PumlLanguage with org.eclipse.xtext.common.Terminals
+grammar plantuml.PumlLanguage with org.eclipse.xtext.common.Terminals
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 

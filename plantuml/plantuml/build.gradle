@@ -18,10 +18,10 @@ dependencies {
 task generateXtextLanguage(type: JavaExec) {
 	main = 'org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher'
 	classpath = configurations.mwe2
-	inputs.file "src/plantuml/eclipse/GeneratePumlLanguage.mwe2"
-	inputs.file "src/plantuml/eclipse/PumlLanguage.xtext"
+	inputs.file "src/plantuml/GeneratePumlLanguage.mwe2"
+	inputs.file "src/plantuml/PumlLanguage.xtext"
 	outputs.dir "src-gen"
-	args += "src/plantuml/eclipse/GeneratePumlLanguage.mwe2"
+	args += "src/plantuml/GeneratePumlLanguage.mwe2"
 	args += "-p"
 	args += "rootPath=/${projectDir}/.."
 }

@@ -1,4 +1,4 @@
-module plantuml.eclipse.GeneratePumlLanguage
+module plantuml.GeneratePumlLanguage
 
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
@@ -20,7 +20,7 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "plantuml.eclipse.PumlLanguage"
+			name = "plantuml.PumlLanguage"
 			fileExtensions = "puml"
 
 			serializer = {
