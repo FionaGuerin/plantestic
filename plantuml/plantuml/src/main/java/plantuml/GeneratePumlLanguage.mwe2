@@ -13,6 +13,9 @@ Workflow {
 				baseName = "plantuml"
 				mavenLayout = true
 				rootPath = rootPath
+				runtimeTest = {
+                   enabled = true
+                }
 			}
 			code = {
 				encoding = "UTF-8"
