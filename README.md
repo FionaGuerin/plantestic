@@ -50,6 +50,17 @@ The Eclipse Modeling Framework serves modeling and code generation.
 From a model specification in XMI it produces an equivalent set of classes in Kotlin.
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
 
+## XML Metadata Interchange (XMI)
+XML Metadata Interchange is an exchange format among software development tools. 
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
+
+## PlantUML
+The open source tool PlantUML produces a UML diagram from simple text language. 
+Such a PlantUML diagram can be a sequence diagram, use case diagram, class diagram, activity diagram, component diagram, 
+state diagram, object diagram, deployment diagram, or timing diagram.
+Website: [http://plantuml.com](http://plantuml.com)
+
 ## REST-assured
 The Rest-assured library simplifies the verification and validation of REST APIs. 
 As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
@@ -61,8 +72,3 @@ The Cucumber tool tests the behavior of software.
 The test case that tests this behavior is defined in natural language. 
 For this, Cucumber uses the plain language parser Gherkin.
 Website: [https://cucumber.io](https://cucumber.io)
-
-## XML Metadata Interchange (XMI)
-XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
-Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
