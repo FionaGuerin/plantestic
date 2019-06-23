@@ -27,24 +27,24 @@
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//RequestParam">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/key"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Protocol"/>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Body">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Body/keywords"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Body/extractparam"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//BodyExpectations">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//BodyExpectations/paramexistsexpectation"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//URL">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//URL/path"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/body"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Response/status"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//ExtractParam">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ExtractParam/keywords"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Param">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Param/name"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//ParamExistsExpectation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ParamExistsExpectation/jsonPath"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
