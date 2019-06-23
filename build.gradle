@@ -19,6 +19,7 @@ apply plugin: "kotlin" // Required for Kotlin integration
 apply plugin: "com.palantir.jacoco-coverage"
 apply plugin: "idea"
 apply plugin: "application"
+
 mainClassName = "de.unia.se.mdd.Main"
 
 group = "de.unia.se"
@@ -67,8 +68,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile 'org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.15.0'
-
-    testCompile 'io.kotlintest:kotlintest-runner-junit5:3.1.7'
+    
+    testCompile "io.kotlintest:kotlintest-runner-junit5:3.1.7"
     testCompile "io.mockk:mockk:1.8.9"
 
     ktlint "com.github.shyiko:ktlint:0.29.0"
