@@ -1,0 +1,95 @@
+modeltype UML "effective" uses uml('http://www.eclipse.org/uml2/5.0.0/UML')
+  where {     self.objectsOfType(Association)->forAll(a | a.memberEnd->size() = 2)
+          and self.objectsOfType(Association)->forAll(a | a.ownedEnd->size() = 1) };
+
+transformation flatten(in hierarchical : UML, out flat : UML);
+
+intermediate property Property::mappedTo : Set(Tuple(c : Class, p : Property));
+
+main() {
+  assert fatal (hierarchical.objectsOfType(Association)->forAll(a | a.memberEnd->size() = 2))
+    with log('Transformation only applicable to models with binary associations: ' + hierarchical.objectsOfType(Association)->select(a | a.memberEnd->size() <> 2)->any(true).repr());
+  assert fatal (hierarchical.objectsOfType(Association)->forAll(a | a.ownedEnd->size() = 1))
+    with log('Transformation only applicable to models with associations showing exactly one owned end: ' + hierarchical.objectsOfType(Association)->select(a | a.ownedEnd->size() <> 1)->any(true).repr());
+  log('Start', hierarchical);
+  hierarchical.objectsOfKind(Package).map transformPackage();
+}
+
+mapping Package::transformPackage() : Package {
+  log('Package', self);
+  name := self.name;
+  nestedPackage += self.ownedElement[Package].map transformPackage();
+  packagedElement += self.ownedElement[DataType].map copyDataType();
+  packagedElement += self.ownedElement[Class].map copyLeafClass();
+}
+
+mapping DataType::copyDataType() : Type {
+  init {
+    result := object DataType {
+      name := self.name;
+      ownedAttribute += self.ownedAttribute.map copyOwnedProperty();
+    };
+  }
+  log('[DataType] name = ' + self.name);
+}
+
+mapping Class::copyLeafClass() : Class
+  when {
+    self.isLeafClass()
+  } {
+  log('[Class] name = ' + self.name);
+  name := self.name;
+  ownedAttribute += self.ownedAttribute.map copyOwnedProperty();
+  ownedAttribute += (self.allFeatures()[Property] - self.ownedAttribute)->reject(p | self.ownedAttribute.name->includes(p.name)).copyProperty(self);
+  self.allFeatures()[Property]->select(p | not p.association.oclIsUndefined()).association.copyAssociation(self);
+}
+
+mapping PrimitiveType::copyPrimitiveType() : PrimitiveType {
+  init {
+    result := self.deepclone().oclAsType(PrimitiveType);
+  }
+  log('[PrimitiveType] name = ' + self.name);
+}
+
+mapping Type::transformType() : Type
+  disjuncts DataType::copyDataType, Class::copyLeafClass, PrimitiveType::copyPrimitiveType;
+
+mapping Property::copyOwnedProperty() : Property {
+  name := self.name;
+  type := self.type.map transformType();
+}
+
+helper Property::copyProperty(in c : Class) : Property {
+  log('[Property] name = ' + self.name);
+  var copy := object Property {
+    name := self.name;
+    type := self.type.map transformType();
+  };
+  self.mappedTo += Tuple{ c = c, p = copy };
+  return copy;
+}
+
+helper Association::copyAssociation(in c : Class) : Association {
+  log('[Association] name = ' + self.name + ', memberEnds = [' + self.memberEnd->asSequence()->at(1).name + ', ' + self.memberEnd->asSequence()->at(2).name + ']');
+  var theOwnedEnd : Property := self.ownedEnd->any(true);
+  var theMemberEnd : Property := (self.memberEnd - self.ownedEnd)->any(true);
+  var theMappedMemberEnd : Property := theMemberEnd.mappedTo->select(t | t.c = c)->any(true).p;
+  return object Association {
+    name := self.name;
+    package := self.package.late resolveoneIn(Package::transformPackage, Package);
+    ownedEnd += new Property(theOwnedEnd.name, c.resolveoneIn(Class::copyLeafClass, Class));
+    memberEnd += if theMappedMemberEnd.oclIsUndefined()
+                 then theMemberEnd.resolveoneIn(Property::copyOwnedProperty, Property)
+                 else theMappedMemberEnd
+                 endif;
+  }
+}
+
+constructor Property::Property(n : String, t : Type) {
+  name := n;
+  type := t;
+}
+
+query Class::isLeafClass() : Boolean{
+  return hierarchical.objectsOfType(Generalization)->select(g | g.general = self)->isEmpty();
+}

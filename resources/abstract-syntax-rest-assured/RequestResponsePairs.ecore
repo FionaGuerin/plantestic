@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RequestResponsePairs" nsURI="http://www.example.org/RequestResponsePairs"
+    nsPrefix="RequestResponsePairs">
+  <eClassifiers xsi:type="ecore:EClass" name="Scenario" instanceClassName="java.lang.Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="request" upperBound="-1"
+        eType="#//Request" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="response" upperBound="-1"
+        eType="#//Response" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Request">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="#//Method"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//RequestParam" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="url" lowerBound="1" eType="#//URL"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestresponse" lowerBound="1"
+        eType="#//Response"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestParam" instanceTypeName="RequestParam">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Protocol"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Method" instanceClassName="Method">
+    <eLiterals name="GET"/>
+    <eLiterals name="POST" value="1"/>
+    <eLiterals name="PUT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyExpectations" instanceClassName="BodyExpectations">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="paramexistsexpectation"
+        upperBound="-1" eType="#//ParamExistsExpectation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="URL" instanceClassName="URL">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Response" instanceClassName="Response">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assertbody" upperBound="-1"
+        eType="#//BodyExpectations" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assertstatus" eType="#//StatusExpectation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StatusExpectation" instanceClassName="StatusExpectation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedStatusCodes" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ParamExistsExpectation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jsonPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>
