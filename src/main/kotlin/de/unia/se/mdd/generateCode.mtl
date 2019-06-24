@@ -1,0 +1,19 @@
+[comment encoding = UTF-8 /]
+[module generateCode('http://www.eclipse.org/uml2/5.0.0/UML')]
+
+
+[template public generateElement(testScenario : Class)]
+	[comment @main /]
+	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
+
+	public void [testScenario.name /] (
+		[if (not testScenario.attribute->isEmpty())]
+		[for (param : Property | testScenario.attribute) separator(',') ]
+			[param.type.name/] [param.name/]
+		[/for]
+		[/if]
+	) { 
+		// Todo implementation
+	}
+	[/file]
+[/template]
