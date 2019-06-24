@@ -14,7 +14,7 @@ Workflow {
 				mavenLayout = true
 				rootPath = rootPath
 				runtimeTest = {
-                    enabled = true
+				enabled = true
 				}
 			}
 			code = {
