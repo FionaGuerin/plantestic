@@ -6,12 +6,12 @@ import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import plantuml.pumlLanguage.*
+import plantuml.puml.*
 import static org.junit.Assert.*
 
 
 @ExtendWith(InjectionExtension)
-@InjectWith(PumlLanguageInjectorProvider)
+@InjectWith(PumlInjectorProvider)
 class SequenceDiagramTest {
 
 	@Inject extension ParseHelper<UmlDiagram>
