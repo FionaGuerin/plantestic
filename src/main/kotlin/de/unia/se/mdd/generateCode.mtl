@@ -1,19 +1,50 @@
 [comment encoding = UTF-8 /]
-[module generateCode('http://www.eclipse.org/uml2/5.0.0/UML')]
+[module generateCode('/mdd/resources/abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore')]
 
 
-[template public generateElement(testScenario : Class)]
+[template public generateElement(testScenario : TestScenario)]
 	[comment @main /]
 	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
 
 	public void [testScenario.name /] (
-		[if (not testScenario.attribute->isEmpty())]
-		[for (param : Property | testScenario.attribute) separator(',') ]
+		[if (testScenario.parameter->notEmpty())]
+		[for (param : Property | testScenario.parameter) separator(',') ]
 			[param.type.name/] [param.name/]
 		[/for]
 		[/if]
 	) { 
-		// Todo implementation
+		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
+		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
+			[let bas : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme]
+				.auth().basic([bas.user/], [bas.password/])
+			[/let]
+			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
+				.param([requestParam.key/], [requestParam.value/])
+			[/for]
+			.when()
+				.[testRoundtrip.requestspecification.method/]([testRoundtrip.requestspecification.path/])
+			.then()
+				[let res : ResponseSpecification = testRoundtrip.assertresponse]
+					.assertThat()
+					[if (res.expectedStatusCode->notEmpty())]
+						[let isIn : IsIn = res.expectedStatusCode]
+							.statusCode(in([isIn.allowedValues/])
+						[/let]
+					[/if]
+					[if (res.bodyMatchers->notEmpty())]
+						.body("rerouteOptions", contains("UI_SWITCH")); //Todo: correct this line, is wrong because data is missing
+						[for (matcher : BodyMatcher | res.bodyMatchers)]
+							.body([matcher.matcher/]
+						[/for]
+					[/if]
+					
+				[/let]
+		// Todo implementation for Variables that come from response (not part of this small example)
+		[/for]
 	}
 	[/file]
+[/template]
+
+[template public generateElement(bas : BasicAuthScheme)]
+	Hallo [bas.password /]
 [/template]
