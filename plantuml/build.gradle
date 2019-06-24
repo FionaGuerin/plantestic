@@ -3,35 +3,34 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'org.xtext:xtext-gradle-plugin:2.0.4'
+		classpath "org.xtext:xtext-gradle-plugin:2.0.4"
 	}
 }
 
 subprojects {
-	ext.xtextVersion = '2.18.0'
+	ext.xtextVersion = "2.18.0"
 	repositories {
 		mavenCentral()
 	}
-	
-	apply plugin: 'java'
-	apply plugin: "idea"
-	apply plugin: "eclipse"
+
 	dependencies {
 		compile platform("org.eclipse.xtext:xtext-dev-bom:${xtextVersion}")
 	}
 
-	apply plugin: 'org.xtext.xtend'
+	apply plugin: "java"
+	apply plugin: "idea"
+	apply plugin: "eclipse"
+	apply plugin: "org.xtext.xtend"
 	apply from: "${rootDir}/gradle/source-layout.gradle"
-	apply plugin: 'eclipse'
 	
-	group = 'plantuml'
-	version = '1.0.0-SNAPSHOT'
+	group = "plantuml"
+	version = "1.0.0-SNAPSHOT"
 	
-	sourceCompatibility = '1.8'
-	targetCompatibility = '1.8'
+	sourceCompatibility = "1.8"
+	targetCompatibility = "1.8"
 	
 	configurations.all {
-		exclude group: 'asm'
+		exclude group: "asm"
 	}
 
 	test {
