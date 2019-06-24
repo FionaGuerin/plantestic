@@ -15,6 +15,7 @@ Workflow {
 				rootPath = rootPath
 				runtimeTest = {
                    enabled = true
+                   src = "SequenceDiagramTest"
                 }
 			}
 			code = {
