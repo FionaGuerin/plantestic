@@ -3,7 +3,7 @@ module plantuml.GeneratePumlLanguage
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
 
-var rootPath = ".."
+var rootPath = "."
 
 Workflow {
 
@@ -14,8 +14,7 @@ Workflow {
 				mavenLayout = true
 				rootPath = rootPath
 				runtimeTest = {
-					enabled = true
-					src = "SequenceDiagramTest"
+                    enabled = true
 				}
 			}
 			code = {

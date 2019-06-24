@@ -4,7 +4,6 @@ subprojects {
 }
 
 
-// Configure build for PlantUML DSL
 buildscript {
 	repositories {
 		mavenCentral()
@@ -12,14 +11,4 @@ buildscript {
 	dependencies {
 		classpath "org.xtext:xtext-gradle-plugin:2.0.4"
 	}
-}
-
-project(":plantuml") {
-	ext.xtextVersion = "2.18.0"
-	repositories {
-		mavenCentral()
-	}
-
-	group = "plantuml"
-	version = "1.0.0-SNAPSHOT"
 }
