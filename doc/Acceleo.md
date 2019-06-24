@@ -35,7 +35,7 @@
    ```
     // some encoding information 
     [comment encoding = UTF-8 /]
-	// this defines which metamodel is taken, list of all URIs
+	// this defines which model is taken, list of all URIs
     [module generate('http://www.eclipse.org/uml2/5.0.0/UML')]
 	
 	// templates are the description of Element to generate
