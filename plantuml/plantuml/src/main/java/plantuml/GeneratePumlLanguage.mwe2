@@ -14,9 +14,9 @@ Workflow {
 				mavenLayout = true
 				rootPath = rootPath
 				runtimeTest = {
-                   enabled = true
-                   src = "SequenceDiagramTest"
-                }
+					enabled = true
+					src = "SequenceDiagramTest"
+				}
 			}
 			code = {
 				encoding = "UTF-8"
@@ -40,17 +40,17 @@ Workflow {
 				junitVersion = "5"
 			}
 			parserGenerator = {
-                antlrParam = "-Xconversiontimeout"
-                antlrParam = "40000"
-                options = {
-                ignoreCase = true
-                backtrack=true
-                memoize = true
-                classSplitting=true
-                    fieldsPerClass = "300"
-                    methodsPerClass= "800"
-                }
-            }
+				antlrParam = "-Xconversiontimeout"
+				antlrParam = "40000"
+				options = {
+					ignoreCase = true
+					backtrack=true
+					memoize = true
+					classSplitting=true
+					fieldsPerClass = "300"
+					methodsPerClass= "800"
+				}
+			}
 		}
 	}
 }
