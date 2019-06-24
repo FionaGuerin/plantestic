@@ -34,7 +34,7 @@
 					[if (res.bodyMatchers->notEmpty())]
 						.body("rerouteOptions", contains("UI_SWITCH")); //Todo: correct this line, is wrong because data is missing
 						[for (matcher : BodyMatcher | res.bodyMatchers)]
-							.body([matcher.matcher/]
+							.body([matcher.matcher/] //Todo: needs correction after dealing with the inheritance
 						[/for]
 					[/if]
 					
@@ -43,8 +43,4 @@
 		[/for]
 	}
 	[/file]
-[/template]
-
-[template public generateElement(bas : BasicAuthScheme)]
-	Hallo [bas.password /]
 [/template]
