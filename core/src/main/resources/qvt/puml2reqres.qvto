@@ -1,0 +1,17 @@
+modeltype UseCase uses UseCase('http://www.eclipse.plantuml/Puml');
+transformation AddActor(inout useCaseModel : UseCase);
+
+main()
+{
+  useCaseModel.rootObjects()[Model].map applyAddActor();
+}
+
+mapping inout Model::applyAddActor()
+{
+   self.actor += new Actor("newActor");
+}
+
+constructor Actor::Actor(myName : String)
+{
+   name := myName;
+}
