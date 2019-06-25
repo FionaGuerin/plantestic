@@ -9,7 +9,7 @@
 	public void [testScenario.name /] (
 		[if (testScenario.parameter->notEmpty())]
 		[for (param : Property | testScenario.parameter) separator(',') ]
-			[param.type.name/] [param.name/]
+			[param.type/] [param.name/]
 		[/for]
 		[/if]
 	) { 

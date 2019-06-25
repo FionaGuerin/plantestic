@@ -60,4 +60,5 @@
    - [let name : type = value]  
      temporary value assignment
  
- 
+ Some project to look for ideas: <https://gist.github.com/aranega/f07e4cb4e850af3288af>
+
