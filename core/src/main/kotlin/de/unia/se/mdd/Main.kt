@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.URIConverter.WriteableOutputStream
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl
-import plantuml.puml.UmlDiagram
 
 object Main {
 
@@ -22,7 +21,6 @@ object Main {
         val lectureExample = getEcoreLectureExample()
         System.out.println(lectureExample)
     }
-
 
     fun getEcoreLectureExample(): String {
         val ecoreFactory: EcoreFactory = EcoreFactory.eINSTANCE

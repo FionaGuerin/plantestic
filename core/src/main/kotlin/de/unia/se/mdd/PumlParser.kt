@@ -22,7 +22,6 @@ class PumlParser {
     }
 
     private fun setupParser() {
-        //new org.eclipse.emf.mwe.utils.StandaloneSetup().setPlatformUri("../");
         PumlStandaloneSetup.doSetup()
         val injector = Guice.createInjector(PumlRuntimeModule())
         injector.injectMembers(this)
