@@ -294,8 +294,6 @@ class SequenceDiagramTest {
 		'''.parse
 		assertEquals(5, ((heros.umlDiagrams.head as SequenceUml).umlElements.size))
 		assertEquals(3, ((heros.umlDiagrams.head as SequenceUml).umlElements.get(4) as Activate).umlElements.size);
-
-	//		assertEquals("45", ((heros.umlDiagrams.head as SequenceUml).umlElements.get(7) as Space).value)
 	}
 
 	@Test def void testParseUseWithO() {
