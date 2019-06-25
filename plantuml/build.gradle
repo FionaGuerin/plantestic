@@ -4,7 +4,10 @@ version = "1.0.0-SNAPSHOT"
 ext.xtextVersion = "2.18.0"
 
 repositories {
+	jcenter()
 	mavenCentral()
+	google()
+	gradlePluginPortal()
 }
 
 apply plugin: "java"

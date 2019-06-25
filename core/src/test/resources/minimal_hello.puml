@@ -1,0 +1,11 @@
+SEQUENCE @startuml
+
+PARTICIPANT A
+PARTICIPANT B
+
+A -> B : /hello
+activate B
+B -> A
+deactivate B
+
+@enduml

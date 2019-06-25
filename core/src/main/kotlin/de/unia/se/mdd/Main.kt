@@ -4,7 +4,6 @@ import java.io.StringWriter
 import java.io.IOException
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.*
-import org.eclipse.emf.ecore.EPackage.Registry
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.URIConverter.WriteableOutputStream
@@ -12,17 +11,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData
 import org.eclipse.emf.ecore.xmi.XMLResource
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl
 import org.eclipse.m2m.qvt.oml.TransformationExecutor
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.resource.XtextResourceSet
-import com.google.inject.Injector
 import plantuml.PumlStandaloneSetup
 import plantuml.puml.UmlDiagram
-
 
 object Main {
 
@@ -83,6 +78,7 @@ object Main {
             val diagnostics = transformationExecutor.execute(executionContext)
         }
     }
+
 
     fun getEcoreLectureExample(): String {
         val ecoreFactory: EcoreFactory = EcoreFactory.eINSTANCE
