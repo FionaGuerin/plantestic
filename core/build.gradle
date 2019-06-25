@@ -48,6 +48,7 @@ repositories {
     google()
     mavenCentral()
     maven { url "https://dist.wso2.org/maven2/" }
+    maven { url "https://repo.eclipse.org/content/groups/releases/" }
 }
 
 configurations {

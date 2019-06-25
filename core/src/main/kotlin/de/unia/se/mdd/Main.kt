@@ -1,8 +1,8 @@
 package de.unia.se.mdd
 
+import com.google.common.io.Resources
 import java.io.StringWriter
 import java.io.IOException
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.*
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -13,6 +13,18 @@ import org.eclipse.emf.ecore.xmi.XMLResource
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl
 import org.eclipse.m2m.qvt.oml.TransformationExecutor
+import plantuml.PumlRuntimeModule
+import org.eclipse.core.runtime.IStatus
+import org.eclipse.emf.common.util.*
+import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic
+import org.eclipse.m2m.qvt.oml.BasicModelExtent
+import org.eclipse.m2m.qvt.oml.ModelExtent
+import plantuml.PumlStandaloneSetup
+import plantuml.PumlStandaloneSetupGenerated
+import plantuml.puml.UmlDiagram
+import java.util.*
+import kotlin.collections.HashMap
+
 
 object Main {
 
@@ -22,7 +34,7 @@ object Main {
         // http://www.davehofmann.de/different-ways-of-parsing-with-xtext/
 
         // Transform PlantUML AST to RequestResponse-Pairs
-        transformPuml2ReqRes()
+        //transformPuml2ReqRes()
 
         // TODO
 
@@ -33,33 +45,48 @@ object Main {
         // TODO
     }
 
-    fun transformPuml2ReqRes() {
-        val resourceSet: ResourceSet
+    fun transformPuml2ReqRes(diagram: UmlDiagram) {
+        PumlStandaloneSetup.doSetup()
 
-        val ecoreModelUri = URI.createFileURI("../plantuml/model/generated/Puml.ecore")
-        val qvtTransformationUri = URI.createFileURI(".qvto") // TODO
+        // Refer to an existing transformation via URI
+        val transformationURI = URI.createURI(Resources.getResource("qvt/puml2reqres.qvto").path)
+        // create executor for the given transformation
+        val executor = TransformationExecutor(transformationURI)
 
 
+        val inObjects = BasicEList<EObject>()
+        inObjects.add(diagram)
 
-        // taken from https://stackoverflow.com/questions/9386348/register-ecore-meta-model-programmatically
+        // create the input extent with its initial contents
+        val input = BasicModelExtent(inObjects)
+        // create an empty extent to catch the output
+        val output = BasicModelExtent()
 
-        // register globally the Ecore Resource Factory to the ".ecore" extension
-        // weird that we need to do this, but well...
-        Resource.Factory.Registry.INSTANCE.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
+        // setup the execution environment details ->
+        // configuration properties, logger, monitor object etc.
+        val context = ExecutionContextImpl()
+        context.setConfigProperty("keepModeling", true)
 
-        val rs = ResourceSetImpl()
-        // enable extended metadata
-        val extendedMetaData = BasicExtendedMetaData(rs.packageRegistry)
-        rs.loadOptions[XMLResource.OPTION_EXTENDED_META_DATA] = extendedMetaData
+        // run the transformation assigned to the executor with the given
+        // input and output and execution context -> ChangeTheWorld(in, out)
+        // Remark: variable arguments count is supported
+        val result = executor.execute(context, input, output)
 
-        val r = rs.getResource(ecoreModelUri, true)
-        val eObject = r.contents[0]
-        if (eObject is EPackage) {
-            rs.packageRegistry[eObject.nsURI] = eObject
-
-            val transformationExecutor = TransformationExecutor(qvtTransformationUri, rs.packageRegistry)
-            val executionContext = ExecutionContextImpl()
-            val diagnostics = transformationExecutor.execute(executionContext)
+        // check the result for success
+        if (result.severity == Diagnostic.OK) {
+            // the output objects got captured in the output extent
+            val outObjects = output.contents
+            // let's persist them using a resource
+            val resourceSet2 = ResourceSetImpl()
+            val outResource = resourceSet2.getResource(
+                URI.createURI("platform:/resource/myqvtprj/tomorrow.betterWorld"), true
+            )
+            outResource.contents.addAll(outObjects)
+            outResource.save(Collections.emptyMap<String, String>())
+        } else {
+            // turn the result diagnostic into status and send it to error log
+            val status = BasicDiagnostic.toIStatus(result)
+            //TODO Activator.getDefault().getLog().log(status)
         }
     }
 
