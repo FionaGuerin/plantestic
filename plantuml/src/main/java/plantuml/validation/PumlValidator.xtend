@@ -105,8 +105,7 @@ class PumlValidator extends AbstractPumlValidator {
 		){
 			error("This association is not allowed for class diagrams.", 
 				PumlPackage::eINSTANCE.association_AssociationArrow, 
-				WRONG_ASSOCIATION_FOR_DIAGRAMTYPE, 
-				null
+				WRONG_ASSOCIATION_FOR_DIAGRAMTYPE
 			)
 		}
 	}
