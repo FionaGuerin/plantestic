@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_YuusIGpFEeiJwvlhhUqCxQ" name="courses">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_Y0FtQGpFEeiJwvlhhUqCxQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_ydg-gGpFEeiJwvlhhUqCxQ" name="Person">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_8nVHIGpFEeiJwvlhhUqCxQ" name="name">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_PzpLAGpGEeiJwvlhhUqCxQ" name="ssn">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zRv30GpFEeiJwvlhhUqCxQ" name="EnrolledInSchool">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_rmUAsGpGEeiJwvlhhUqCxQ" name="school" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_0gdtsGpFEeiJwvlhhUqCxQ" name="Student">
+    <generalization xmi:type="uml:Generalization" xmi:id="_4s5R4GpFEeiJwvlhhUqCxQ" general="_zRv30GpFEeiJwvlhhUqCxQ"/>
+    <generalization xmi:type="uml:Generalization" xmi:id="_5o2j0GpFEeiJwvlhhUqCxQ" general="_ydg-gGpFEeiJwvlhhUqCxQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1TFdcGpFEeiJwvlhhUqCxQ" name="PhDStudent">
+    <generalization xmi:type="uml:Generalization" xmi:id="_3pBaEGpFEeiJwvlhhUqCxQ" general="_0gdtsGpFEeiJwvlhhUqCxQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_HyosgGpHEeiJwvlhhUqCxQ" name="name" visibility="public" type="_-NZQkGpGEeiJwvlhhUqCxQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_-NZQkGpGEeiJwvlhhUqCxQ" name="FullName">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="__74ysGpGEeiJwvlhhUqCxQ" name="firstName" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_D8NNgGpHEeiJwvlhhUqCxQ" name="lastName" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_9irVEGpFEeiJwvlhhUqCxQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_9iwNkGpFEeiJwvlhhUqCxQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>
