@@ -50,7 +50,7 @@
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//TestScenario">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestScenario/testroundtrip"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//TestScenario/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestScenario/service"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestScenario/parameter"/>
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//HasXPath">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//HasXPath/pathString"/>
@@ -58,9 +58,9 @@
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//BodyMatcher">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//BodyMatcher/matcher"/>
     </genClasses>
-    <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//Service">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Service/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Service/value"/>
+    <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

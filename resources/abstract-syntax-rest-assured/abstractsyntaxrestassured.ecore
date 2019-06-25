@@ -50,8 +50,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="testroundtrip" lowerBound="1"
         upperBound="-1" eType="#//TestRoundtrip" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="service" lowerBound="1"
-        upperBound="-1" eType="#//Service" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="HasXPath" eSuperTypes="#//Matcher">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pathString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -60,7 +60,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" lowerBound="1"
         eType="#//Matcher" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Service" instanceTypeName="Service">
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" instanceTypeName="Parameter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
