@@ -6,7 +6,10 @@ subprojects {
 
 buildscript {
 	repositories {
+		jcenter()
 		mavenCentral()
+		google()
+		gradlePluginPortal()
 	}
 	dependencies {
 		classpath "org.xtext:xtext-gradle-plugin:2.0.4"
