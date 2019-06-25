@@ -38,17 +38,6 @@ object Main {
         // TODO
     }
 
-    fun loadInputFile() {
-        org.eclipse.emf.mwe.utils.StandaloneSetup().setPlatformUri("../")
-        val injector = PumlStandaloneSetup.doSetup()
-        val resourceSet = injector.getInstance(XtextResourceSet::class.java)
-        resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, java.lang.Boolean.TRUE)
-        val resource = resourceSet.createResource(URI.createURI("dummy:/example.mydsl"))
-        val `in` = ByteArrayInputStream("type foo type bar".toByteArray())
-        resource.load(`in`, resourceSet.getLoadOptions())
-        val model = resource.getContents().get(0) as UmlDiagram
-    }
-
     fun transformPuml2ReqRes() {
         val resourceSet: ResourceSet
 
