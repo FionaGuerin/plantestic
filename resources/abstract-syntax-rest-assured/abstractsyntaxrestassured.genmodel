@@ -60,7 +60,7 @@
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
