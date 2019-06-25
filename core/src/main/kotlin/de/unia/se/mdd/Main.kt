@@ -13,11 +13,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl
 import org.eclipse.m2m.qvt.oml.TransformationExecutor
-import java.io.ByteArrayInputStream
-import org.eclipse.xtext.resource.XtextResource
-import org.eclipse.xtext.resource.XtextResourceSet
-import plantuml.PumlStandaloneSetup
-import plantuml.puml.UmlDiagram
 
 object Main {
 
@@ -67,7 +62,6 @@ object Main {
             val diagnostics = transformationExecutor.execute(executionContext)
         }
     }
-
 
     fun getEcoreLectureExample(): String {
         val ecoreFactory: EcoreFactory = EcoreFactory.eINSTANCE
