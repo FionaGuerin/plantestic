@@ -1,6 +1,6 @@
 # Copyright Notice
 
-The files in this directory are adopted from [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
+The files in this directory except for `GeneratePumlLanguage.mwe2` are adopted from [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
 which is licensed under the Apache 2.0 license.
 A copy of the license can be found in the `LICENSE` file in this directory.
 
