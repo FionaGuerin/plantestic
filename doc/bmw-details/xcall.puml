@@ -1,0 +1,54 @@
+@startuml
+
+participant Vehicle
+participant "Voicemanager" as VM
+participant XCS
+participant DataService
+participant CRS
+participant EventNotifier
+participant ELOS
+participant CCC
+
+
+Vehicle -> XCS : notifyXCall() \n <font color=red>'Not relevant for testing'</font>
+activate Vehicle
+activate XCS
+
+XCS -> DataService : GET  /vehicle/internal/{vin}
+activate DataService
+DataService --> XCS : homeCountry, positionCountry, brand
+deactivate DataService
+
+XCS -> CRS : POST routingTargets/find(eventId, serviceType, vin, \n homeCountry, positionCountry, brand)
+activate CRS
+CRS --> XCS : voiceTargets
+deactivate CRS
+
+alt serviceType = ACall
+XCS -> EventNotifier : PUT xcs/notify/{eventId}(homeCountry, positionCountry, brand)
+activate EventNotifier
+EventNotifier --> XCS : 200 OK
+deactivate EventNotifier
+end
+
+alt ServiceType = BCall
+XCS->ELOS : PUT xcs/notify/{eventId}(homeCountry, positionCountry, brand)
+activate ELOS
+ELOS --> XCS : 200 OK
+deactivate 
+end
+
+XCS -> CCC : POST xcs/eventReceived(eventId, serviceType, homeCountry, positionCountry, brand)
+activate CCC
+CCC --> XCS : 200 OK
+deactivate CCC
+
+XCS -> VM : POST /setupCall(eventId, vin, \n voiceTargets, serviceType, \n positionCountry, homeCountry)
+activate VM
+VM -> Vehicle : call(voiceTargets) \n <font color=red>'Not relevant for testing'</font>
+VM --> XCS : 200 OK
+deactivate XCS
+deactivate VM
+deactivate Vehicle
+
+@enduml

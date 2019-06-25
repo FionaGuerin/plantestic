@@ -1,0 +1,82 @@
+void xcall(Vehicle vehicle, Voicemanager vm, XCS xcs, DataService dataService, CRS crs, EventNotifier eventNotifier, ELOS elos, CCC ccc, String vin, String eventId){
+    
+    ValidatableResponse response1 = RestAssured.given()
+        .auth().basic(dataService.username(xcs), dataService.password(xcs))
+        .param("vin",vin)
+    .when()
+        .get(dataService.path + "/vehicle/internal/{vin}")
+    .then()
+        .assertThat().statusCode(200)
+        .and().extract().response();
+
+    String homeCountry = response1.path("homeCountry");
+    String positionCountry = response1.path("positionCountry");
+    String brand = response1.path("brand");
+
+    ValidatableResponse response2 = RestAssured.given()
+        .auth().basic(crs.username(xcs), crs.password(xcs))
+        .param("eventId", eventId).and()
+        .param("serviceType", xcs.serviceType).and()
+        .param("vin", vin).and()
+        .param("homeCountry", homeCountry).and()
+        .param("positionCountry", positionCountry).and()
+        .param("brand", brand)
+    .when()
+        .post(crs.path + "routingTargets/find")
+    .then()
+        .assertThat().statusCode(200)
+        .and().extract().response();
+    
+    String voiceTargets = response2.path("voiceTargets");
+
+    if(xcs.serviceType == "ACall"){
+        ValidatableResponse response3 = RestAssured.given()
+            .auth().basic(eventNotifier.username(xcs), eventNotifier.password(xcs))
+            .param("eventId", eventId).and()
+            .param("homeCountry", homeCountry).and()
+            .param("positionCountry", positionCountry).and()
+            .param("brand", brand)
+        .when()
+            .put(eventNotifier.path + "xcs/notify/{eventId}")
+        .then()
+            .assertThat().statusCode(200);
+    }
+    
+    if(xcs.serviceType == "BCall"){
+         ValidatableResponse response4 = RestAssured.given()
+            .auth().basic(elos.username(xcs), elos.password(xcs))
+            .param("eventId", eventId).and()
+            .param("homeCountry", homeCountry).and()
+            .param("positionCountry", positionCountry).and()
+            .param("brand", brand)
+        .when()
+            .put(elos.path + "xcs/notify/{eventId}")
+        .then()
+            .assertThat().statusCode(200);
+    }
+
+    ValidatableResponse response5 = RestAssured.given()
+        .auth().basic(ccc.username(xcs), ccc.password(xcs))
+        .param("eventId", eventId).and()
+        .param("serviceType", xcs.serviceType).and()
+        .param("homeCountry", homeCountry).and()
+        .param("positionCountry", positionCountry).and()
+        .param("brand", brand)
+    .when()
+        .post(ccc.path + "xcs/eventReceived")
+    .then()
+        .assertThat().statusCode(200);
+
+    ValidatableResponse response6 = RestAssured.given()
+        .auth().basic(vm.username(xcs), vm.password(xcs))
+        .param("eventId", eventId).and()
+        .param("vin", vin).and()
+        .param("voiceTargets", voiceTargets).and()
+        .param("serviceType", xcs.serviceType).and()
+        .param("positionCountry", positionCountry).and()
+        .param("homeCountry", homeCountry)
+    .when()
+        .post(vm.path + "/setupCall")
+    .then()
+        .assertThat().statusCode(200);
+}
