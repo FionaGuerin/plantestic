@@ -87,6 +87,8 @@ dependencies {
     implementation "org.eclipse.uml2:org.eclipse.uml2.common:2.0.1.v20140910-1354"
     implementation "org.eclipse.uml2:org.eclipse.uml2.types:2.0.0.v20140910-1354"
     implementation "org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354"
+    //
+    implementation group: 'lpg.runtime', name: 'lpg.runtime.java', version: '2.0.17.v201004271640'
 
 
     implementation "org.eclipse.ocl:org.eclipse.ocl:3.4.2.v20140725-2242"
