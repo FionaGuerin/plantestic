@@ -53,6 +53,8 @@
  - it is a Markup language with open and closing tags, which are in square brackets  
    not enclosed text is directly added to the generated file
  - relevant tags:
+   - [template public generateElement(m : Model)]  
+     general template, is generated alone
    - [for (element) separator('xy')] doSomeStuff [/for]  
      Iteration over the element specification, repeat doSomeStuff
    - [if  (condition)] doSomeStuff [/if]  
