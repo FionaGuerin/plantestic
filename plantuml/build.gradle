@@ -1,0 +1,69 @@
+group = "plantuml"
+version = "1.0.0-SNAPSHOT"
+
+ext.xtextVersion = "2.18.0"
+
+repositories {
+	jcenter()
+	mavenCentral()
+	google()
+	gradlePluginPortal()
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "org.xtext.xtend"
+apply from: "${projectDir}/source-layout.gradle"
+
+dependencies {
+	testCompile "org.junit.jupiter:junit-jupiter-api"
+	testRuntime "org.junit.jupiter:junit-jupiter-engine"
+	testCompile "org.eclipse.xtext:org.eclipse.xtext.testing:${xtextVersion}"
+	testCompile "org.eclipse.xtext:org.eclipse.xtext.xbase.testing:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase:${xtextVersion}"
+	compile platform("org.eclipse.xtext:xtext-dev-bom:${xtextVersion}")
+}
+
+configurations {
+	mwe2 {
+		extendsFrom compile
+	}
+	all {
+		exclude group: "asm"
+	}
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+dependencies {
+	mwe2 "org.eclipse.emf:org.eclipse.emf.mwe2.launch"
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.common.types:${xtextVersion}"
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.xtext.generator:${xtextVersion}"
+	mwe2 "org.eclipse.xtext:xtext-antlr-generator"
+}
+
+task generateXtextLanguage(type: JavaExec) {
+	main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
+	classpath = configurations.mwe2
+	inputs.file "src/main/java/plantuml/GeneratePumlLanguage.mwe2"
+	inputs.file "src/main/java/plantuml/PumlLanguage.xtext"
+	outputs.dir "src/main/xtext-gen"
+	args += "src/main/java/plantuml/GeneratePumlLanguage.mwe2"
+	args += "-p"
+	args += "rootPath=/${projectDir}/.."
+}
+
+test {
+	useJUnitPlatform()
+
+	afterTest { desc, result ->
+		logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+	}
+}
+
+generateXtext.dependsOn(generateXtextLanguage)
+clean.dependsOn(cleanGenerateXtextLanguage)
+eclipse.classpath.plusConfigurations += [configurations.mwe2]
