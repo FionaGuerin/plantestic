@@ -80,10 +80,9 @@ For example, XML Metadata Interchange represents UML diagrams textually within t
 Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
 
 # Credits
+
  - [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
    developed a grammar file for PlantUML.
    We built upon their work from their repository and marked their contributions in the repository.
- - [https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
-   gave us a lot of insights in how to run `qvt` without Eclipse.
  - [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
    wrote a very useful article on how to use an Xtext parser in standalone mode.
