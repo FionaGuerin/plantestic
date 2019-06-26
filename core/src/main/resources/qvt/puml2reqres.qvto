@@ -1,17 +1,19 @@
-modeltype UseCase uses UseCase('http://www.eclipse.plantuml/Puml');
-transformation AddActor(inout useCaseModel : UseCase);
+modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
+modeltype reqresp "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
 
-main()
-{
-  useCaseModel.rootObjects()[Model].map applyAddActor();
+transformation puml2reqresp(in input: puml, out output: reqresp);
+
+main() {
+    assert fatal ( false )
+            with log('test', input);
+
+    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 0 )
+        with log('Not one Sequence Diagram');
+
+    log('One Sequence diagram', puml);
+  // input.objectsOfKind(UmlDiagram).map transformUmlDiagram();
 }
 
-mapping inout Model::applyAddActor()
-{
-   self.actor += new Actor("newActor");
+mapping UmlDiagram::transformUmlDiagram(): TestRoundtrip {
 }
 
-constructor Actor::Actor(myName : String)
-{
-   name := myName;
-}

@@ -24,6 +24,14 @@ import plantuml.PumlStandaloneSetupGenerated
 import plantuml.puml.UmlDiagram
 import java.util.*
 import kotlin.collections.HashMap
+import org.eclipse.emf.common.util.URI.createFileURI
+import org.eclipse.emf.common.util.URI.createFileURI
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil.createResource
+import org.eclipse.uml2.uml.UMLPackage
+import org.eclipse.uml2.uml.resource.UMLResource
+import java.io.File
+import java.lang.IllegalArgumentException
 
 
 object Main {
@@ -47,6 +55,29 @@ object Main {
 
     fun transformPuml2ReqRes(diagram: UmlDiagram) {
         PumlStandaloneSetup.doSetup()
+
+        val rs = ResourceSetImpl()
+
+        val mmResSrc = rs.getResource(URI.createURI("file:" + Resources.getResource("qvt/Puml.ecore").path), true)
+
+        // FRom https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
+        val eObjectSrc = mmResSrc.contents[0]
+        if (eObjectSrc is EPackage) {
+            val p = eObjectSrc as EPackage
+            EPackage.Registry.INSTANCE[p.nsURI] = p
+        }
+
+        val mmResTarget = rs.getResource(
+            URI.createURI("file:" + Resources.getResource("qvt/abstractsyntaxrestassured.ecore").path),
+            true
+        )
+
+        // FRom https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
+        val eObjectTarget = mmResTarget.contents[0]
+        if (eObjectTarget is EPackage) {
+            val p = eObjectTarget as EPackage
+            EPackage.Registry.INSTANCE[p.nsURI] = p
+        }
 
         // Refer to an existing transformation via URI
         val transformationURI = URI.createURI("file:" + Resources.getResource("qvt/puml2reqres.qvto").path)
@@ -77,15 +108,30 @@ object Main {
             // the output objects got captured in the output extent
             val outObjects = output.contents
             // let's persist them using a resource
-            val resourceSet2 = ResourceSetImpl()
-            val outResource = resourceSet2.getResource(
-                URI.createURI("platform:/resource/myqvtprj/tomorrow.betterWorld"), true
-            )
+            val outputLocationString = Resources.getResource("qvt").path + "/result.uml"
+            val outputPathUri = URI.createURI("file:$outputLocationString")
+            val file = File(outputLocationString)
+            file.createNewFile()
+
+            rs.resourceFactoryRegistry.extensionToFactoryMap["xmi"] = XMIResourceFactoryImpl();
+
+            rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
+
+            EPackage.Registry.INSTANCE[UMLPackage.eNS_URI] = UMLPackage.eINSTANCE;
+            Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] = UMLResource.Factory.INSTANCE
+
+            val outResource = rs.createResource(outputPathUri) as UMLResource
             outResource.contents.addAll(outObjects)
-            outResource.save(Collections.emptyMap<String, String>())
+            try {
+                outResource.save(null)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
         } else {
             // turn the result diagnostic into status and send it to error log
             val status = BasicDiagnostic.toIStatus(result)
+            throw IllegalArgumentException(result.message)
             //TODO Activator.getDefault().getLog().log(status)
         }
     }
