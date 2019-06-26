@@ -49,7 +49,7 @@ object Main {
         PumlStandaloneSetup.doSetup()
 
         // Refer to an existing transformation via URI
-        val transformationURI = URI.createURI(Resources.getResource("qvt/puml2reqres.qvto").path)
+        val transformationURI = URI.createURI("file:" + Resources.getResource("qvt/puml2reqres.qvto").path)
         // create executor for the given transformation
         val executor = TransformationExecutor(transformationURI)
 
