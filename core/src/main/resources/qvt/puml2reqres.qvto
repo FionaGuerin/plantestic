@@ -4,10 +4,8 @@ modeltype reqresp "strict" uses abstractsyntaxrestassured('http://www.example.or
 transformation puml2reqresp(in input: puml, out output: reqresp);
 
 main() {
-    assert fatal ( false )
-            with log('test', input);
 
-    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 0 )
+    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Not one Sequence Diagram');
 
     log('One Sequence diagram', puml);
@@ -15,5 +13,6 @@ main() {
 }
 
 mapping UmlDiagram::transformUmlDiagram(): TestRoundtrip {
+
 }
 
