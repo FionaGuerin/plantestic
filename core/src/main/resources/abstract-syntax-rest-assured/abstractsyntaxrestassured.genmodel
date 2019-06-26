@@ -19,6 +19,7 @@
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//TestRoundtrip">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestRoundtrip/requestspecification"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestRoundtrip/assertresponse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//TestRoundtrip/name"/>
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//RequestSpecification">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//RequestSpecification/requestParameters"/>
@@ -48,12 +49,18 @@
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//TestScenario">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestScenario/testroundtrip"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//TestScenario/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//TestScenario/parameter"/>
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//HasXPath">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//HasXPath/pathString"/>
     </genClasses>
     <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//BodyMatcher">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference abstractsyntaxrestassured.ecore#//BodyMatcher/matcher"/>
+    </genClasses>
+    <genClasses ecoreClass="abstractsyntaxrestassured.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute abstractsyntaxrestassured.ecore#//Parameter/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
