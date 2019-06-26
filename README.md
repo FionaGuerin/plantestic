@@ -57,8 +57,6 @@ The generated meta-model files are located in `plantuml/model/generated/Puml.eco
 The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
 This gradle task is also automatically executed when you build the project.
 
-
-
 ## Eclipse Modelling Framework (EMF)
 The Eclipse Modeling Framework serves modeling and code generation. 
 From a model specification in XMI it produces an equivalent set of classes in Kotlin.
