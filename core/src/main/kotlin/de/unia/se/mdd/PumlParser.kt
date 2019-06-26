@@ -1,5 +1,7 @@
 package de.unia.se.mdd
 
+import java.io.IOException
+import java.io.InputStream
 import com.google.inject.Guice
 import com.google.inject.Inject
 import org.eclipse.emf.common.util.URI
@@ -8,9 +10,6 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import plantuml.PumlRuntimeModule
 import plantuml.PumlStandaloneSetup
 import plantuml.puml.UmlDiagram
-
-import java.io.IOException
-import java.io.InputStream
 
 class PumlParser {
 
