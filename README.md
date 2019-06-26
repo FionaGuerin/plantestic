@@ -86,3 +86,7 @@ Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/
    We built upon their work from their repository and marked their contributions in the repository.
  - [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
    wrote a very useful article on how to use an Xtext parser in standalone mode.
+ - [https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
+    gave us a lot of insights in how to run `qvt` without Eclipse.
+ - [https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
+   shows how to invoke `qvt` programmatically.
