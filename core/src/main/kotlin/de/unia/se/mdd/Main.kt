@@ -118,7 +118,8 @@ object Main {
             rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
 
             EPackage.Registry.INSTANCE[UMLPackage.eNS_URI] = UMLPackage.eINSTANCE;
-            Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] = UMLResource.Factory.INSTANCE
+            Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] =
+                UMLResource.Factory.INSTANCE
 
             val outResource = rs.createResource(outputPathUri) as UMLResource
             outResource.contents.addAll(outObjects)
@@ -131,7 +132,7 @@ object Main {
         } else {
             // turn the result diagnostic into status and send it to error log
             val status = BasicDiagnostic.toIStatus(result)
-            throw IllegalArgumentException(result.message)
+            throw IllegalArgumentException(result.toString())
             //TODO Activator.getDefault().getLog().log(status)
         }
     }
