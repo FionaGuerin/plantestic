@@ -70,6 +70,27 @@ dependencies {
     implementation "com.google.guava:guava:28.0-jre"
     implementation "org.eclipse:org.eclipse.m2m.qvt.oml:3.4.1.v20150201-1444"
 
+    // making qvt work
+    //implementation "lpg.runtime.java:lpg.runtime.java:2.0.17.v201004271640"
+    implementation "org.eclipse.emf:org.eclipse.emf.common:2.15.0"
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore:2.15.0"
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.15.0"
+    implementation "org.eclipse:org.eclipse.m2m.qvt.oml:3.4.1.v20150201-1444"
+    implementation "org.eclipse:org.eclipse.m2m.qvt.oml.common:3.4.0.v20140306-0649"
+    implementation "org.eclipse:org.eclipse.m2m.qvt.oml.cst.parser:3.4.0.v20140429-1120"
+    implementation "org.eclipse:org.eclipse.m2m.qvt.oml.ecore.imperativeocl:3.3.0.v20140317-1132"
+    implementation "org.eclipse:org.eclipse.m2m.qvt.oml.emf.util:3.4.0.v20140306-0718"
+    implementation "org.eclipse.ocl:org.eclipse.ocl:3.4.2.v20140725-2242"
+    implementation "org.eclipse.ocl:org.eclipse.ocl.common:1.2.0.v20140610-0641"
+    implementation "org.eclipse.ocl:org.eclipse.ocl.ecore:3.3.100.v20140610-0641"
+    //implementation "org.eclipse.uml2"
+    implementation "org.eclipse.uml2:org.eclipse.uml2.common:2.0.1.v20140910-1354"
+    implementation "org.eclipse.uml2:org.eclipse.uml2.types:2.0.0.v20140910-1354"
+    implementation "org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354"
+
+
+    implementation "org.eclipse.ocl:org.eclipse.ocl:3.4.2.v20140725-2242"
+
     implementation project(":plantuml")
 
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.1.7"
