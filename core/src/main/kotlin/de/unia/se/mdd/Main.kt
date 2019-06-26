@@ -28,13 +28,22 @@ import org.eclipse.emf.common.util.URI.createFileURI
 import org.eclipse.emf.common.util.URI.createFileURI
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil.createResource
+import org.eclipse.m2m.qvt.oml.util.Log
+import org.eclipse.m2m.qvt.oml.util.WriterLog
 import org.eclipse.uml2.uml.UMLPackage
 import org.eclipse.uml2.uml.resource.UMLResource
 import java.io.File
+import java.io.OutputStreamWriter
 import java.lang.IllegalArgumentException
 
 
 object Main {
+
+    val PUML_METAMODEL_URI = createFileURI("../plantuml/model/generated/Puml.ecore")
+    val REQUEST_RESPONSE_PAIRS_METAMODEL_URI = createFileURI(Resources.getResource("request-response-pairs/RequestResponsePairs.ecore").path)
+    val REST_ASSURED_METAMODEL_URI = createFileURI(Resources.getResource("abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore").path)
+    val QVT_PUML2REQRES_TRANFORMATION_URI = createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)
+    val QVT_REQRES2RESTASSURED_TRANFORMATION_URI = createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -53,37 +62,42 @@ object Main {
         // TODO
     }
 
+
     fun transformPuml2ReqRes(diagram: UmlDiagram) {
-        PumlStandaloneSetup.doSetup()
+        // sources:
+        // - https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
 
         val rs = ResourceSetImpl()
 
-        val mmResSrc = rs.getResource(URI.createURI("file:" + Resources.getResource("qvt/Puml.ecore").path), true)
+        // TODO register factories
+        rs.resourceFactoryRegistry.extensionToFactoryMap["xmi"] = XMIResourceFactoryImpl()
+        rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
 
-        // FRom https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
+        // FIXME Not sure why we need to do this?
+        EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE)
+        Resource.Factory.Registry.INSTANCE.
+            getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE)
+
+        // TODO load source (=PUML) metamodel
+        val mmResSrc = rs.getResource(PUML_METAMODEL_URI, true)
         val eObjectSrc = mmResSrc.contents[0]
         if (eObjectSrc is EPackage) {
-            val p = eObjectSrc as EPackage
-            EPackage.Registry.INSTANCE[p.nsURI] = p
+            EPackage.Registry.INSTANCE[eObjectSrc.nsURI] = eObjectSrc
         }
 
-        val mmResTarget = rs.getResource(
-            URI.createURI("file:" + Resources.getResource("qvt/abstractsyntaxrestassured.ecore").path),
-            true
-        )
-
-        // FRom https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
+        // TODO load target (=RESTASSURED) metamodel
+        val mmResTarget = rs.getResource(REST_ASSURED_METAMODEL_URI, true)
         val eObjectTarget = mmResTarget.contents[0]
         if (eObjectTarget is EPackage) {
-            val p = eObjectTarget as EPackage
-            EPackage.Registry.INSTANCE[p.nsURI] = p
+            EPackage.Registry.INSTANCE[eObjectTarget.nsURI] = eObjectTarget
         }
 
-        // Refer to an existing transformation via URI
-        val transformationURI = URI.createURI("file:" + Resources.getResource("qvt/puml2reqres.qvto").path)
+        // TODO Refer to an existing transformation via URI
+        val transformationURI = QVT_PUML2REQRES_TRANFORMATION_URI
         // create executor for the given transformation
         val executor = TransformationExecutor(transformationURI)
-
+        val validationDiagnostic = executor.loadTransformation()
+        require(validationDiagnostic.message == "OK")
 
         val inObjects = BasicEList<EObject>()
         inObjects.add(diagram)
@@ -97,6 +111,9 @@ object Main {
         // configuration properties, logger, monitor object etc.
         val context = ExecutionContextImpl()
         context.setConfigProperty("keepModeling", true)
+        val outStream = OutputStreamWriter(System.out)
+	    val log = WriterLog(outStream)
+        context.log = log
 
         // run the transformation assigned to the executor with the given
         // input and output and execution context -> ChangeTheWorld(in, out)
@@ -113,9 +130,7 @@ object Main {
             val file = File(outputLocationString)
             file.createNewFile()
 
-            rs.resourceFactoryRegistry.extensionToFactoryMap["xmi"] = XMIResourceFactoryImpl();
 
-            rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
 
             EPackage.Registry.INSTANCE[UMLPackage.eNS_URI] = UMLPackage.eINSTANCE;
             Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] =

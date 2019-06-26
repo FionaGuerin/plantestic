@@ -5,14 +5,15 @@ transformation puml2reqresp(in input: puml, out output: reqresp);
 
 main() {
 
+    log('Starting log');
+
     assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Not one Sequence Diagram', puml);
 
     log('One Sequence diagram', puml);
-  // input.objectsOfKind(UmlDiagram).map transformUmlDiagram();
+    input.objectsOfType(UmlDiagram).map transformUmlDiagram();
 }
 
 mapping UmlDiagram::transformUmlDiagram(): TestRoundtrip {
 
 }
-
