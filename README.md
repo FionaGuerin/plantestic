@@ -52,7 +52,7 @@ We use Xtext to generate the parser and the corresponding language from a gramma
 
 To generate the language, you can run
 ```
-gradlew generateXtext
+./gradlew generateXtext
 ```
 The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
 The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
