@@ -75,7 +75,7 @@ dependencies {
     implementation "org.eclipse.emf:org.eclipse.emf.common:2.15.0"
     implementation "org.eclipse.emf:org.eclipse.emf.ecore:2.15.0"
     implementation "org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.15.0"
-    implementation "org.eclipse:org.eclipse.m2m.qvt.oml:3.4.1.v20150201-1444"
+    //implementation "org.eclipse:org.eclipse.m2m.qvt.oml:3.4.1.v20150201-1444"
     implementation "org.eclipse:org.eclipse.m2m.qvt.oml.common:3.4.0.v20140306-0649"
     implementation "org.eclipse:org.eclipse.m2m.qvt.oml.cst.parser:3.4.0.v20140429-1120"
     implementation "org.eclipse:org.eclipse.m2m.qvt.oml.ecore.imperativeocl:3.3.0.v20140317-1132"

@@ -22,9 +22,9 @@ class MainTest : StringSpec({
     }
 
     "Bullshit transformation throws error" {
-        val parser = PumlParser()
-        val umlDiagram = parser.parse(Resources.getResource("minimal_hello.puml").openStream())
+        //val parser = PumlParser()
+        //val umlDiagram = parser.parse(Resources.getResource("minimal_hello.puml").openStream())
 
-        transformPuml2ReqRes(umlDiagram)
+        transformPuml2ReqRes()
     }
 })

@@ -26,12 +26,15 @@ import java.util.*
 import kotlin.collections.HashMap
 import org.eclipse.emf.common.util.URI.createFileURI
 import org.eclipse.emf.common.util.URI.createFileURI
+import org.eclipse.emf.ecore.resource.URIConverter
+import org.eclipse.emf.ecore.util.EContentsEList
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil.createResource
 import org.eclipse.m2m.qvt.oml.util.Log
 import org.eclipse.m2m.qvt.oml.util.WriterLog
 import org.eclipse.uml2.uml.UMLPackage
 import org.eclipse.uml2.uml.resource.UMLResource
+import plantuml.puml.PumlPackage
 import java.io.File
 import java.io.OutputStreamWriter
 import java.lang.IllegalArgumentException
@@ -63,15 +66,46 @@ object Main {
     }
 
 
-    fun transformPuml2ReqRes(diagram: UmlDiagram) {
+    fun transformPuml2ReqRes() {
         // sources:
         // - https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
+        // - https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava
+
 
         val rs = ResourceSetImpl()
 
+
         // TODO register factories
-        rs.resourceFactoryRegistry.extensionToFactoryMap["xmi"] = XMIResourceFactoryImpl()
-        rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
+        PumlStandaloneSetup.doSetup()
+        //rs.resourceFactoryRegistry.extensionToFactoryMap[packageInstance.nsURI] = packageInstance
+        //rs.resourceFactoryRegistry.extensionToFactoryMap["xmi"] = XMIResourceFactoryImpl()
+        //rs.resourceFactoryRegistry.extensionToFactoryMap["ecore"] = EcoreResourceFactoryImpl()
+
+        // TODO load input model
+        val INPUT_URI = createFileURI(Resources.getResource("minimal_hello.puml").path)
+        val inputModel = rs.getResource(INPUT_URI, true)
+
+        val rs_temp = ResourceSetImpl()
+        val inputResource = rs_temp.createResource(URI.createURI("dummy:/test.ecore"))
+        inputResource.contents.add(inputModel.contents[0])
+
+
+
+
+
+        val stringWriter = StringWriter()
+        val outputStream = URIConverter.WriteableOutputStream(
+            stringWriter,
+            "UTF-8"
+        )
+        val options = HashMap<String, String>()
+        inputResource.save(outputStream, options)
+
+        println(stringWriter.toString())
+
+
+
+
 
         // FIXME Not sure why we need to do this?
         EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE)
@@ -99,11 +133,14 @@ object Main {
         val validationDiagnostic = executor.loadTransformation()
         require(validationDiagnostic.message == "OK")
 
-        val inObjects = BasicEList<EObject>()
-        inObjects.add(diagram)
+        val examle_xmi = createFileURI(Resources.getResource("diagram.xmi").path)
+        val input_xmi = rs.getResource(examle_xmi, true)
+
+        //val inObjects = EContentsEList<EObject>(diagram)
+        //inObjects.add(diagram)
 
         // create the input extent with its initial contents
-        val input = BasicModelExtent(inObjects)
+        val input = BasicModelExtent(input_xmi.contents)
         // create an empty extent to catch the output
         val output = BasicModelExtent()
 
@@ -119,6 +156,8 @@ object Main {
         // input and output and execution context -> ChangeTheWorld(in, out)
         // Remark: variable arguments count is supported
         val result = executor.execute(context, input, output)
+
+
 
         // check the result for success
         if (result.severity == Diagnostic.OK) {
