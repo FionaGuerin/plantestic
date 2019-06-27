@@ -1,23 +1,18 @@
 [comment encoding = UTF-8 /]
-[module generateCode('/mdd/resources/abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore')]
-
+[module generateCode('/mdd/core/src/main/resources/abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore')]
 
 [template public generateElement(testScenario : TestScenario)]
 	[comment @main /]
 	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
 
-	public void [testScenario.name /] (
-		[if (testScenario.parameter->notEmpty())]
-		[for (param : Property | testScenario.parameter) separator(',') ]
-			[param.type/] [param.name/]
-		[/for]
-		[/if]
-	) { 
+	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] { 
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
-			[let bas : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme]
-				.auth().basic([bas.user/], [bas.password/])
-			[/let]
+			[if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme))]
+				[let bas : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme)]
+					.auth().basic([bas.user/], [bas.password/])
+				[/let]
+			[/if]
 			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
 				.param([requestParam.key/], [requestParam.value/])
 			[/for]
@@ -27,17 +22,26 @@
 				[let res : ResponseSpecification = testRoundtrip.assertresponse]
 					.assertThat()
 					[if (res.expectedStatusCode->notEmpty())]
-						[let isIn : IsIn = res.expectedStatusCode]
-							.statusCode(in([isIn.allowedValues/])
-						[/let]
+						[if (res.expectedStatusCode.oclIsTypeOf(IsIn))]
+							[let statusCode : IsIn = res.expectedStatusCode.oclAsType(IsIn)]
+								.statusCode(in([statusCode.allowedValues/])
+							[/let]
+						[/if]
 					[/if]
 					[if (res.bodyMatchers->notEmpty())]
-						.body("rerouteOptions", contains("UI_SWITCH")); //Todo: correct this line, is wrong because data is missing
 						[for (matcher : BodyMatcher | res.bodyMatchers)]
-							.body([matcher.matcher/] //Todo: needs correction after dealing with the inheritance
+						    [if (matcher.oclIsTypeOf(HasXPath))]
+								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
+									.body([bodyXPath.pathString/]) //Todo: needs correction after dealing with the inheritance
+								[/let]
+							[/if]
+							[if (matcher.oclIsTypeOf(IsIn))]
+								[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
+									//Todo: is this needed?
+								[/let]
+							[/if]
 						[/for]
 					[/if]
-					
 				[/let]
 		// Todo implementation for Variables that come from response (not part of this small example)
 		[/for]

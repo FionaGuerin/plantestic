@@ -50,6 +50,8 @@
  
  ## Language Features
  
+ [Acceleo Query Language](https://www.eclipse.org/acceleo/documentation/)
+ 
  - it is a Markup language with open and closing tags, which are in square brackets  
    not enclosed text is directly added to the generated file
  - relevant tags:
