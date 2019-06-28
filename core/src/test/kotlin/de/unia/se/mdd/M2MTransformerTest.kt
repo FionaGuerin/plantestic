@@ -6,7 +6,7 @@ import io.kotlintest.specs.StringSpec
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
-class ModelToModelTransformationsTest : StringSpec({
+class M2MTransformerTest : StringSpec({
 
     "Transform simple puml input to Request Response Pairs " {
         MetaModelSetup.doSetup()
@@ -14,7 +14,7 @@ class ModelToModelTransformationsTest : StringSpec({
         val resultSet = ResourceSetImpl()
         val pumlInputModel = resultSet.getResource(INPUT_URI, true)
 
-        val reqRespOutputModel = ModelToModelTransformations.transformPuml2ReqRes(pumlInputModel)
+        val reqRespOutputModel = M2MTransformer.transformPuml2ReqRes(pumlInputModel.contents[0])
         reqRespOutputModel shouldNotBe null
     }
 }) {

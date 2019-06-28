@@ -11,10 +11,10 @@ object Main {
         // val pumlInputModel = resultSet.getResource(INPUT_URI, true)
 
         // TODO: Transform PlantUML AST to RequestResponse-Pairs
-        // ModelToModelTransformations.transformPuml2ReqRes()
+        // M2MTransformer.transformPuml2ReqRes()
 
         // TODO: Transform RequestResponse-Pairs to RestAssured AST
-        // ModelToModelTransformations.transformReqRes2RestAssured()
+        // M2MTransformer.transformReqRes2RestAssured()
 
         // TODO: Generate test files from RestAssured AST with Accelio
     }
