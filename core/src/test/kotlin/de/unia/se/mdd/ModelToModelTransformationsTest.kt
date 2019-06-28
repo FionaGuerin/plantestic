@@ -10,8 +10,8 @@ class ModelToModelTransformationsTest : StringSpec({
 
     "Transform simple puml input to Request Response Pairs " {
         MetaModelSetup.doSetup()
-        val resultSet = ResourceSetImpl()
 
+        val resultSet = ResourceSetImpl()
         val pumlInputModel = resultSet.getResource(INPUT_URI, true)
 
         val reqRespOutputModel = ModelToModelTransformations.transformPuml2ReqRes(pumlInputModel)

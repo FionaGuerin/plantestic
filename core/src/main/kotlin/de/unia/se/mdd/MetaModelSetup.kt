@@ -22,6 +22,7 @@ object MetaModelSetup {
         Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] =
             UMLResource.Factory.INSTANCE
 
+        // Our meta models
         PumlStandaloneSetup.doSetup()
         registerMetamodelFromEcoreFile(REST_ASSURED_METAMODEL_URI)
         registerMetamodelFromEcoreFile(REQUEST_RESPONSE_PAIRS_METAMODEL_URI)
