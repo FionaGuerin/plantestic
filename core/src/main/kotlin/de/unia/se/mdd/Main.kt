@@ -48,6 +48,7 @@ object Main {
 
         // Generate test files from RestAssured AST
         // TODO
+        doMetamodelSetup()
     }
 
 
@@ -58,30 +59,6 @@ object Main {
 
 
         val rs = ResourceSetImpl()
-
-
-        // register encoding factories
-        PumlStandaloneSetup.doSetup()
-
-
-        // FIXME Not sure why we need to do this?
-        EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE)
-        Resource.Factory.Registry.INSTANCE.
-            getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE)
-
-        // TODO load source (=PUML) metamodel
-        val mmResSrc = rs.getResource(PUML_METAMODEL_URI, true)
-        val eObjectSrc = mmResSrc.contents[0]
-        if (eObjectSrc is EPackage) {
-            EPackage.Registry.INSTANCE[eObjectSrc.nsURI] = eObjectSrc
-        }
-
-        // TODO load target (=RESTASSURED) metamodel
-        val mmResTarget = rs.getResource(REST_ASSURED_METAMODEL_URI, true)
-        val eObjectTarget = mmResTarget.contents[0]
-        if (eObjectTarget is EPackage) {
-            EPackage.Registry.INSTANCE[eObjectTarget.nsURI] = eObjectTarget
-        }
 
         // TODO Refer to an existing transformation via URI
         val transformationURI = QVT_PUML2REQRES_TRANFORMATION_URI
@@ -135,6 +112,27 @@ object Main {
             val status = BasicDiagnostic.toIStatus(result)
             throw IllegalArgumentException(result.toString())
             //TODO Activator.getDefault().getLog().log(status)
+        }
+    }
+
+    fun doMetamodelSetup() {
+
+        // register encoding factories
+        PumlStandaloneSetup.doSetup()
+
+
+        val rs = ResourceSetImpl()
+
+        // FIXME Not sure why we need to do this?
+        EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE)
+        Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] =
+            UMLResource.Factory.INSTANCE
+
+        // TODO load target (=RESTASSURED) metamodel
+        val mmResTarget = rs.getResource(REST_ASSURED_METAMODEL_URI, true)
+        val eObjectTarget = mmResTarget.contents[0]
+        if (eObjectTarget is EPackage) {
+            EPackage.Registry.INSTANCE[eObjectTarget.nsURI] = eObjectTarget
         }
     }
 }
