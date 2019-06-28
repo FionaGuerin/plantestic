@@ -16,6 +16,6 @@ object Main {
         // TODO: Transform RequestResponse-Pairs to RestAssured AST
         // M2MTransformer.transformReqRes2RestAssured()
 
-        // TODO: Generate test files from RestAssured AST with Accelio
+        // TODO: Generate test files from RestAssured AST with Acceleo
     }
 }
