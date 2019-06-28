@@ -91,24 +91,12 @@ object Main {
         require(validationDiagnostic.message == "OK")
 
 
-        // load input model and parse it, then write it back to a temp file in ecore format (xmi)
-        // then load it back by parsing xmi (this somehow adds eSttings which is still a WIP)
+        // load input model and parse it
         val INPUT_URI = createFileURI(Resources.getResource("minimal_hello.puml").path)
         val inputModel = rs.getResource(INPUT_URI, true)
 
-        val tmpFileResource = rs.createResource(URI.createURI("dummy:/test.ecore"))
-        tmpFileResource.contents.addAll(inputModel.contents)
-
-        val fileTmpOutput = FileOutputStream("tmp.xmi")
-        val tmpFileOptions = HashMap<String, String>()
-        tmpFileResource.save(fileTmpOutput, tmpFileOptions)
-
-        val tmpFileUri = createFileURI("tmp.xmi")
-        val inputModelEcore = rs.getResource(tmpFileUri, true)
-
-
         // create the input extent with its initial contents
-        val input = BasicModelExtent(inputModelEcore.contents)
+        val input = BasicModelExtent(inputModel.contents)
         // create an empty extent to catch the output
         val output = BasicModelExtent()
 
@@ -127,9 +115,6 @@ object Main {
         // Remark: variable arguments count is supported
         val result = executor.execute(context, input, output)
 
-
-        // now delete the tmp file
-        File("tmp.xmi").delete()
 
 
         // check the result for success
