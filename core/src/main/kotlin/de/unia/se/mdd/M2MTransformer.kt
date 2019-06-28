@@ -13,10 +13,11 @@ import java.io.OutputStreamWriter
 
 object M2MTransformer {
 
-    private val QVT_PUML2REQRES_TRANFORMATION_URI = URI.createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)!!
+    private val QVT_PUML2REQRES_TRANFORMATION_URI =
+        URI.createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)
 
     private val QVT_REQRES2RESTASSURED_TRANFORMATION_URI =
-        URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)!!
+        URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
 
     /**
      * Transforms a UmlDiagram to a Request Response Pair.
