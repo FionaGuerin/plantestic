@@ -1,7 +1,5 @@
 package de.unia.se.mdd
 
-import java.io.IOException
-import java.io.InputStream
 import com.google.inject.Guice
 import com.google.inject.Inject
 import org.eclipse.emf.common.util.URI
@@ -25,22 +23,6 @@ class PumlParser {
         val injector = Guice.createInjector(PumlRuntimeModule())
         injector.injectMembers(this)
         resourceSet!!.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, java.lang.Boolean.TRUE)
-    }
-
-    /**
-     * Parses an input stream and returns the resulting object tree root element.
-     * @param inputStream Input Stream
-     * @return Root model object
-     * @throws IOException When and I/O related parser error occurs
-     */
-    @Throws(IOException::class)
-    fun parse(inputStream: InputStream): UmlDiagram {
-        val resource = resourceSet!!.createResource(URI.createURI("dummy:/inmemory.puml"))
-        resource.load(inputStream, resourceSet.loadOptions)
-
-        require(resource.contents.size > 0) { "File should contain something meaningful." }
-        require(resource.contents[0] is UmlDiagram) { "File should contain a diagram." }
-        return resource.contents[0] as UmlDiagram
     }
 
     /**

@@ -9,17 +9,6 @@ import plantuml.puml.SequenceUml
 
 class PumlParserTest : StringSpec({
 
-    "Minimal example can be parsed from stream" {
-        val parser = PumlParser()
-        val umlDiagram = parser.parse(Resources.getResource("minimal_hello.puml").openStream())
-
-        (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
-        val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
-        sequenceDiagram.umlElements.size shouldBe 4
-        (sequenceDiagram.umlElements[0] as Participant).name shouldBe "A"
-        (sequenceDiagram.umlElements[1] as Participant).name shouldBe "B"
-    }
-
     "Minimal example can be parsed from URI" {
         val parser = PumlParser()
         val umlDiagram = parser.parse(URI.createFileURI(Resources.getResource("minimal_hello.puml").path))
