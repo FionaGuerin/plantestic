@@ -26,6 +26,9 @@ import java.util.*
 import kotlin.collections.HashMap
 import org.eclipse.emf.common.util.URI.createFileURI
 import org.eclipse.emf.common.util.URI.createFileURI
+import org.eclipse.emf.ecore.impl.BasicEObjectImpl
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
+import org.eclipse.emf.ecore.impl.EObjectImpl
 import org.eclipse.emf.ecore.resource.URIConverter
 import org.eclipse.emf.ecore.util.EContentsEList
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
@@ -87,13 +90,15 @@ object Main {
 
         val rs_temp = ResourceSetImpl()
         val inputResource = rs_temp.createResource(URI.createURI("dummy:/test.ecore"))
-        inputResource.contents.add(inputModel.contents[0])
+        //inputResource.contents.add(inputModel.contents[0])
 
 
+        //inputModel.uri = URI.createURI("dummy:/test.ecore")
 
 
+        //val test1 = inputModel.getEObject("dummy:test.ecore")
 
-        val stringWriter = StringWriter()
+        /*val stringWriter = StringWriter()
         val outputStream = URIConverter.WriteableOutputStream(
             stringWriter,
             "UTF-8"
@@ -102,8 +107,7 @@ object Main {
         inputResource.save(outputStream, options)
 
         println(stringWriter.toString())
-
-
+*/
 
 
 
@@ -139,10 +143,15 @@ object Main {
         //val inObjects = EContentsEList<EObject>(diagram)
         //inObjects.add(diagram)
 
+
+
         // create the input extent with its initial contents
-        val input = BasicModelExtent(input_xmi.contents)
+        val input_1 = BasicModelExtent(inputModel.contents.map { d -> DynamicEObjectImpl(d.eClass()) })
+        val input_2 = BasicModelExtent(input_xmi.contents)
         // create an empty extent to catch the output
         val output = BasicModelExtent()
+
+
 
         // setup the execution environment details ->
         // configuration properties, logger, monitor object etc.
@@ -152,10 +161,11 @@ object Main {
 	    val log = WriterLog(outStream)
         context.log = log
 
+
         // run the transformation assigned to the executor with the given
         // input and output and execution context -> ChangeTheWorld(in, out)
         // Remark: variable arguments count is supported
-        val result = executor.execute(context, input, output)
+        val result = executor.execute(context, input_2, output)
 
 
 
@@ -171,7 +181,7 @@ object Main {
 
 
 
-            EPackage.Registry.INSTANCE[UMLPackage.eNS_URI] = UMLPackage.eINSTANCE;
+            EPackage.Registry.INSTANCE[UMLPackage.eNS_URI] = UMLPackage.eINSTANCE
             Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] =
                 UMLResource.Factory.INSTANCE
 
