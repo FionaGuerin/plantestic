@@ -20,7 +20,7 @@ object M2MTransformer {
         URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
 
     /**
-     * Transforms a UmlDiagram to a Request Response Pair.
+     * Transforms a UmlDiagram EObject to a Request Response Pair EObject.
      * @param inputModel The UmlDiagram to transform
      * @return Request Response Pair
      */
@@ -39,7 +39,7 @@ object M2MTransformer {
     }
 
     private fun doQvtoTransformation(inputModel: EObject, transformationUri: URI): EObject {
-        // sources:
+        // Sources:
         // - https://github.com/mrcalvin/qvto-cli/blob/master/qvto-app/src/main/java/at/ac/wu/nm/qvto/App.java
         // - https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava
 
