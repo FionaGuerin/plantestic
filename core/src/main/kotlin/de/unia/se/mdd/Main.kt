@@ -1,21 +1,24 @@
 package de.unia.se.mdd
 
+import com.google.common.io.Resources
+import org.eclipse.emf.common.util.URI
+
 object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        //runTransformationPipeline()
+    }
+
+    fun runTransformationPipeline(input: URI) {
         MetaModelSetup.doSetup()
 
-        // TODO: Parse PlantUML input file
-        // private val INPUT_URI = URI.createFileURI(Resources.getResource("minimal_hello.puml").path)
-        // val pumlInputModel = resultSet.getResource(INPUT_URI, true)
+        val parser = PumlParser()
+        val pumlDiagramModel = parser.parse(input)
 
-        // TODO: Transform PlantUML AST to RequestResponse-Pairs
-        // M2MTransformer.transformPuml2ReqRes()
+        val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
+        val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        // TODO: Transform RequestResponse-Pairs to RestAssured AST
-        // M2MTransformer.transformReqRes2RestAssured()
-
-        // TODO: Generate test files from RestAssured AST with Acceleo
+        // TODO: generate output
     }
 }

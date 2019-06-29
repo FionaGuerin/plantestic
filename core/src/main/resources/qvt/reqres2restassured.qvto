@@ -1,18 +1,17 @@
-modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
-modeltype reqresp "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
+modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
+modeltype restassured "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
 
-transformation puml2reqresp(in input: puml, out output: reqresp);
+transformation reqres2restassured(in input: reqres, out output: restassured);
 
 main() {
-    log('Starting log');
+    log('Started transforming RequestResponse pairs to RestAssured');
 
-    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
-        with log('Not one Sequence Diagram', puml);
+        assert fatal ( input.objectsOfType(Scenario)->size() = 1 )
+            with log('Input does not contain exactly one Scenario');
 
-    log('One Sequence diagram', puml);
-    input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+    input.objectsOfType(Scenario).map transformScenario();
 }
 
-mapping UmlDiagram::transformUmlDiagram(): TestRoundtrip {
+mapping Scenario::transformScenario(): TestRoundtrip {
 
 }
