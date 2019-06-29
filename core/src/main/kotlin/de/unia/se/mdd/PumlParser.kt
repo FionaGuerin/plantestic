@@ -14,7 +14,7 @@ object PumlParser {
      */
     fun parse(fileUriString: String): UmlDiagram {
         require(EPackage.Registry.INSTANCE["http://www.eclipse.plantuml/Puml"] != null) {
-            "Please run MetaModelSetup.doSetup() first"
+            "Please run MetaModelSetup.doSetup() first!"
         }
 
         val uri = URI.createFileURI(fileUriString)
