@@ -30,7 +30,6 @@ class M2MTransformerTest : StringSpec({
 
         printModel(restAssuredOutputModel)
     }
-
 }) {
     companion object {
         private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello_puml.xmi").path
