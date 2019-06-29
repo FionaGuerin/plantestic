@@ -9,6 +9,8 @@ import plantuml.puml.SequenceUml
 class PumlParserTest : StringSpec({
 
     "Minimal example can be parsed from URI" {
+        MetaModelSetup.doSetup()
+
         val umlDiagram = PumlParser.parse(Resources.getResource("minimal_hello.puml").path)
 
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
