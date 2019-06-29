@@ -1,0 +1,18 @@
+modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
+modeltype reqresp "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
+
+transformation puml2reqresp(in input: puml, out output: reqresp);
+
+main() {
+    log('Starting log');
+
+    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
+        with log('Not one Sequence Diagram', puml);
+
+    log('One Sequence diagram', puml);
+    input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+}
+
+mapping UmlDiagram::transformUmlDiagram(): TestRoundtrip {
+
+}

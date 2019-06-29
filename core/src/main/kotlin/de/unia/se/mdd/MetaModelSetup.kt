@@ -31,9 +31,9 @@ object MetaModelSetup {
     private fun registerMetamodelFromEcoreFile(uri: URI) {
         val resourceSet = ResourceSetImpl()
 
-        val restAssuredMetaModelResource = resourceSet.getResource(uri, true)
-        val restAssuredEPackage = restAssuredMetaModelResource.contents[0]
-        require(restAssuredEPackage is EPackage) { "Rest Assured Metamodel wasn't loaded properly!" }
-        EPackage.Registry.INSTANCE[restAssuredEPackage.nsURI] = restAssuredEPackage
+        val metaModelResource = resourceSet.getResource(uri, true)
+        val metaModelEPackage = metaModelResource.contents[0]
+        require(metaModelEPackage is EPackage) { "Metamodel for URI $uri wasn't loaded properly!" }
+        EPackage.Registry.INSTANCE[metaModelEPackage.nsURI] = metaModelEPackage
     }
 }
