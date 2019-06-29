@@ -11,7 +11,7 @@ import kotlin.reflect.KCallable
 import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.jvm.isAccessible
 
-class MetaModelSetupTest : StringSpec(){
+class MetaModelSetupTest : StringSpec() {
 
     init {
         "doSetup should work" {
