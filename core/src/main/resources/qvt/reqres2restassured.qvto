@@ -1,5 +1,5 @@
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
-modeltype restassured "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
+modeltype restassured "strict" uses RestAssured('http://www.example.org/RestAssured');
 
 transformation reqres2restassured(in input: reqres, out output: restassured);
 
