@@ -146,6 +146,7 @@ local.properties
 .loadpath
 .recommenders
 .project
+.aird
 
 # External tool builders
 .externalToolBuilders/
