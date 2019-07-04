@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/abstract-syntax-restassured/src-gen" creationIcons="false"
+    editDirectory="/abstract-syntax-restassured.edit/src-gen" editorDirectory="/abstract-syntax-restassured.editor/src-gen"
+    modelPluginID="abstract-syntax-restassured" modelName="RestAssured"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>RestAssured.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="RestAssured" basePackage="abstract-syntax-restassured"
+      disposableProviderFactory="true" ecorePackage="RestAssured.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RestAssured.ecore#//Method">
+      <genEnumLiterals ecoreEnumLiteral="RestAssured.ecore#//Method/GET"/>
+      <genEnumLiterals ecoreEnumLiteral="RestAssured.ecore#//Method/POST"/>
+      <genEnumLiterals ecoreEnumLiteral="RestAssured.ecore#//Method/PUT"/>
+    </genEnums>
+    <genClasses ecoreClass="RestAssured.ecore#//TestRoundtrip">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//TestRoundtrip/requestspecification"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//TestRoundtrip/assertresponse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//TestRoundtrip/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//RequestSpecification">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//RequestSpecification/requestParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//RequestSpecification/authenticationScheme"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/method"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//ResponseSpecification">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/bodyMatchers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/expectedStatusCode"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//AuthenticationScheme"/>
+    <genClasses ecoreClass="RestAssured.ecore#//RequestParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestParameter/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestParameter/key"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//BasicAuthScheme">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//BasicAuthScheme/user"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//BasicAuthScheme/password"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//BodyMatcherGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//BodyMatcherGroup/bodyMatchers"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//Matcher"/>
+    <genClasses ecoreClass="RestAssured.ecore#//IsIn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//IsIn/allowedValues"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//TestScenario">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//TestScenario/testroundtrip"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//TestScenario/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//TestScenario/parameter"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//HasXPath">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//HasXPath/pathString"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//BodyMatcher">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//BodyMatcher/matcher"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//Parameter/name"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

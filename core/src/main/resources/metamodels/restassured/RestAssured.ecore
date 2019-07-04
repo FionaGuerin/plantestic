@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="abstractsyntaxrestassured" nsURI="http://www.example.org/abstractsyntaxrestassured"
-    nsPrefix="abstractsyntaxrestassured">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RestAssured" nsURI="http://www.example.org/RestAssured" nsPrefix="RestAssured">
   <eClassifiers xsi:type="ecore:EClass" name="TestRoundtrip" instanceTypeName="TestRoundtrip">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requestspecification" lowerBound="1"
         eType="#//RequestSpecification" containment="true"/>
