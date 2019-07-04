@@ -21,34 +21,21 @@ package de.unia.se.mdd;
         /**
          * The plug-in ID.
          */
-        public static final String PLUGIN_ID = "org.eclipse.acceleo.module.sample";
+        public static final String PLUGIN_ID = "de.unia.se.mdd";
 
         /**
          * The shared instance.
          */
         private static AcceleoActivator plugin;
 
-        /**
-         * The constructor.
-         */
         public AcceleoActivator() {
         }
 
-        /**
-         * {@inheritDoc}
-         *
-         * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
-         */
         public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
         }
 
-        /**
-         * {@inheritDoc}
-         *
-         * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-         */
         public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);

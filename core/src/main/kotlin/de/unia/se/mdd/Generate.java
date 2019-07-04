@@ -24,31 +24,16 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-/**
- * Entry point of the 'Generate' generation module.
- *
- * @generated
- */
+// Entry point of the 'Generate' generation module.
 public class Generate extends AbstractAcceleoGenerator {
-    /**
-     * The name of the module.
-     *
-     * @generated
-     */
-    public static final String MODULE_FILE_NAME = "/org/eclipse/acceleo/module/sample/main/generate";
+    // The name of the module.
+    public static final String MODULE_FILE_NAME = "de/unia/se/mdd/generate";
+    // public static final String MODULE_FILE_NAME = "/org/eclipse/acceleo/module/sample/main/generate";
 
-    /**
-     * The name of the templates that are to be generated.
-     *
-     * @generated
-     */
+    // The name of the templates that are to be generated.
     public static final String[] TEMPLATE_NAMES = { "generateElement" };
 
-    /**
-     * The list of properties files from the launch parameters (Launch configuration).
-     *
-     * @generated
-     */
+    // The list of properties files from the launch parameters (Launch configuration).
     private List<String> propertiesFiles = new ArrayList<String>();
 
     /**
@@ -62,8 +47,6 @@ public class Generate extends AbstractAcceleoGenerator {
      * retrieval of {@link #getProperties()} and
      * {@link #getGenerationListeners()}.
      * </p>
-     *
-     * @generated
      */
     public Generate() {
         // Empty implementation
@@ -83,7 +66,6 @@ public class Generate extends AbstractAcceleoGenerator {
      * @throws IOException
      *             This can be thrown in three scenarios : the module cannot be found, it cannot be loaded, or
      *             the model cannot be loaded.
-     * @generated
      */
     public Generate(URI modelURI, File targetFolder,
                     List<? extends Object> arguments) throws IOException {
@@ -116,7 +98,6 @@ public class Generate extends AbstractAcceleoGenerator {
      *
      * @param args
      *            Arguments of the generation.
-     * @generated
      */
     public static void main(String[] args) {
         try {
@@ -127,31 +108,7 @@ public class Generate extends AbstractAcceleoGenerator {
                 File folder = new File(args[1]);
 
                 List<String> arguments = new ArrayList<String>();
-
-                /*
-                 * If you want to change the content of this method, do NOT forget to change the "@generated"
-                 * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
-                 * of the Acceleo module with the main template that has caused the creation of this class will
-                 * revert your modifications.
-                 */
-
-                /*
-                 * Add in this list all the arguments used by the starting point of the generation
-                 * If your main template is called on an element of your model and a String, you can
-                 * add in "arguments" this "String" attribute.
-                 */
-
                 Generate generator = new Generate(modelURI, folder, arguments);
-
-                /*
-                 * Add the properties from the launch arguments.
-                 * If you want to programmatically add new properties, add them in "propertiesFiles"
-                 * You can add the absolute path of a properties files, or even a project relative path.
-                 * If you want to add another "protocol" for your properties files, please override
-                 * "getPropertiesLoaderService(AcceleoService)" in order to return a new property loader.
-                 * The behavior of the properties loader service is explained in the Acceleo documentation
-                 * (Help -> Help Contents).
-                 */
 
                 for (int i = 2; i < args.length; i++) {
                     generator.addPropertiesFile(args[i]);
@@ -171,34 +128,9 @@ public class Generate extends AbstractAcceleoGenerator {
      *            This will be used to display progress information to the user.
      * @throws IOException
      *             This will be thrown if any of the output files cannot be saved to disk.
-     * @generated
      */
     @Override
     public void doGenerate(Monitor monitor) throws IOException {
-        /*
-         * TODO if you wish to change the generation as a whole, override this. The default behavior should
-         * be sufficient in most cases. If you want to change the content of this method, do NOT forget to
-         * change the "@generated" tag in the Javadoc of this method to "@generated NOT". Without this new tag,
-         * any compilation of the Acceleo module with the main template that has caused the creation of this
-         * class will revert your modifications. If you encounter a problem with an unresolved proxy during the
-         * generation, you can remove the comments in the following instructions to check for problems. Please
-         * note that those instructions may have a significant impact on the performances.
-         */
-
-        //org.eclipse.emf.ecore.util.EcoreUtil.resolveAll(model);
-
-        /*
-         * If you want to check for potential errors in your models before the launch of the generation, you
-         * use the code below.
-         */
-
-        //if (model != null && model.eResource() != null) {
-        //    List<org.eclipse.emf.ecore.resource.Resource.Diagnostic> errors = model.eResource().getErrors();
-        //    for (org.eclipse.emf.ecore.resource.Resource.Diagnostic diagnostic : errors) {
-        //        System.err.println(diagnostic.toString());
-        //    }
-        //}
-
         super.doGenerate(monitor);
     }
 
@@ -206,41 +138,13 @@ public class Generate extends AbstractAcceleoGenerator {
      * If this generator needs to listen to text generation events, listeners can be returned from here.
      *
      * @return List of listeners that are to be notified when text is generated through this launch.
-     * @generated
      */
     @Override
     public List<IAcceleoTextGenerationListener> getGenerationListeners() {
         List<IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();
-        /*
-         * TODO if you need to listen to generation event, add listeners to the list here. If you want to change
-         * the content of this method, do NOT forget to change the "@generated" tag in the Javadoc of this method
-         * to "@generated NOT". Without this new tag, any compilation of the Acceleo module with the main template
-         * that has caused the creation of this class will revert your modifications.
-         */
         return listeners;
     }
 
-    /**
-     * If you need to change the way files are generated, this is your entry point.
-     * <p>
-     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates
-     * files on the fly. If you only need to preview the results, return a new
-     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of
-     * the running Eclipse and can be used standalone.
-     * </p>
-     * <p>
-     * If you need the file generation to be aware of the workspace (A typical example is when you wanna
-     * override files that are under clear case or any other VCS that could forbid the overriding), then
-     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.
-     * <b>Note</b>, however, that this <b>cannot</b> be used standalone.
-     * </p>
-     * <p>
-     * All three of these default strategies support merging through JMerge.
-     * </p>
-     *
-     * @return The generation strategy that is to be used for generations launched through this launcher.
-     * @generated
-     */
     @Override
     public IAcceleoGenerationStrategy getGenerationStrategy() {
         return super.getGenerationStrategy();
@@ -251,7 +155,6 @@ public class Generate extends AbstractAcceleoGenerator {
      * We expect this name not to contain file extension, and the module to be located beside the launcher.
      *
      * @return The name of the module that is to be launched.
-     * @generated
      */
     @Override
     public String getModuleName() {
@@ -265,148 +168,30 @@ public class Generate extends AbstractAcceleoGenerator {
      *
      * @return The list of properties file we need to add to the generation context.
      * @see java.util.ResourceBundle#getBundle(String)
-     * @generated
      */
     @Override
     public List<String> getProperties() {
-        /*
-         * If you want to change the content of this method, do NOT forget to change the "@generated"
-         * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
-         * of the Acceleo module with the main template that has caused the creation of this class will
-         * revert your modifications.
-         */
-
-        /*
-         * TODO if your generation module requires access to properties files, add their qualified path to the list here.
-         *
-         * Properties files can be located in an Eclipse plug-in or in the file system (all Acceleo projects are Eclipse
-         * plug-in). In order to use properties files located in an Eclipse plugin, you need to add the path of the properties
-         * files to the "propertiesFiles" list:
-         *
-         * final String prefix = "platform:/plugin/";
-         * final String pluginName = "org.eclipse.acceleo.module.sample";
-         * final String packagePath = "/org/eclipse/acceleo/module/sample/properties/";
-         * final String fileName = "default.properties";
-         * propertiesFiles.add(prefix + pluginName + packagePath + fileName);
-         *
-         * With this mechanism, you can load properties files from your plugin or from another plugin.
-         *
-         * You may want to load properties files from the file system, for that you need to add the absolute path of the file:
-         *
-         * propertiesFiles.add("C:\Users\MyName\MyFile.properties");
-         *
-         * If you want to let your users add properties files located in the same folder as the model:
-         *
-         * if (EMFPlugin.IS_ECLIPSE_RUNNING && model != null && model.eResource() != null) {
-         *     propertiesFiles.addAll(AcceleoEngineUtils.getPropertiesFilesNearModel(model.eResource()));
-         * }
-         *
-         * To learn more about Properties Files, have a look at the Acceleo documentation (Help -> Help Contents).
-         */
         return propertiesFiles;
     }
 
-    /**
-     * Adds a properties file in the list of properties files.
-     *
-     * @param propertiesFile
-     *            The properties file to add.
-     * @generated
-     * @since 3.1
-     */
     @Override
     public void addPropertiesFile(String propertiesFile) {
         this.propertiesFiles.add(propertiesFile);
     }
 
-    /**
-     * This will be used to get the list of templates that are to be launched by this launcher.
-     *
-     * @return The list of templates to call on the module {@link #getModuleName()}.
-     * @generated
-     */
     @Override
     public String[] getTemplateNames() {
         return TEMPLATE_NAMES;
     }
 
-    /**
-     * This can be used to update the resource set's package registry with all needed EPackages.
-     *
-     * @param resourceSet
-     *            The resource set which registry has to be updated.
-     * @generated
-     */
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
-
-        /*
-         * If you want to change the content of this method, do NOT forget to change the "@generated"
-         * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
-         * of the Acceleo module with the main template that has caused the creation of this class will
-         * revert your modifications.
-         */
-
-        /*
-         * If you need additional package registrations, you can register them here. The following line
-         * (in comment) is an example of the package registration for UML.
-         *
-         * You can use the method  "isInWorkspace(Class c)" to check if the package that you are about to
-         * register is in the workspace.
-         *
-         * To register a package properly, please follow the following conventions:
-         *
-         * If the package is located in another plug-in, already installed in Eclipse. The following content should
-         * have been generated at the beginning of this method. Do not register the package using this mechanism if
-         * the metamodel is located in the workspace.
-         *
-         * if (!isInWorkspace(UMLPackage.class)) {
-         *     // The normal package registration if your metamodel is in a plugin.
-         *     resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-         * }
-         *
-         * If the package is located in another project in your workspace, the plugin containing the package has not
-         * been register by EMF and Acceleo should register it automatically. If you want to use the generator in
-         * stand alone, the regular registration (seen a couple lines before) is needed.
-         *
-         * To learn more about Package Registration, have a look at the Acceleo documentation (Help -> Help Contents).
-         */
     }
 
-    /**
-     * This can be used to update the resource set's resource factory registry with all needed factories.
-     *
-     * @param resourceSet
-     *            The resource set which registry has to be updated.
-     * @generated
-     */
     @Override
     public void registerResourceFactories(ResourceSet resourceSet) {
         super.registerResourceFactories(resourceSet);
-        /*
-         * If you want to change the content of this method, do NOT forget to change the "@generated"
-         * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
-         * of the Acceleo module with the main template that has caused the creation of this class will
-         * revert your modifications.
-         */
-
-        /*
-         * TODO If you need additional resource factories registrations, you can register them here. the following line
-         * (in comment) is an example of the resource factory registration.
-         *
-         * If you want to use the generator in stand alone, the resource factory registration will be required.
-         *
-         * To learn more about the registration of Resource Factories, have a look at the Acceleo documentation (Help -> Help Contents).
-         */
-
-        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(XyzResource.FILE_EXTENSION, XyzResource.Factory.INSTANCE);
-
-        /*
-         * Some metamodels require a very complex setup for standalone usage. For example, if you want to use a generator
-         * targetting UML models in standalone, you NEED to use the following:
-         */
-        // UMLResourcesUtil.init(resourceSet)
     }
 
 }
