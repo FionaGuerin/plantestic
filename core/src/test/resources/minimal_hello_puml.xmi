@@ -4,12 +4,12 @@
   <umlDiagrams xsi:type="puml:SequenceUml">
     <umlElements xmi:id="A" xsi:type="puml:Participant" name="A"/>
     <umlElements xmi:id="B" xsi:type="puml:Participant" name="B"/>
-    <umlElements xsi:type="puml:UseLeft" userOne="#A" userTwo="#B">
+    <umlElements xmi:id="0" xsi:type="puml:UseLeft" userOne="#A" userTwo="#B">
       <associationArrow>DIRECTIONALRIGHT</associationArrow>
       <text>hello</text>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
-      <umlElements xsi:type="puml:UseLeft" userOne="#B" userTwo="#A">
+      <umlElements xmi:id="1" xsi:type="puml:UseLeft" userOne="#B" userTwo="#A" request="#0">
         <associationArrow>DIRECTIONALLEFT</associationArrow>
       </umlElements>
       <activate/>
