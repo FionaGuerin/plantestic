@@ -2,15 +2,20 @@
 <puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:puml="http://www.eclipse.plantuml/Puml">
   <umlDiagrams xsi:type="puml:SequenceUml">
+
     <umlElements xmi:id="A" xsi:type="puml:Participant" name="A"/>
     <umlElements xmi:id="B" xsi:type="puml:Participant" name="B"/>
     <umlElements xsi:type="puml:UseLeft" userOne="#A" userTwo="#B">
+      <associationArrow>DIRECTIONALRIGHT</associationArrow>
       <text>hello</text>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
-      <umlElements xsi:type="puml:UseLeft" userOne="#B" userTwo="#A"/>
+      <umlElements xsi:type="puml:UseLeft" userOne="#B" userTwo="#A">
+        <associationArrow>DIRECTIONALLEFT</associationArrow>
+      </umlElements>
       <activate/>
       <deactivate/>
     </umlElements>
+
   </umlDiagrams>
 </puml:UmlDiagram>
