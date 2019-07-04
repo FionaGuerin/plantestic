@@ -24,8 +24,8 @@ object MetaModelSetup {
 
         // Our meta models
         PumlStandaloneSetup.doSetup()
-        registerMetamodelFromEcoreFile(REST_ASSURED_METAMODEL_URI)
         registerMetamodelFromEcoreFile(REQUEST_RESPONSE_PAIRS_METAMODEL_URI)
+        registerMetamodelFromEcoreFile(REST_ASSURED_METAMODEL_URI)
     }
 
     private fun registerMetamodelFromEcoreFile(uri: URI) {
