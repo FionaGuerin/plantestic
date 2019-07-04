@@ -18,7 +18,7 @@ class MetaModelSetupTest : StringSpec() {
             MetaModelSetup.doSetup()
 
             Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] shouldNotBe null
-            EPackage.Registry.INSTANCE["http://www.example.org/abstractsyntaxrestassured"] shouldNotBe null
+            EPackage.Registry.INSTANCE["http://www.example.org/RestAssured"] shouldNotBe null
             EPackage.Registry.INSTANCE["http://www.example.org/RequestResponsePairs"] shouldNotBe null
             EPackage.Registry.INSTANCE["http://www.eclipse.plantuml/Puml"] shouldNotBe null
         }
