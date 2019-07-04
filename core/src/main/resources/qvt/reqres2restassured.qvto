@@ -9,9 +9,76 @@ main() {
         assert fatal ( input.objectsOfType(Scenario)->size() = 1 )
             with log('Input does not contain exactly one Scenario');
 
-    input.objectsOfType(Scenario).map transformScenario();
+    input.objectsOfType(Scenario).map toTestRoundtrip();
 }
 
-mapping Scenario::transformScenario(): TestRoundtrip {
+//TODO: Insert parameter of TestScenario-paramters
+mapping Scenario::toTestRoundtrip(): TestRoundtrip {
+    log('Transforming Scenario to TestRoundtrip');
 
+    name := "TestRountrip1"; // TODO: give name and count roundtrips
+    //requestspecification := self.request -> map toRequestSpecification();
+    /*assertresponse := self.response -> map toResponseSpecification();*/
+}
+
+//_____________________________________________
+
+mapping Request::toRequestSpecification(): RequestSpecification{
+    log('Transforming Request to RequestSpecification');
+
+    method := self.method; // "GET"
+    //TODO
+    path := PathQuery(self.url);
+    //Do we need a new transition here?
+    authenticationScheme := object BasicAuthScheme {
+        user := "TestUser"; // TODO: use user-parameter here
+        password := "password"; // TODO: use password-parameter here
+    };
+
+    requestParameters := self.parameter -> map toRequestParameter();
+}
+
+mapping Response::toResponseSpecification(): ResponseSpecification{
+    log('Transforming Response to ResponseSpecification');
+
+    bodyMatchers := object BodyMatcherGroup {
+        bodyMatchers := self.assertbody -> map toBodyMatcher();
+    };
+
+    expectedStatusCode := self.assertstatus.map toIsIn();
+}
+
+//TODO
+query PathQuery( url: URL) : String {
+    log('Query path of URL');
+
+     return url.path;
+}
+
+
+mapping RequestParam::toRequestParameter() : RequestParameter {
+    log('Transforming RequestParam to RequestParameter');
+
+     value := self.value;
+     key := self.key;
+}
+
+mapping BodyExpectations::toBodyMatcher(): BodyMatcher{
+    log('Transforming BodyExpectation to BodyMatcher');
+
+
+   // matcher := self.paramexistsexpectation.map toHasXpath();
+}
+
+mapping ParamExistsExpectation::toHasXpath(): HasXPath{
+    log('Transforming ParamExistsExpectation to HasXPath');
+
+    pathString := self.jsonPath;
+}
+
+
+mapping StatusExpectation::toIsIn(): IsIn{
+    log('Transforming StatusExpectation to IsIn');
+
+    allowedValues := self.allowedStatusCodes;
 }
