@@ -6,12 +6,14 @@ transformation puml2reqres(in input: puml, out output: reqres);
 main() {
     log('Started transforming PlantUML to RequestResponse pairs');
 
-    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
+    assert fatal ( input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-    input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map transformUmlDiagram();
+    input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml].map transformUmlDiagram();
 }
 
 mapping SequenceUml::transformUmlDiagram(): Scenario {
-
+    result.response += self.umlElements[UseLeft].associationArrow[AssociationType = AssociationType::DIRECTIONALLEFT].map AssociationType2Response();
 }
+
+mapping AssociationType :: AssociationType2Response() : Response { }
