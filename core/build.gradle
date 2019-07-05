@@ -90,6 +90,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.eclipse.acceleo/org.eclipse.acceleo.engine
     compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.engine', version: '3.5.1.201409021433'
+    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.common', version: '3.5.1.201409021433'
+    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.model', version: '3.5.1.201409021433'
+    compile group: 'org.eclipse.platform', name: 'org.eclipse.core.runtime', version: '3.15.200'
+    //implementation "org.eclipse.platform:org.eclipse.core.runtime:3.15.200.v20190301-1641"
     
     implementation project(":plantuml")
 
