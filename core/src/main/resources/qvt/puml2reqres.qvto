@@ -1,5 +1,6 @@
 modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
+modeltype Ecore "strict" uses 'http://www.eclipse.org/emf/2002/Ecore';
 
 transformation puml2reqres(in input: puml, out output: reqres);
 
@@ -13,12 +14,38 @@ main() {
 }
 
 mapping SequenceUml::transformUmlDiagram(): Scenario {
-    result.request += self.umlElements[UseLeft].associationArrow[AssociationType = AssociationType::DIRECTIONALRIGHT].map AssociationType2Request();
-    result.response += self.umlElements[UseLeft].associationArrow[AssociationType = AssociationType::DIRECTIONALLEFT].map AssociationType2Response();
+    request += self.umlElements[UseLeft]->forEach(i) {
+        if (i.associationArrow = AssociationType::DIRECTIONALRIGHT) then {
+            i.UseLeft2Request();
+        } endif;
+    };
+
+    response += self.umlElements[UseLeft]->forEach(i) {
+            if (i.associationArrow = AssociationType::DIRECTIONALLEFT) then {
+                i.UseLeft2Response();
+            } endif;
+        };
 }
 
-mapping AssociationType :: AssociationType2Request() : Request {
-    method := RequestResponsePairs::Method::GET;
+mapping UseLeft :: UseLeft2Request() : Request {
+   // Help needed: If someone knows a way to access sequences by index (e.g. texts[0]), please change :-)
+   var index := 0;
+   self.text->forEach(i){
+        if (index = 0) then {
+            result.method := RequestResponsePairs::Method::GET;
+        } endif;
+        if (index = 1) then {
+            result.url := i.EString2URL();
+        } endif;
+        index := index + 1;
+   }
 }
 
-mapping AssociationType :: AssociationType2Response() : Response { }
+mapping UseLeft :: UseLeft2Response() : Response { }
+
+mapping EString :: EString2URL() : URL {
+    path = self;
+}
+
+
+
