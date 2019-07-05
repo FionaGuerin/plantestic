@@ -13,7 +13,12 @@ main() {
 }
 
 mapping SequenceUml::transformUmlDiagram(): Scenario {
+    result.request += self.umlElements[UseLeft].associationArrow[AssociationType = AssociationType::DIRECTIONALRIGHT].map AssociationType2Request();
     result.response += self.umlElements[UseLeft].associationArrow[AssociationType = AssociationType::DIRECTIONALLEFT].map AssociationType2Response();
+}
+
+mapping AssociationType :: AssociationType2Request() : Request {
+    method := RequestResponsePairs::Method::GET;
 }
 
 mapping AssociationType :: AssociationType2Response() : Response { }

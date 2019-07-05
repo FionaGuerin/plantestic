@@ -9,7 +9,7 @@
       <text>hello</text>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
-      <umlElements xmi:id="1" xsi:type="puml:UseLeft" userOne="#B" userTwo="#A" request="#0">
+      <umlElements xmi:id="1" xsi:type="puml:UseLeft" userOne="#B" userTwo="#A">
         <associationArrow>DIRECTIONALLEFT</associationArrow>
       </umlElements>
       <activate/>
