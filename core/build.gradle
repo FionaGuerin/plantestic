@@ -88,6 +88,9 @@ dependencies {
     implementation "org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354"
     implementation "lpg.runtime:lpg.runtime.java:2.0.17.v201004271640"
 
+    // https://mvnrepository.com/artifact/org.eclipse.acceleo/org.eclipse.acceleo.engine
+    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.engine', version: '3.5.1.201409021433'
+    
     implementation project(":plantuml")
 
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.1.7"
