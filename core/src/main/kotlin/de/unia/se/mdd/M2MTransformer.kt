@@ -45,7 +45,10 @@ object M2MTransformer {
 
         val executor = TransformationExecutor(transformationUri)
         val validationDiagnostic = executor.loadTransformation()
-        require(validationDiagnostic.message == "OK") { "Validation diagnostic is not OK" + "\n" + validationDiagnostic.message + "\n" + validationDiagnostic.children }
+        require(validationDiagnostic.message == "OK")  {
+            validationDiagnostic.children.fold(StringBuilder("\n"), { sb, child -> sb.appendln(child) })
+        }
+        /*{ "Validation diagnostic is not OK" + "\n" + validationDiagnostic.message + "\n" + validationDiagnostic.children }*/
 
         val input = BasicModelExtent(listOf(inputModel))
         val output = BasicModelExtent()
