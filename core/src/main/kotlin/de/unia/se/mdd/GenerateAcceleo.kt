@@ -8,12 +8,15 @@ import org.eclipse.emf.ecore.EObject
 import java.io.File
 import java.io.IOException
 import java.util.ArrayList
+import com.google.common.io.Resources
 
 object GenerateAcceleo : AbstractAcceleoGenerator() {
 
     // The name of the module.
     // val MODULE_FILE_NAME = "de/unia/se/mdd/generate"
-    val MODULE_FILE_NAME = "code-generation/generateCode.mtl"
+    //val MODULE_FILE_NAME = "code-generation/generateCode"
+    val MODULE_FILE_NAME = Resources.getResource("code-generation/generateCode.mtl").path
+
     val TEMPLATE_NAMES = arrayOf("generateTestScenario")
 
     /*@Throws(IOException::class)
