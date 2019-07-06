@@ -45,15 +45,22 @@ Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
 # Frameworks, libraries, standards
+
+## Xtext for parsing PlantUML files
+We use [Xtext](https://www.eclipse.org/Xtext/) to generate the parser and the corresponding language from a grammar to read the DSL of PlantUML.
+
+To generate the language, you can run
+```
+./gradlew generateXtext
+```
+The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
+The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
+This gradle task is also automatically executed when you build the project.
+
 ## Eclipse Modelling Framework (EMF)
 The Eclipse Modeling Framework serves modeling and code generation. 
 From a model specification in XMI it produces an equivalent set of classes in Kotlin.
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
-
-## XML Metadata Interchange (XMI)
-XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
-Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
 
 ## PlantUML
 The open source tool PlantUML produces a UML diagram from simple text language. 
@@ -72,3 +79,20 @@ The Cucumber tool tests the behavior of software.
 The test case that tests this behavior is defined in natural language. 
 For this, Cucumber uses the plain language parser Gherkin.
 Website: [https://cucumber.io](https://cucumber.io)
+
+## XML Metadata Interchange (XMI)
+XML Metadata Interchange is an exchange format among software development tools. 
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
+
+# Credits
+
+ - [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
+   developed a grammar file for PlantUML.
+   We built upon their work from their repository and marked their contributions in the repository.
+ - [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
+   wrote a very useful article on how to use an Xtext parser in standalone mode.
+ - [https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
+    gave us a lot of insights in how to run `qvt` without Eclipse.
+ - [https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
+   shows how to invoke `qvt` programmatically.

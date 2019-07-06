@@ -1,0 +1,17 @@
+modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
+modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
+
+transformation puml2reqres(in input: puml, out output: reqres);
+
+main() {
+    log('Started transforming PlantUML to RequestResponse pairs');
+
+    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
+        with log('Input does not contain exactly one SequenceDiagram');
+
+    input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+}
+
+mapping UmlDiagram::transformUmlDiagram(): Scenario {
+
+}

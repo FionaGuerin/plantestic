@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RestAssured" nsURI="http://www.example.org/RestAssured" nsPrefix="RestAssured">
+  <eClassifiers xsi:type="ecore:EClass" name="TestRoundtrip" instanceTypeName="TestRoundtrip">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestspecification" lowerBound="1"
+        eType="#//RequestSpecification" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assertresponse" lowerBound="1"
+        eType="#//ResponseSpecification" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestSpecification" instanceTypeName="RequestSpecification">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestParameters" upperBound="-1"
+        eType="#//RequestParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authenticationScheme" lowerBound="1"
+        eType="#//AuthenticationScheme" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="#//Method"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResponseSpecification" instanceTypeName="ResponseSpecification">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyMatchers" eType="#//BodyMatcherGroup"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expectedStatusCode" eType="#//Matcher"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AuthenticationScheme" instanceTypeName="AuthenticationScheme"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestParameter" instanceTypeName="RequestParameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Method" instanceClassName="Method">
+    <eLiterals name="GET"/>
+    <eLiterals name="POST" value="1"/>
+    <eLiterals name="PUT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BasicAuthScheme" instanceTypeName="BasicAuthScheme"
+      eSuperTypes="#//AuthenticationScheme">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="password" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyMatcherGroup" instanceTypeName="BodyMatcherGroup">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyMatchers" upperBound="-1"
+        eType="#//BodyMatcher" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Matcher" instanceClassName="Matcher"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IsIn" instanceClassName="IsIn" eSuperTypes="#//Matcher">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedValues" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TestScenario" instanceClassName="TestScenario">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="testroundtrip" lowerBound="1"
+        upperBound="-1" eType="#//TestRoundtrip" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="HasXPath" eSuperTypes="#//Matcher">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pathString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyMatcher" instanceTypeName="BodyMatcher">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" lowerBound="1"
+        eType="#//Matcher" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" instanceTypeName="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,17 @@
+modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
+modeltype restassured "strict" uses RestAssured('http://www.example.org/RestAssured');
+
+transformation reqres2restassured(in input: reqres, out output: restassured);
+
+main() {
+    log('Started transforming RequestResponse pairs to RestAssured');
+
+        assert fatal ( input.objectsOfType(Scenario)->size() = 1 )
+            with log('Input does not contain exactly one Scenario');
+
+    input.objectsOfType(Scenario).map transformScenario();
+}
+
+mapping Scenario::transformScenario(): TestRoundtrip {
+
+}
