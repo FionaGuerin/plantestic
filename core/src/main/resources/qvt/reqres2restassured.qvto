@@ -1,5 +1,5 @@
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
-modeltype restassured "strict" uses abstractsyntaxrestassured('http://www.example.org/abstractsyntaxrestassured');
+modeltype restassured "strict" uses RestAssured('http://www.example.org/RestAssured');
 modeltype Ecore "strict" uses 'http://www.eclipse.org/emf/2002/Ecore';
 
 transformation reqres2restassured(in input: reqres, out output: restassured);
@@ -10,73 +10,72 @@ main() {
     assert fatal ( input.rootObjects()[Scenario]->size() = 1 )
                 with log('Input does not contain exactly one Scenario');
 
-        input.rootObjects()[Scenario].map toTestRoundtrip();
+    input.rootObjects()[Scenario].map scenario2testScenario();
 }
 
-//TODO: Insert parameter of TestScenario-paramters
-mapping Scenario::toTestRoundtrip(): TestRoundtrip {
-    log('Transforming Scenario to TestRoundtrip');
+mapping Scenario::scenario2testScenario(): TestScenario {
+    log('Transforming Scenario to TestScenario');
 
-    name := "TestRountrip1"; // TODO: give name and count roundtrips
-    //requestspecification := self.request -> map Request2RequestSpecification();
-    /*assertresponse := self.response -> map toResponseSpecification();*/
+    name := "$testScenario";
+    parameter := object Parameter {
+                         type := "$paramType";
+                         name := "$paramName";
+                     };
+    testroundtrip := self.response -> map response2testRoundtrip();
 }
 
-//_____________________________________________
+mapping Response::response2testRoundtrip(): TestRoundtrip {
+    log('Transforming Response to TestRoundtrip');
 
-mapping Request::Request2RequestSpecification(): RequestSpecification{
+    requestspecification := self.requestresponse.map request2RequestSpecification();
+    assertresponse := object ResponseSpecification {
+        bodyMatchers := object BodyMatcherGroup {
+                bodyMatchers := self.assertbody -> map bodyExpectation2bodyMatcher();
+            };
+
+        expectedStatusCode := self.assertstatus.map statusExpectation2isIn();
+    }
+}
+
+mapping Request::request2RequestSpecification(): RequestSpecification{
     log('Transforming Request to RequestSpecification');
 
-    method := self.method;// "GET"
-    path := PathQuery(self.url);
-    //Do we need a new transition here?
+    method := self.method;
+    path := pathQuery(self.url);
     authenticationScheme := object BasicAuthScheme {
-        user := "TestUser"; // TODO: use user-parameter here
-        password := "password"; // TODO: use password-parameter here
+        user := "$user";
+        password := "$password";
     };
 
-    requestParameters := self.parameter -> map toRequestParameter();
+    requestParameters := self.parameter -> map requestParam2requestParameter();
 }
 
-mapping Response::toResponseSpecification(): ResponseSpecification{
-    log('Transforming Response to ResponseSpecification');
-
-    bodyMatchers := object BodyMatcherGroup {
-        bodyMatchers := self.assertbody -> map toBodyMatcher();
-    };
-
-    expectedStatusCode := self.assertstatus.map toIsIn();
-}
-
-query PathQuery( url: URL) : String {
+query pathQuery( url: URL) : String {
     log('Query path of URL');
 
-     return url.path;
+    return url.path;
 }
 
-
-mapping RequestParam::toRequestParameter() : RequestParameter {
+mapping RequestParam::requestParam2requestParameter() : RequestParameter {
     log('Transforming RequestParam to RequestParameter');
 
      value := self.value;
      key := self.key;
 }
 
-mapping BodyExpectations::toBodyMatcher(): BodyMatcher{
+mapping BodyExpectations::bodyExpectation2bodyMatcher(): BodyMatcher{
     log('Transforming BodyExpectation to BodyMatcher');
 
-    //TODO set of matchers?
-    // matcher := self.paramexistsexpectation.map toHasXpath();
+    matcher := (self.paramexistsexpectation.map paramExistsExpectation2hasXpath()) -> first();
 }
 
-mapping ParamExistsExpectation::toHasXpath(): HasXPath{
+mapping ParamExistsExpectation::paramExistsExpectation2hasXpath(): HasXPath{
     log('Transforming ParamExistsExpectation to HasXPath');
 
     pathString := self.jsonPath;
 }
 
-
-mapping StatusExpectation::toIsIn(): IsIn{
+mapping StatusExpectation::statusExpectation2isIn(): IsIn{
     log('Transforming StatusExpectation to IsIn');
 
     allowedValues := self.allowedStatusCodes;

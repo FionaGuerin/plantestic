@@ -45,7 +45,7 @@ object M2MTransformer {
 
         val executor = TransformationExecutor(transformationUri)
         val validationDiagnostic = executor.loadTransformation()
-        require(validationDiagnostic.message == "OK")  {
+        require(validationDiagnostic.message == "OK") {
             validationDiagnostic.children.fold(StringBuilder("\n"), { sb, child -> sb.appendln(child) })
         }
         /*{ "Validation diagnostic is not OK" + "\n" + validationDiagnostic.message + "\n" + validationDiagnostic.children }*/
