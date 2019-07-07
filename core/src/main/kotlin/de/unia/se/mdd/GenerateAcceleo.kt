@@ -49,6 +49,7 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
 
     @Throws(IOException::class)
     override fun doGenerate(monitor: Monitor) {
+        println("Generating code from Rest assured Model")
         super.doGenerate(monitor)
     }
 
