@@ -14,8 +14,6 @@
         eType="#//RequestParam" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="url" lowerBound="1" eType="#//URL"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requestresponse" lowerBound="1"
-        eType="#//Response"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequestParam" instanceTypeName="RequestParam">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -38,6 +36,8 @@
         eType="#//BodyExpectations" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="assertstatus" eType="#//StatusExpectation"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestresponse" lowerBound="1"
+        eType="#//Request"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StatusExpectation" instanceClassName="StatusExpectation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedStatusCodes" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
