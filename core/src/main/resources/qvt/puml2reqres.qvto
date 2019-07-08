@@ -1,6 +1,6 @@
 modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
-modeltype Ecore "strict" uses 'http://www.eclipse.org/emf/2002/Ecore';
+modeltype ecore "strict" uses 'http://www.eclipse.org/emf/2002/Ecore';
 
 transformation puml2reqres(in input: puml, out output: reqres);
 
@@ -10,42 +10,19 @@ main() {
     assert fatal ( input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-    input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml].map transformUmlDiagram();
+    input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map transformUmlDiagram();
+}
+
+constructor URL::URL(path:EString){
+    result.path := path;
 }
 
 mapping SequenceUml::transformUmlDiagram(): Scenario {
-    request += self.umlElements[UseLeft]->forEach(i) {
-        if (i.associationArrow = AssociationType::DIRECTIONALRIGHT) then {
-            i.UseLeft2Request();
-        } endif;
-    };
-
-    response += self.umlElements[UseLeft]->forEach(i) {
-            if (i.associationArrow = AssociationType::DIRECTIONALLEFT) then {
-                i.UseLeft2Response();
-            } endif;
-        };
+    request := self.umlElements[UseLeft]->select(r | r.associationArrow = AssociationType::DIRECTIONALRIGHT)->map UseLeft2Request();
+    response := new Response();
 }
 
 mapping UseLeft :: UseLeft2Request() : Request {
-   // Help needed: If someone knows a way to access sequences by index (e.g. texts[0]), please change :-)
-   var index := 0;
-   self.text->forEach(i){
-        if (index = 0) then {
-            result.method := RequestResponsePairs::Method::GET;
-        } endif;
-        if (index = 1) then {
-            result.url := i.EString2URL();
-        } endif;
-        index := index + 1;
-   }
+   method := RequestResponsePairs::Method::GET;
+   url := new URL("/" + self.text->at(1));
 }
-
-mapping UseLeft :: UseLeft2Response() : Response { }
-
-mapping EString :: EString2URL() : URL {
-    path = self;
-}
-
-
-
