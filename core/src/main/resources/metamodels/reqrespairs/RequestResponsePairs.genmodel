@@ -23,13 +23,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/parameter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/url"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/requestresponse"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//RequestParam">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/key"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Protocol"/>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//BodyExpectations">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//BodyExpectations/paramexistsexpectation"/>
     </genClasses>
@@ -39,6 +37,7 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/requestresponse"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
