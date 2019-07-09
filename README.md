@@ -1,5 +1,11 @@
 # Model-driven Software Engineering
-This test case generator produces test cases from plantUML diagrams.
+This test case generator produces test cases from a sequence diagram. 
+A sequence diagram models a sequence of interactions between objects. 
+A test case then checks for such an interaction whether it is implemented as the sequence diagram defines it. 
+In an example sequence diagram called `Hello`, let there be two actors Alice and Bob. 
+Alice sends Bob the request `GET /hello ` and Bob answers with `Hello World`. 
+The corresponding test case now sends an HTTP request `GET /hello` to the backend. 
+The test case then expects a response with status `200 OK` and date `Hello World`.
 
 # Motivation
 The implementation of user requirements often deviates from the specification of the same user requirements. 
