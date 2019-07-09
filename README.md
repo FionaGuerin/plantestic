@@ -51,7 +51,6 @@ Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
 # Frameworks, libraries, standards
-
 ## Xtext for parsing PlantUML files
 We use [Xtext](https://www.eclipse.org/Xtext/) to generate the parser and the corresponding language from a grammar to read the DSL of PlantUML.
 
@@ -92,13 +91,28 @@ For example, XML Metadata Interchange represents UML diagrams textually within t
 Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
 
 # Credits
+## Contributors
+- [Stefan Grafberger](https://github.com/stefan-grafberger)
+- [Fiona Guerin](https://github.com/FionaGuerin)
+- [Michelle Martin](https://github.com/MichelleMar)
+- [Daniela Neupert](https://github.com/danielaneupert)
+- [Andreas Zimmerer](https://github.com/Jibbow)
 
- - [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
+## Repositories
+### PlantUML-Eclipse-Xtext
+[https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
    developed a grammar file for PlantUML.
    We built upon their work from their repository and marked their contributions in the repository.
- - [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
-   wrote a very useful article on how to use an Xtext parser in standalone mode.
- - [https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
+   
+### QVTO-CLI
+[https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
     gave us a lot of insights in how to run `qvt` without Eclipse.
- - [https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
+   
+## Articles
+### Standalone Parsing with Xtext
+[http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
+   wrote a very useful article on how to use an Xtext parser in standalone mode.
+    
+### QVTOML/Examples/InvokeInJava
+[https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
    shows how to invoke `qvt` programmatically.
