@@ -44,7 +44,6 @@ mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
          index := index + 1;
          roundtrip += currentRoundtrip;
     }
-
 }
 
 mapping UmlUse :: UmlUse2Request() : Request {
@@ -62,7 +61,6 @@ mapping UmlUse :: UmlUse2Request() : Request {
            pathIndex := 2;
            method := RequestResponsePairs::Method::PUT;
    };
-
    url := new URL("/" + self.text->at(pathIndex));
 }
 
