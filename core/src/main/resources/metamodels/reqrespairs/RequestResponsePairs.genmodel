@@ -46,7 +46,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ParamExistsExpectation/jsonPath"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/testroundtrip"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/roundtrip"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

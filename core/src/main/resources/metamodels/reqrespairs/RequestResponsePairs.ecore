@@ -46,7 +46,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jsonPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Scenario">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="testroundtrip" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roundtrip" upperBound="-1"
         eType="#//Roundtrip" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
