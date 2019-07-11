@@ -37,7 +37,6 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/requestresponse"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
