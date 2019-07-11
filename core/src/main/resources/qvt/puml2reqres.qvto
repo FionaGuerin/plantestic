@@ -10,19 +10,57 @@ main() {
     assert fatal ( input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-    input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map transformUmlDiagram();
+    input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map SequenceUml2Scenario();
+}
+
+mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
+    var size : Integer := self.umlElements[UmlUse]->size();
+    var index : Integer := 1;
+    while (index <= size) {
+        var roundtrip : Roundtrip := new Roundtrip();
+
+        var message : UmlUse := self.umlElements[UmlUse]->at(index);
+        var hasRequest : Boolean := false;
+        var hasResponse : Boolean := false;
+
+        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
+            hasRequest := true;
+            roundtrip.request := message.UmlUse2Request();
+            index := index + 1;
+            message := self.umlElements[UmlUse]->at(index);
+        };
+        if (message.associationArrow = AssociationType::DIRECTIONALLEFT) {
+             hasResponse := true;
+             roundtrip.response := message.UmlUse2Response();
+             index := index + 1;
+         };
+         if (hasRequest = false) {
+            roundtrip.request := new Request();
+         };
+         if (hasResponse = false) {
+             roundtrip.response := new Response();
+          };
+
+         index := index + 1;
+         testroundtrip += roundtrip;
+    }
+
+}
+
+mapping UmlUse :: UmlUse2Request() : Request {
+   method := RequestResponsePairs::Method::GET;
+   if (self.text->at(1) = "POST") {
+        method := RequestResponsePairs::Method::POST;
+   }
+   elif (self.text->at(1) = "PUT") {
+        method := RequestResponsePairs::Method::PUT;
+   };
+
+   url := new URL("/" + self.text->at(2));
 }
 
 constructor URL::URL(path:EString){
     result.path := path;
 }
 
-mapping SequenceUml::transformUmlDiagram(): Scenario {
-    request := self.umlElements[UseLeft]->select(r | r.associationArrow = AssociationType::DIRECTIONALRIGHT)->map UseLeft2Request();
-    response := new Response();
-}
-
-mapping UseLeft :: UseLeft2Request() : Request {
-   method := RequestResponsePairs::Method::GET;
-   url := new URL("/" + self.text->at(1));
-}
+mapping UmlUse :: UmlUse2Response() : Response { }
