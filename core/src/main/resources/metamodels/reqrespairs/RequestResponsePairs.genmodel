@@ -15,9 +15,9 @@
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/POST"/>
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/PUT"/>
     </genEnums>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/request"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/response"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Roundtrip">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/request"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/response"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
@@ -44,6 +44,9 @@
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//ParamExistsExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ParamExistsExpectation/jsonPath"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/testroundtrip"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
