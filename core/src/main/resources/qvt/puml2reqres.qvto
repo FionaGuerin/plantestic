@@ -17,7 +17,7 @@ mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
     var size : Integer := self.umlElements[UmlUse]->size();
     var index : Integer := 1;
     while (index <= size) {
-        var roundtrip : Roundtrip := new Roundtrip();
+        var currentRoundtrip : Roundtrip := new Roundtrip();
 
         var message : UmlUse := self.umlElements[UmlUse]->at(index);
         var hasRequest : Boolean := false;
@@ -25,24 +25,24 @@ mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
 
         if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
             hasRequest := true;
-            roundtrip.request := message.UmlUse2Request();
+            currentRoundtrip.request := message.UmlUse2Request();
             index := index + 1;
             message := self.umlElements[UmlUse]->at(index);
         };
         if (message.associationArrow = AssociationType::DIRECTIONALLEFT) {
              hasResponse := true;
-             roundtrip.response := message.UmlUse2Response();
+             currentRoundtrip.response := message.UmlUse2Response();
              index := index + 1;
          };
          if (hasRequest = false) {
-            roundtrip.request := new Request();
+            currentRoundtrip.request := new Request();
          };
          if (hasResponse = false) {
-             roundtrip.response := new Response();
+             currentRoundtrip.response := new Response();
           };
 
          index := index + 1;
-         testroundtrip += roundtrip;
+         roundtrip += currentRoundtrip;
     }
 
 }
