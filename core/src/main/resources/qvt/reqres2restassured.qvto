@@ -12,6 +12,6 @@ main() {
     input.rootObjects()[Scenario].map transformScenario();
 }
 
-mapping Scenario::transformScenario(): TestRoundtrip {
+mapping Scenario::transformScenario(): TestScenario {
 
 }
