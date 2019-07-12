@@ -40,7 +40,7 @@ Such a PlantUML diagram can be a sequence diagram, use case diagram, class diagr
 state diagram, object diagram, deployment diagram, or timing diagram.
 Website: [http://plantuml.com](http://plantuml.com)
 
-## REST-assured
+## REST Assured
 The Rest-assured library simplifies the verification and validation of REST APIs. 
 As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
 The library offers all standardized HTTP operations.
