@@ -56,22 +56,16 @@ The squashed merge commit name is a summary of the issues plus the issue ids plu
 Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
-# Frameworks, libraries, standards
-## Xtext for parsing PlantUML files
-We use [Xtext](https://www.eclipse.org/Xtext/) to generate the parser and the corresponding language from a grammar to read the DSL of PlantUML.
-
-To generate the language, you can run
-```
-./gradlew generateXtext
-```
-The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
-The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
-This gradle task is also automatically executed when you build the project.
-
+# Technologies
 ## Eclipse Modelling Framework (EMF)
 The Eclipse Modeling Framework serves modeling and code generation. 
-From a model specification in XMI it produces an equivalent set of classes in Kotlin.
+From a model specification in XMI, it produces an equivalent set of classes in Kotlin.
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
+
+## XML Metadata Interchange (XMI)
+XML Metadata Interchange is an exchange format among software development tools. 
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
 
 ## PlantUML
 The open source tool PlantUML produces a UML diagram from simple text language. 
@@ -85,16 +79,25 @@ As such, the test techniques of Rest-assured follow the test techniques of dynam
 The library offers all standardized HTTP operations.
 Website: [http://rest-assured.io](http://rest-assured.io)
 
-## Cucumber
-The Cucumber tool tests the behavior of software. 
-The test case that tests this behavior is defined in natural language. 
-For this, Cucumber uses the plain language parser Gherkin.
-Website: [https://cucumber.io](https://cucumber.io)
+## Xtext for parsing PlantUML files
+The Eclipse framework Xtext produces a domain-specific language from a grammar. 
+On the one hand, Xtext generates a class diagram for the abstract syntax of the domain-specific language. 
+On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker. 
+Website: [https://www.eclipse.org/Xtext/](https://www.eclipse.org/Xtext/) 
 
-## XML Metadata Interchange (XMI)
-XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
-Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
+To generate the language, you can run
+```
+./gradlew generateXtext
+```
+The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
+The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
+This gradle task is also automatically executed when you build the project.
+
+
+## Query View Transformation (QVT)
+The programming language set Query View Transformation, which the Object Management Group specifies, describes model-to-model transformations. 
+Query View Transformation contains the languages Query View Transformation Operational, Query View Transformation Relations, and Query View Transformation Core. 
+The imperative language Query-View-Transformation-Operational serves unidirectional model transformations. 
 
 # Credits
 ## Contributors
