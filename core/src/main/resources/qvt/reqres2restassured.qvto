@@ -13,32 +13,42 @@ main() {
     input.rootObjects()[Scenario].map scenario2testScenario();
 }
 
-mapping Scenario::scenario2testScenario(): TestScenario {
-    log('Transforming Scenario to TestScenario');
-
-    name := "$testScenario";
-    parameter := object Parameter {
-                         type := "$paramType";
-                         name := "$paramName";
-                     };
-    testroundtrip := self.response -> map response2testRoundtrip();
+mapping Scenario::scenario2testScenario(): TestScenario{
+     name := "$scenarioName";
+     testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
+     parameter := object Parameter {
+        type := "$parameterType";
+        name := "$parameterName";
+     }
 }
 
-mapping Response::response2testRoundtrip(): TestRoundtrip {
-    log('Transforming Response to TestRoundtrip');
+mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip{
+     log('Transforming Roundtrip to TestRooundtrip');
 
-    requestspecification := self.requestresponse.map request2RequestSpecification();
+     name := "$testRoundtripName";
+     requestspecification :=  self.request .map request2requestSpecification();
+     assertresponse := self.response .map response2responseSpecification();
+}
+
+/*mapping Response::response2testRoundtrip(): TestRoundtrip {
+    log('Transforming Response to TestRoundtrip');
+    requestspecification :=  self.container().oclAsType(Scenario).request -> first().map request2requestSpecification();
     assertresponse := object ResponseSpecification {
         bodyMatchers := object BodyMatcherGroup {
                 bodyMatchers := self.assertbody -> map bodyExpectation2bodyMatcher();
             };
-
         expectedStatusCode := self.assertstatus.map statusExpectation2isIn();
     }
-}
+}*/
 
-mapping Request::request2RequestSpecification(): RequestSpecification{
+mapping Request::request2requestSpecification(): RequestSpecification{
     log('Transforming Request to RequestSpecification');
+     if (self.method = "POST") then {
+        method := self.method;
+     } endif;
+    if (self.method = "PUT") then {
+        method := self.method;
+     } endif;
 
     method := self.method;
     path := pathQuery(self.url);
@@ -48,6 +58,14 @@ mapping Request::request2RequestSpecification(): RequestSpecification{
     };
 
     requestParameters := self.parameter -> map requestParam2requestParameter();
+}
+
+mapping Response::response2responseSpecification(): ResponseSpecification{
+     log('Transforming Responne to ResponseSpecification');
+     bodyMatchers := object BodyMatcherGroup {
+                     bodyMatchers := self.assertbody -> map bodyExpectation2bodyMatcher();
+                 };
+     expectedStatusCode := self.assertstatus.map statusExpectation2isIn();
 }
 
 query pathQuery( url: URL) : String {
