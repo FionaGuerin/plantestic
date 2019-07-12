@@ -2,10 +2,10 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RequestResponsePairs" nsURI="http://www.example.org/RequestResponsePairs"
     nsPrefix="RequestResponsePairs">
-  <eClassifiers xsi:type="ecore:EClass" name="Scenario" instanceClassName="java.lang.Object">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="request" upperBound="-1"
+  <eClassifiers xsi:type="ecore:EClass" name="Roundtrip" instanceClassName="java.lang.Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="request" lowerBound="1"
         eType="#//Request" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="response" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="response" lowerBound="1"
         eType="#//Response" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Request">
@@ -36,13 +36,15 @@
         eType="#//BodyExpectations" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="assertstatus" eType="#//StatusExpectation"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requestresponse" lowerBound="1"
-        eType="#//Request"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StatusExpectation" instanceClassName="StatusExpectation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedStatusCodes" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParamExistsExpectation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jsonPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Scenario">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roundtrip" upperBound="-1"
+        eType="#//Roundtrip" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
