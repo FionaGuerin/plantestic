@@ -23,6 +23,49 @@ With our test case generator, developers can quickly uncover inconsistencies, fi
 # Build status
 [![Build Status](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
 
+# Technologies
+## Eclipse Modelling Framework (EMF)
+The Eclipse Modeling Framework serves modeling and code generation. 
+From a model specification in XMI, it produces an equivalent set of classes in Kotlin.
+Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
+
+## XML Metadata Interchange (XMI)
+XML Metadata Interchange is an exchange format among software development tools. 
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
+
+## PlantUML
+The open source tool PlantUML produces a UML diagram from simple text language. 
+Such a PlantUML diagram can be a sequence diagram, use case diagram, class diagram, activity diagram, component diagram, 
+state diagram, object diagram, deployment diagram, or timing diagram.
+Website: [http://plantuml.com](http://plantuml.com)
+
+## REST-assured
+The Rest-assured library simplifies the verification and validation of REST APIs. 
+As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
+The library offers all standardized HTTP operations.
+Website: [http://rest-assured.io](http://rest-assured.io)
+
+## Xtext for parsing PlantUML files
+The Eclipse framework Xtext produces a domain-specific language from a grammar. 
+On the one hand, Xtext generates a class diagram for the abstract syntax of the domain-specific language. 
+On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker. 
+Website: [https://www.eclipse.org/Xtext/](https://www.eclipse.org/Xtext/) 
+
+## Query View Transformation (QVT)
+The programming language set Query View Transformation, which the Object Management Group specifies, describes model-to-model transformations. 
+Query View Transformation contains the languages Query View Transformation Operational, Query View Transformation Relations, and Query View Transformation Core. 
+The imperative language Query-View-Transformation-Operational serves unidirectional model transformations. 
+
+# API reference
+To generate the language, you can run
+```
+./gradlew generateXtext
+```
+The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
+The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
+This gradle task is also automatically executed when you build the project.
+
 # Conventions
 ## Repository language
 English
@@ -55,49 +98,6 @@ If a pull request addresses several issues, the pull request name is a summary o
 The squashed merge commit name is a summary of the issues plus the issue ids plus the pull request id.
 Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
-
-# Technologies
-## Eclipse Modelling Framework (EMF)
-The Eclipse Modeling Framework serves modeling and code generation. 
-From a model specification in XMI, it produces an equivalent set of classes in Kotlin.
-Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
-
-## XML Metadata Interchange (XMI)
-XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
-Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
-
-## PlantUML
-The open source tool PlantUML produces a UML diagram from simple text language. 
-Such a PlantUML diagram can be a sequence diagram, use case diagram, class diagram, activity diagram, component diagram, 
-state diagram, object diagram, deployment diagram, or timing diagram.
-Website: [http://plantuml.com](http://plantuml.com)
-
-## REST-assured
-The Rest-assured library simplifies the verification and validation of REST APIs. 
-As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
-The library offers all standardized HTTP operations.
-Website: [http://rest-assured.io](http://rest-assured.io)
-
-## Xtext for parsing PlantUML files
-The Eclipse framework Xtext produces a domain-specific language from a grammar. 
-On the one hand, Xtext generates a class diagram for the abstract syntax of the domain-specific language. 
-On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker. 
-Website: [https://www.eclipse.org/Xtext/](https://www.eclipse.org/Xtext/) 
-
-To generate the language, you can run
-```
-./gradlew generateXtext
-```
-The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
-The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
-This gradle task is also automatically executed when you build the project.
-
-
-## Query View Transformation (QVT)
-The programming language set Query View Transformation, which the Object Management Group specifies, describes model-to-model transformations. 
-Query View Transformation contains the languages Query View Transformation Operational, Query View Transformation Relations, and Query View Transformation Core. 
-The imperative language Query-View-Transformation-Operational serves unidirectional model transformations. 
 
 # Credits
 ## Contributors
