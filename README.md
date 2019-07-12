@@ -46,7 +46,7 @@ As such, the test techniques of Rest-assured follow the test techniques of dynam
 The library offers all standardized HTTP operations.
 Website: [http://rest-assured.io](http://rest-assured.io)
 
-## Xtext for parsing PlantUML files
+## Xtext
 The Eclipse framework Xtext produces a domain-specific language from a grammar. 
 On the one hand, Xtext generates a class diagram for the abstract syntax of the domain-specific language. 
 On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker. 
