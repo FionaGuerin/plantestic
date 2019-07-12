@@ -27,6 +27,9 @@ With our test case generator, developers can quickly uncover inconsistencies, fi
 ## Repository language
 English
 
+## Programming Language
+Kotlin
+
 ## Review process
 A pull request addresses a single issue. 
 
