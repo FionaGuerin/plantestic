@@ -100,12 +100,14 @@ Example pull request: ```Initial Setup (Issue #1, Issue #2, Issue #3)```
 Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3) (PR #2)```
 
 # Credits
-## Contributors
-- [Stefan Grafberger](https://github.com/stefan-grafberger)
-- [Fiona Guerin](https://github.com/FionaGuerin)
-- [Michelle Martin](https://github.com/MichelleMar)
-- [Daniela Neupert](https://github.com/danielaneupert)
-- [Andreas Zimmerer](https://github.com/Jibbow)
+## Contributors 
+- [Stefan Grafberger](https://github.com/stefan-grafberger) *
+- [Fiona Guerin](https://github.com/FionaGuerin) *
+- [Michelle Martin](https://github.com/MichelleMar) *
+- [Daniela Neupert](https://github.com/danielaneupert) *
+- [Andreas Zimmerer](https://github.com/Jibbow) *
+
+\* contributed equally
 
 ## Repositories
 ### PlantUML-Eclipse-Xtext
