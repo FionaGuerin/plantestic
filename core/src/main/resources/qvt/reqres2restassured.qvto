@@ -6,12 +6,48 @@ transformation reqres2restassured(in input: reqres, out output: restassured);
 main() {
     log('Started transforming RequestResponse pairs to RestAssured');
 
-        assert fatal ( input.rootObjects()[Scenario]->size() = 1 )
-            with log('Input does not contain exactly one Scenario');
+    assert fatal ( input.rootObjects()[Scenario]->size() = 1 )
+                with log('Input does not contain exactly one Scenario');
 
-    input.rootObjects()[Scenario].map transformScenario();
+    input.rootObjects()[Scenario].map scenario2testScenario();
 }
 
-mapping Scenario::transformScenario(): TestScenario {
+mapping Scenario::scenario2testScenario(): TestScenario{
+     name := "$scenarioName";
+     testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
+     parameter := object Parameter {
+        type := "$parameterType";
+        name := "$parameterName";
+     }
+}
 
+mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip{
+     log('Transforming Roundtrip to TestRooundtrip');
+
+     name := "$testRoundtripName";
+     requestspecification :=  self.request .map request2requestSpecification();
+     assertresponse := self.response .map response2responseSpecification();
+}
+
+mapping Request::request2requestSpecification(): RequestSpecification{
+    log('Transforming Request to RequestSpecification');
+
+     if (self.method.toString() = "POST") then {
+        method := RestAssured::Method::POST;
+     } endif;
+    if (self.method.toString() = "PUT") then {
+        method := RestAssured::Method::PUT;
+     } endif;
+
+    path := pathQuery(self.url);
+}
+
+mapping Response::response2responseSpecification(): ResponseSpecification{
+     log('Transforming Responne to ResponseSpecification');
+}
+
+query pathQuery( url: URL) : String {
+    log('Query path of URL');
+
+    return url.path;
 }
