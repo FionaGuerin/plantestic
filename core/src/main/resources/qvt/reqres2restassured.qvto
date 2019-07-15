@@ -40,51 +40,15 @@ mapping Request::request2requestSpecification(): RequestSpecification{
         method := RestAssured::Method::PUT;
      } endif;
 
-    log(method.toString());
     path := pathQuery(self.url);
-    authenticationScheme := object BasicAuthScheme {
-        user := "$user";
-        password := "$password";
-    };
-
-    requestParameters := self.parameter -> map requestParam2requestParameter();
 }
 
 mapping Response::response2responseSpecification(): ResponseSpecification{
      log('Transforming Responne to ResponseSpecification');
-     bodyMatchers := object BodyMatcherGroup {
-                     bodyMatchers := self.assertbody -> map bodyExpectation2bodyMatcher();
-                 };
-     expectedStatusCode := self.assertstatus.map statusExpectation2isIn();
 }
 
 query pathQuery( url: URL) : String {
     log('Query path of URL');
 
     return url.path;
-}
-
-mapping RequestParam::requestParam2requestParameter() : RequestParameter {
-    log('Transforming RequestParam to RequestParameter');
-
-     value := self.value;
-     key := self.key;
-}
-
-mapping BodyExpectations::bodyExpectation2bodyMatcher(): BodyMatcher{
-    log('Transforming BodyExpectation to BodyMatcher');
-
-    matcher := (self.paramexistsexpectation.map paramExistsExpectation2hasXpath()) -> first();
-}
-
-mapping ParamExistsExpectation::paramExistsExpectation2hasXpath(): HasXPath{
-    log('Transforming ParamExistsExpectation to HasXPath');
-
-    pathString := self.jsonPath;
-}
-
-mapping StatusExpectation::statusExpectation2isIn(): IsIn{
-    log('Transforming StatusExpectation to IsIn');
-
-    allowedValues := self.allowedStatusCodes;
 }
