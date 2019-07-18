@@ -7,9 +7,10 @@ import java.io.File
 object AcceleoCodeGenerator {
 
     /**
-     * Parses a resource specified by an URI and returns the resulting object tree root element.
-     * @param fileUriString URI of resource to be parsed as String
-     * @return Root model object
+     * Generates the Rest Assured Code based on a Rest Assured EObject.
+     * @param inputModel The Rest Assured EObject
+     * @param targetFolder The folder to write the generated code into
+     * @return Request Response Pair
      */
     fun generateCode(inputModel: EObject, targetFolder: File) {
         val restAssuredAcceleoGenerator = RestAssuredAcceleoGenerator()
