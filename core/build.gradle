@@ -36,6 +36,7 @@ jar {
     manifest {
         attributes "Main-Class": "de.unia.se.mdd.MainKt"
     }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 sourceSets{
@@ -89,6 +90,7 @@ dependencies {
     implementation "lpg.runtime:lpg.runtime.java:2.0.17.v201004271640"
 
     implementation project(":plantuml")
+    implementation 'com.github.ajalt:clikt:2.1.0'
 
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.1.7"
     testImplementation "io.mockk:mockk:1.8.9"

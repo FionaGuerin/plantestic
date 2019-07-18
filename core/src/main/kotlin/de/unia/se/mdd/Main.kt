@@ -10,7 +10,7 @@ class Pipeliner : CliktCommand() {
     val inputPath: String by option(help = "Path to PlantUML file").prompt("Input path")
 
     override fun run() {
-        runTransformationPipeline(Resources.getResource(inputFile).path)
+        runTransformationPipeline(inputPath)
     }
 
     fun runTransformationPipeline(inputUriString: String) {
