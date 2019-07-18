@@ -22,15 +22,6 @@ class PumlParserTest : StringSpec({
 
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
-        sequenceDiagram.umlElements.size shouldBe 4
-        (sequenceDiagram.umlElements[0] as Participant).name shouldBe "A"
-        (sequenceDiagram.umlElements[1] as Participant).name shouldBe "B"
-        (sequenceDiagram.umlElements[2] as UseLeft).userOne shouldBe sequenceDiagram.umlElements[0]
-        (sequenceDiagram.umlElements[2] as UseLeft).userTwo shouldBe sequenceDiagram.umlElements[1]
-        ((sequenceDiagram.umlElements[3] as Activate).umlElements[0] as UseLeft).userOne shouldBe
-                sequenceDiagram.umlElements[1]
-        ((sequenceDiagram.umlElements[3] as Activate).umlElements[0] as UseLeft).userTwo shouldBe
-                sequenceDiagram.umlElements[0]
     }
 }) {
     companion object {
