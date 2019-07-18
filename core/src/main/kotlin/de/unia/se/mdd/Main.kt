@@ -1,7 +1,6 @@
 package de.unia.se.mdd
 
 import com.google.common.io.Resources
-import org.eclipse.emf.common.util.BasicMonitor
 import java.io.File
 
 object Main {

@@ -25,10 +25,8 @@ class AcceleoGeneratorTest : StringSpec({
 
         fun printCode(folder: File) {
             folder.listFiles().forEach { file ->
-                val data = file.readLines()
-                for(line in data) {
-                    println(line)
-                }
+                val lines = file.readLines()
+                lines.forEach { line -> println(line) }
             }
         }
     }
