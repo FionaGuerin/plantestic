@@ -7,15 +7,12 @@
         eType="#//Request" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="response" lowerBound="1"
         eType="#//Response" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="Method" instanceClassName="Method">
-    <eLiterals name="GET"/>
-    <eLiterals name="POST" value="1"/>
-    <eLiterals name="PUT" value="2"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alternative" eType="#//Alternative"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Request">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="#//Method"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requestparam" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
         eType="#//RequestParam" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="url" lowerBound="1" eType="#//URL"
         containment="true"/>
@@ -23,6 +20,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="RequestParam" instanceTypeName="RequestParam">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Method" instanceClassName="Method">
+    <eLiterals name="GET"/>
+    <eLiterals name="POST" value="1"/>
+    <eLiterals name="PUT" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BodyExpectations" instanceClassName="BodyExpectations">
     <eStructuralFeatures xsi:type="ecore:EReference" name="paramexistsexpectation"
@@ -36,8 +38,6 @@
         eType="#//BodyExpectations" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="assertstatus" eType="#//StatusExpectation"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responseparam" upperBound="-1"
-        eType="#//ResponseParam" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StatusExpectation" instanceClassName="StatusExpectation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedStatusCodes" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
@@ -49,8 +49,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="roundtrip" upperBound="-1"
         eType="#//Roundtrip" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ResponseParam" instanceClassName="ResponseParam">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Alternative" instanceClassName="Alternative">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
