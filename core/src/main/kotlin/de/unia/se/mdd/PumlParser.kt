@@ -21,6 +21,7 @@ object PumlParser {
         val uri = URI.createFileURI(fileUriString)
         val resource = ResourceSetImpl().getResource(uri, true)
 
+        // resolve cross references
         EcoreUtil.resolveAll(resource)
 
         require(resource.contents.size > 0) { "File should contain something meaningful." }
