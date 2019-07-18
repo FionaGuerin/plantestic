@@ -1,8 +1,8 @@
 package de.unia.se.mdd
 
+import com.google.common.io.Resources
 import org.eclipse.emf.common.util.BasicMonitor
 import java.io.File
-import java.util.ArrayList
 
 object Main {
 
@@ -19,12 +19,8 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        val arguments = ArrayList<String>()
-        val targetFolder = File("generatedCode")
-        //val generator = GenerateAcceleo()
-        GenerateAcceleo.init(restAssuredModel, targetFolder, arguments)
-        //val generator = GenerateAcceleo(restAssuredModel, targetFolder, arguments)
+        val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
 
-        GenerateAcceleo.doGenerate(BasicMonitor())
+        AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
     }
 }
