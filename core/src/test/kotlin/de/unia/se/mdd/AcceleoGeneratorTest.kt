@@ -15,8 +15,9 @@ class AcceleoGeneratorTest : StringSpec({
         MetaModelSetup.doSetup()
 
         val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(RESTASSURED_INPUT_URI_STRING), true).contents[0]
+        val output = File(Resources.getResource("code-generation").path + "/generatedCode.txt")
+        output.createNewFile()
 
-        val output = File("generatedCode")
         GenerateAcceleo.init(pumlInputModel, output, ArrayList<String>())
         GenerateAcceleo.doGenerate(BasicMonitor())
         output shouldNotBe null
