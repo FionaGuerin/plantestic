@@ -4,13 +4,13 @@
   <umlDiagrams xsi:type="puml:SequenceUml">
     <umlElements xsi:type="puml:Participant" name="A"/>
     <umlElements xsi:type="puml:Participant" name="B"/>
-    <umlElements xsi:type="puml:UseLeft" userOne="file:/home/andi/Projects/SE-Master/mdd/core/build/resources/test/minimal_hello.puml#|0"
-        userTwo="file:/home/andi/Projects/SE-Master/mdd/core/build/resources/test/minimal_hello.puml#|1">
+    <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+        userTwo="#//@umlDiagrams.0/@umlElements.1">
       <text>hello</text>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
-      <umlElements xsi:type="puml:UseLeft" userOne="file:/home/andi/Projects/SE-Master/mdd/core/build/resources/test/minimal_hello.puml#|2"
-          userTwo="file:/home/andi/Projects/SE-Master/mdd/core/build/resources/test/minimal_hello.puml#|3"/>
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.0"/>
       <activate/>
       <deactivate/>
     </umlElements>
