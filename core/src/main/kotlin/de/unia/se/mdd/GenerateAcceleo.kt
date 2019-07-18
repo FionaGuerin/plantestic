@@ -17,7 +17,7 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
     // The name of the module.
     // val MODULE_FILE_NAME = "de/unia/se/mdd/generate"
     //val MODULE_FILE_NAME = "code-generation/generateCode"
-    private val MODULE_FILE_NAME = Resources.getResource("code-generation/generateCode.mtl").path
+    private val MODULE_FILE_NAME = ("generateCode.mtl")
 
     private val TEMPLATE_NAMES = arrayOf("generateTestScenario")
 
@@ -41,8 +41,9 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
         val acceleoCompiler = AcceleoStandaloneCompiler()
         val ioFolder =
             URI.createFileURI(Resources.getResource("code-generation").path)
+        val ioFoolderClassLoader = System.getProperty("user.dir") + "/build/classes/kotlin/main/de/unia/se/mdd/"
         acceleoCompiler.setSourceFolder(ioFolder.path())
-        acceleoCompiler.setOutputFolder(ioFolder.path())
+        acceleoCompiler.setOutputFolder(ioFoolderClassLoader)
         acceleoCompiler.setBinaryResource(false)
         /* if (args.length == 4 && args['[3]'/] != null && !"".equals(args['[3]'/])) { //$NON-NLS-1$
             acceleoCompiler.setDependencies(args['[3]'/])
