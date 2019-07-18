@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module generateCode('/mdd/core/src/main/resources/abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore')]
+[module generateCode('http://www.example.org/RestAssured')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
@@ -32,7 +32,7 @@
 						[for (matcher : BodyMatcher | res.bodyMatchers)]
 						    [if (matcher.oclIsTypeOf(HasXPath))]
 								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath./]) //Todo: needs correction after dealing with the inheritance
+									.body([bodyXPath/]) //Todo: needs correction after dealing with the inheritance
 								[/let]
 							[/if]
 							[if (matcher.oclIsTypeOf(IsIn))]
