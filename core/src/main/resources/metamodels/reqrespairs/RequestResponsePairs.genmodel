@@ -15,9 +15,9 @@
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/POST"/>
       <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/PUT"/>
     </genEnums>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/request"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/response"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Roundtrip">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/request"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/response"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
@@ -37,13 +37,15 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/requestresponse"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//ParamExistsExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ParamExistsExpectation/jsonPath"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/roundtrip"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
