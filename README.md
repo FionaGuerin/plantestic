@@ -1,6 +1,18 @@
 # Model-driven Software Engineering
 This test case generator produces test cases from plantUML diagrams.
 
+# Usage
+Clone this repository and run
+```
+./gradlew shadowJar
+```
+to create a executable binary. The jar can be found under `core/build/libs/`.
+
+Run the program with
+```
+java -jar core/build/libs/*.jar
+```
+
 # Motivation
 The implementation of user requirements often deviates from the specification of the same user requirements. 
 Individual work, teamwork, and collaboration between teams can produce such a divergence. 
