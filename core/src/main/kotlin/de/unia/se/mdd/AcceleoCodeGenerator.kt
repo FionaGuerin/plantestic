@@ -10,7 +10,6 @@ object AcceleoCodeGenerator {
      * Generates the Rest Assured Code based on a Rest Assured EObject.
      * @param inputModel The Rest Assured EObject
      * @param targetFolder The folder to write the generated code into
-     * @return Request Response Pair
      */
     fun generateCode(inputModel: EObject, targetFolder: File) {
         val restAssuredAcceleoGenerator = RestAssuredAcceleoGenerator()
