@@ -8,8 +8,8 @@ deploy:
   api_key:
     secure: RQ4SClkZF48Zn7lLlo1j88gmZZpZ1AD/dellcjecm3+cVkF8cxytDktp/b9LL7jGjoiWiUmsXPw6aK+lYtUB20Bwqn9CWEQDUyHHEynY3gsDDHHWdFOrtomvh/y6EEJlF/x9O9Tde9tf+R52TW7jesl5uj3RgY9uS7QCK+0IT7GKruZgDJGpGIMS+mPGZYTd9kC7guhzMNvgPl+N0hi03twUJxErPxqrqv0VWD1KFkqiSSiVRHenwz2t4HnMaAZiTeQnvWttNVpLXE5vpuaBqMQ4tLGrnCMxUwVPAYX9RU0ka3xlbLJseCB07SaTkC4BI9dssiTX60Z9z7obFK0LFWsIbjj2ysEb80ksO49aE4fxfG8Flq3if+gxC5aw9cGe/6mvZxJ80/kPdAC/+vlCuvRTElJvPNiPf8G66jMpzrrBrEP6b7NdjGPagSmxpEXKqwWt/Vt1bcfrH1NjcIHEI5JYTD7yyEECCnxfZf5Hg4njoo7fM19NSPnZW+JGva8tzoX1lz5wn+o9JXaEZ/crZibF6ng0a5FdGs9JMC3tF/FCt2jGBMqgq4AgGx/T7CZAWDSpPBNu/X/sdKiErcnD6cTSxJ84p/uXSU/XOkjVrReVkVuXLnVDaHlQRXg2hVUJmztbdgogA0+0nI/7AVneDtYd/tqKnK+SuMK1Asf1TyM=
   file: core/build/libs/*.jar
-  draft: true
-
+  on:
+    tags: true
 
 notifications:
   slack:
