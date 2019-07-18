@@ -42,7 +42,6 @@ class AcceleoStandaloneCompiler : AbstractAcceleoCompiler() {
         //require(metaModelEPackage is EPackage) { "Metamodel for URI ${MetaModelSetup.REST_ASSURED_METAMODEL_URI} " +
         //        "wasn't loaded properly!" }
         //org.eclipse.emf.ecore.EPackage.Registry.INSTANCE[metaModelEPackage.nsURI] = metaModelEPackage
-        MetaModelSetup.doSetup()
     }
 
     /**

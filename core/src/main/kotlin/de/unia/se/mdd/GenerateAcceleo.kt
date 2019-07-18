@@ -75,11 +75,11 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
      * @generated NOT
      */
     override fun registerPackages(resourceSet: ResourceSet) {
-        val metaModelResource = resourceSet.getResource(MetaModelSetup.REST_ASSURED_METAMODEL_URI, true)
+        /*val metaModelResource = resourceSet.getResource(MetaModelSetup.REST_ASSURED_METAMODEL_URI, true)
         val metaModelEPackage = metaModelResource.contents[0]
         require(metaModelEPackage is EPackage) { "Metamodel for URI ${MetaModelSetup.REST_ASSURED_METAMODEL_URI} " +
                 "wasn't loaded properly!" }
-        resourceSet.packageRegistry[metaModelEPackage.nsURI] = metaModelEPackage
+        resourceSet.packageRegistry[metaModelEPackage.nsURI] = metaModelEPackage*/
         super.registerPackages(resourceSet)
 
         /*
@@ -113,39 +113,5 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
          *
          * To learn more about Package Registration, have a look at the Acceleo documentation (Help -> Help Contents).
          */
-    }
-
-    /**
-     * This can be used to update the resource set's resource factory registry with all needed factories.
-     *
-     * @param resourceSet
-     * The resource set which registry has to be updated.
-     * @generated
-     */
-    override fun registerResourceFactories(resourceSet: ResourceSet) {
-        super.registerResourceFactories(resourceSet)
-        /*
-         * If you want to change the content of this method, do NOT forget to change the "@generated"
-         * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
-         * of the Acceleo module with the main template that has caused the creation of this class will
-         * revert your modifications.
-         */
-
-        /*
-         * TODO If you need additional resource factories registrations, you can register them here. the following line
-         * (in comment) is an example of the resource factory registration.
-         *
-         * If you want to use the generator in stand alone, the resource factory registration will be required.
-         *
-         * To learn more about the registration of Resource Factories, have a look at the Acceleo documentation (Help -> Help Contents).
-         */
-
-        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(XyzResource.FILE_EXTENSION, XyzResource.Factory.INSTANCE);
-
-        /*
-         * Some metamodels require a very complex setup for standalone usage. For example, if you want to use a generator
-         * targetting UML models in standalone, you NEED to use the following:
-         */
-        // UMLResourcesUtil.init(resourceSet)
     }
 }

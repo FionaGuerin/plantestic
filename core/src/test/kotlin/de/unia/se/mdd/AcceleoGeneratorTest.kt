@@ -15,8 +15,7 @@ class AcceleoGeneratorTest : StringSpec({
         MetaModelSetup.doSetup()
 
         val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(RESTASSURED_INPUT_URI_STRING), true).contents[0]
-        val output = File(Resources.getResource("code-generation").path + "/generatedCode.txt")
-        output.createNewFile()
+        val output = File(Resources.getResource("code-generation").path + "/generatedCode")
 
         GenerateAcceleo.init(pumlInputModel, output, ArrayList<String>())
         GenerateAcceleo.doGenerate(BasicMonitor())
@@ -28,10 +27,12 @@ class AcceleoGeneratorTest : StringSpec({
     companion object {
         private val RESTASSURED_INPUT_URI_STRING = Resources.getResource("minimal_hello_restassured.xmi").path
 
-        fun printCode(code: File) {
-            val data = code.readLines()
-            for(line in data) {
-                System.out.println(line)
+        fun printCode(folder: File) {
+            folder.listFiles().forEach { file ->
+                val data = file.readLines()
+                for(line in data) {
+                    println(line)
+                }
             }
         }
     }
