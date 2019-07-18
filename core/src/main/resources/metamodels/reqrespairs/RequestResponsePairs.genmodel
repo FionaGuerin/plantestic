@@ -21,7 +21,7 @@
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/requestparam"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/url"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//RequestParam">
@@ -37,6 +37,7 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/responseparam"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
@@ -47,5 +48,8 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/roundtrip"/>
     </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//ResponseParam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ResponseParam/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ResponseParam/key"/>
+    </genClasses>
   </genPackages>
-</genmodel:GenModel>

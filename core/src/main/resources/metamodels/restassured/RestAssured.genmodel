@@ -3,14 +3,13 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
     modelDirectory="/abstract-syntax-restassured/src-gen" creationIcons="false"
     editDirectory="/abstract-syntax-restassured.edit/src-gen" editorDirectory="/abstract-syntax-restassured.editor/src-gen"
-    modelPluginID="abstract-syntax-restassured" modelName="RestAssured"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
-    operationReflection="true" importOrganizing="true">
+    modelPluginID="abstract-syntax-restassured" modelName="RestAssured" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>RestAssured.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="RestAssured" basePackage="abstract-syntax-restassured"
-      disposableProviderFactory="true" ecorePackage="RestAssured.ecore#/">
+  <genPackages prefix="RestAssured" basePackage="abstract-syntax-restassured" disposableProviderFactory="true"
+      ecorePackage="RestAssured.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="RestAssured.ecore#//Method">
       <genEnumLiterals ecoreEnumLiteral="RestAssured.ecore#//Method/GET"/>
       <genEnumLiterals ecoreEnumLiteral="RestAssured.ecore#//Method/POST"/>
@@ -30,6 +29,7 @@
     <genClasses ecoreClass="RestAssured.ecore#//ResponseSpecification">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/bodyMatchers"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/expectedStatusCode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/responseParameters"/>
     </genClasses>
     <genClasses ecoreClass="RestAssured.ecore#//AuthenticationScheme"/>
     <genClasses ecoreClass="RestAssured.ecore#//RequestParameter">
@@ -61,6 +61,10 @@
     <genClasses ecoreClass="RestAssured.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//Parameter/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//Parameter/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//ResponseParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseParameter/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseParameter/key"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
