@@ -1,10 +1,16 @@
 package de.unia.se.mdd
 
-object Main {
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.prompt
+import com.google.common.io.Resources
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        // runTransformationPipeline()
+class Pipeliner : CliktCommand() {
+
+    val inputPath: String by option(help = "Path to PlantUML file").prompt("Input path")
+
+    override fun run() {
+        runTransformationPipeline(Resources.getResource(inputFile).path)
     }
 
     fun runTransformationPipeline(inputUriString: String) {
@@ -16,5 +22,13 @@ object Main {
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
         // TODO: generate output
+    }
+}
+
+object Main {
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        Pipeliner().main(args)
     }
 }
