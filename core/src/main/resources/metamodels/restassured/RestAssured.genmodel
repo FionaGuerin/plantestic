@@ -30,6 +30,7 @@
     <genClasses ecoreClass="RestAssured.ecore#//ResponseSpecification">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/bodyMatchers"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/expectedStatusCode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/responseParameters"/>
     </genClasses>
     <genClasses ecoreClass="RestAssured.ecore#//AuthenticationScheme"/>
     <genClasses ecoreClass="RestAssured.ecore#//RequestParameter">
@@ -64,6 +65,10 @@
     </genClasses>
     <genClasses ecoreClass="RestAssured.ecore#//TestAlternative">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//TestAlternative/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//ResponseParam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseParam/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseParam/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
