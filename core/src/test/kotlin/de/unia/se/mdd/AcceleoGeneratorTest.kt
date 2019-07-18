@@ -1,7 +1,7 @@
 package de.unia.se.mdd
 
 import com.google.common.io.Resources
-import io.kotlintest.shouldNotBe
+import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
 import io.kotlintest.specs.StringSpec
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -11,13 +11,14 @@ class AcceleoGeneratorTest : StringSpec({
     "Transform a  Rest Assured EObject input to Java Code" {
         MetaModelSetup.doSetup()
 
-        val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(RESTASSURED_INPUT_URI_STRING), true).contents[0]
-        val output = File(Resources.getResource("code-generation").path + "/generatedCode")
+        val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_URI_STRING)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, output)
-        output shouldNotBe null
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
 
-        printCode(output)
+        printCode(outputFolder)
     }
 }) {
     companion object {
