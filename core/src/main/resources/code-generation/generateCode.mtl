@@ -8,6 +8,14 @@
 	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] { 
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
+		    [comment]
+		        .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
+		        (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
+                    (let bas : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
+                        .auth().basic((bas.user/), (bas.password/))
+                    (/let)
+                (/if)
+            [/comment]
 			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
 				.param([requestParam.key/], [requestParam.value/])
 			[/for]
