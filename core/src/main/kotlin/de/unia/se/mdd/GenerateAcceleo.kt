@@ -52,23 +52,4 @@ object GenerateAcceleo : AbstractAcceleoGenerator() {
         println("Generating code from Rest assured Model")
         super.doGenerate(monitor)
     }
-
-    /*fun callFromConsole(args: Array<String>) {
-        try {
-            if (args.size < 2) {
-                println("Arguments not valid : {model, folder}.")
-            } else {
-                val modelURI = URI.createFileURI(args[0])
-                val folder = File(args[1])
-
-                val arguments = ArrayList<String>()
-                val generator = GenerateAcceleo(modelURI, folder, arguments)
-
-                //generator.doGenerate(BasicMonitor())
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-    }*/
 }

@@ -25,7 +25,7 @@ class AcceleoGeneratorTest : StringSpec({
     }
 }) {
     companion object {
-        private val RESTASSURED_INPUT_URI_STRING = Resources.getResource("minimal_hello_reqres.xmi").path
+        private val RESTASSURED_INPUT_URI_STRING = Resources.getResource("minimal_hello_restassured.xmi").path
 
         fun printCode(code: File) {
             val data = code.readLines()
