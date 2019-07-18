@@ -1,8 +1,7 @@
 [comment encoding = UTF-8 /]
-[module generateCode('/mdd/core/src/main/resources/abstract-syntax-rest-assured/abstractsyntaxrestassured.ecore')]
+[module generateCode('/mdd/core/src/main/resources/metamodels/restassured/RestAssured.ecore')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
-	[comment @main /]
 	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
 
 	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] { 
