@@ -7,6 +7,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="assertresponse" lowerBound="1"
         eType="#//ResponseSpecification" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="testalternative" eType="#//TestAlternative"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequestSpecification" instanceTypeName="RequestSpecification">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requestParameters" upperBound="-1"
@@ -21,6 +23,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expectedStatusCode" eType="#//Matcher"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="responseParameters" upperBound="-1"
+        eType="#//ResponseParam" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AuthenticationScheme" instanceTypeName="AuthenticationScheme"/>
   <eClassifiers xsi:type="ecore:EClass" name="RequestParameter" instanceTypeName="RequestParameter">
@@ -62,5 +66,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Parameter" instanceTypeName="Parameter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TestAlternative" instanceTypeName="TestAlternative">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResponseParam" instanceTypeName="ResponseParam">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
