@@ -3,6 +3,7 @@ package de.unia.se.mdd
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
 import plantuml.puml.UmlDiagram
 
 object PumlParser {
@@ -19,6 +20,9 @@ object PumlParser {
 
         val uri = URI.createFileURI(fileUriString)
         val resource = ResourceSetImpl().getResource(uri, true)
+
+        // Resolve cross references
+        EcoreUtil.resolveAll(resource)
 
         require(resource.contents.size > 0) { "File should contain something meaningful." }
         require(resource.contents[0] is UmlDiagram) { "File should contain a diagram." }

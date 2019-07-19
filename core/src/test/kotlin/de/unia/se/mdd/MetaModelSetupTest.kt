@@ -5,8 +5,6 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.StringSpec
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.uml2.uml.resource.UMLResource
 import kotlin.reflect.KCallable
 import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.jvm.isAccessible
@@ -17,7 +15,6 @@ class MetaModelSetupTest : StringSpec() {
         "doSetup should work" {
             MetaModelSetup.doSetup()
 
-            Resource.Factory.Registry.INSTANCE.extensionToFactoryMap[UMLResource.FILE_EXTENSION] shouldNotBe null
             EPackage.Registry.INSTANCE["http://www.example.org/RestAssured"] shouldNotBe null
             EPackage.Registry.INSTANCE["http://www.example.org/RequestResponsePairs"] shouldNotBe null
             EPackage.Registry.INSTANCE["http://www.eclipse.plantuml/Puml"] shouldNotBe null
