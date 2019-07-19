@@ -6,10 +6,10 @@ import com.github.ajalt.clikt.parameters.options.prompt
 
 class Pipeliner : CliktCommand() {
 
-    val inputPath: String by option(help = "Path to PlantUML file").prompt("Input path")
+    val inputPath: String? by option(help = "Input path")
 
     override fun run() {
-        runTransformationPipeline(inputPath)
+       runTransformationPipeline(inputPath.toString())
     }
 
     fun runTransformationPipeline(inputUriString: String) {
