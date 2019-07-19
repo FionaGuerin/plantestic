@@ -1,5 +1,8 @@
 [comment encoding = UTF-8 /]
-[module generateCode('http://www.example.org/RestAssured')]
+[comment]
+	(module generateCode('http://www.example.org/RestAssured', 'platform:/resource/mdd/core/src/main/resources/metamodels/restassured/RestAssured.ecore')]
+[/comment]
+[module generateCode('platform:/resource/mdd/core/src/main/resources/metamodels/restassured/RestAssured.ecore')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
@@ -35,7 +38,7 @@
 						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
 						    [if (matcher.oclIsTypeOf(HasXPath))]
 								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath/]) //Todo: needs correction after dealing with the inheritance
+									.body([bodyXPath.pathString/])
 								[/let]
 							[/if]
 							[if (matcher.oclIsTypeOf(IsIn))]
@@ -43,10 +46,15 @@
 									//Todo: is this needed?
 								[/let]
 							[/if]
+							[if (matcher.oclIsTypeOf(Extract))]
+								//Todo: missing in Metamodel
+							[/if]
 						[/for]
 					[/if]
-				[/let]
-		// Todo implementation for Variables that come from response (not part of this small example)
+				[/let];
+			[for (responseParam : ResponseParam | testRoundtrip.assertresponse.responseParameters)]
+				String [responseParam.key/] = [testRoundtrip.name/].path("[responseParam.key/]");
+			[/for]
 		[/for]
 	}
 	[/file]
