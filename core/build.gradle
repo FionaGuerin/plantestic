@@ -88,13 +88,14 @@ dependencies {
     implementation "org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354"
     implementation "lpg.runtime:lpg.runtime.java:2.0.17.v201004271640"
 
-    // https://mvnrepository.com/artifact/org.eclipse.acceleo/org.eclipse.acceleo.engine
-    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.engine', version: '3.5.1.201409021433'
-    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.common', version: '3.5.1.201409021433'
-    compile group: 'org.eclipse.acceleo', name: 'org.eclipse.acceleo.model', version: '3.5.1.201409021433'
-    compile group: 'org.eclipse.platform', name: 'org.eclipse.core.runtime', version: '3.15.200'
-    //implementation "org.eclipse.platform:org.eclipse.core.runtime:3.15.200.v20190301-1641"
-    
+    // Making Acceleo work without Eclipse
+    compile "org.eclipse.acceleo:org.eclipse.acceleo.engine:3.5.1.201409021433"
+    compile "org.eclipse.acceleo:org.eclipse.acceleo.parser:3.5.1.201409021433"
+    compile "org.eclipse.acceleo:org.eclipse.acceleo.common:3.5.1.201409021433"
+    compile "org.eclipse.acceleo:org.eclipse.acceleo.model:3.5.1.201409021433"
+    compile "org.eclipse.platform:org.eclipse.core.runtime:3.15.200"
+    compile "org.apache.ant:ant:1.8.2"
+
     implementation project(":plantuml")
 
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.1.7"

@@ -13,10 +13,10 @@ import java.io.OutputStreamWriter
 
 object M2MTransformer {
 
-    private val QVT_PUML2REQRES_TRANFORMATION_URI =
+    private val QVT_PUML2REQRES_TRANSFORMATION_URI =
         URI.createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)
 
-    private val QVT_REQRES2RESTASSURED_TRANFORMATION_URI =
+    private val QVT_REQRES2RESTASSURED_TRANSFORMATION_URI =
         URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
 
     /**
@@ -26,7 +26,7 @@ object M2MTransformer {
      */
     fun transformPuml2ReqRes(inputModel: EObject): EObject {
         require(inputModel is UmlDiagram) { "Puml transformation input wasn't a puml object!" }
-        return doQvtoTransformation(inputModel, QVT_PUML2REQRES_TRANFORMATION_URI)
+        return doQvtoTransformation(inputModel, QVT_PUML2REQRES_TRANSFORMATION_URI)
     }
 
     /**
@@ -35,7 +35,7 @@ object M2MTransformer {
      * @returnRest Assured EObject
      */
     fun transformReqRes2RestAssured(inputModel: EObject): EObject {
-        return doQvtoTransformation(inputModel, QVT_REQRES2RESTASSURED_TRANFORMATION_URI)
+        return doQvtoTransformation(inputModel, QVT_REQRES2RESTASSURED_TRANSFORMATION_URI)
     }
 
     private fun doQvtoTransformation(inputModel: EObject, transformationUri: URI): EObject {
