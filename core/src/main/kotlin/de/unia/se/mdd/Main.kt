@@ -3,7 +3,6 @@ package de.unia.se.mdd
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
-import com.google.common.io.Resources
 
 class Pipeliner : CliktCommand() {
 
