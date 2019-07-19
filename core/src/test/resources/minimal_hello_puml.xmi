@@ -6,6 +6,7 @@
     <umlElements xsi:type="puml:Participant" name="B"/>
     <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
         userTwo="#//@umlDiagrams.0/@umlElements.1">
+      <associationArrow>DIRECTIONALRIGHT</associationArrow>
       <text>hello</text>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
