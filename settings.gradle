@@ -1,3 +1,4 @@
 rootProject.name = 'mdd'
+
 include 'plantuml'
 include 'core'
