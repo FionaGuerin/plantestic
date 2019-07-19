@@ -11,8 +11,8 @@
             [comment]
                 .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
                 (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
-                    (let bas : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
-                        .auth().basic((bas.user/), (bas.password/))
+                    (let basicAuthScheme : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
+                        .auth().basic((basicAuthScheme.user/), (basicAuthScheme.password/))
                     (/let)
                 (/if)
             [/comment]
@@ -22,17 +22,17 @@
 			.when()
 				.[testRoundtrip.requestspecification.method/]([testRoundtrip.requestspecification.path/])
 			.then()
-				[let res : ResponseSpecification = testRoundtrip.assertresponse]
+				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
 					.assertThat()
-					[if (res.expectedStatusCode->notEmpty())]
-						[if (res.expectedStatusCode.oclIsTypeOf(IsIn))]
-							[let statusCode : IsIn = res.expectedStatusCode.oclAsType(IsIn)]
+					[if (responseSpecification.expectedStatusCode->notEmpty())]
+						[if (responseSpecification.expectedStatusCode.oclIsTypeOf(IsIn))]
+							[let statusCode : IsIn = responseSpecification.expectedStatusCode.oclAsType(IsIn)]
 								.statusCode(in([statusCode.allowedValues/])
 							[/let]
 						[/if]
 					[/if]
-					[if (res.bodyMatchers->notEmpty())]
-						[for (matcher : BodyMatcher | res.bodyMatchers)]
+					[if (responseSpecification.bodyMatchers->notEmpty())]
+						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
 						    [if (matcher.oclIsTypeOf(HasXPath))]
 								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
 									.body([bodyXPath/]) //Todo: needs correction after dealing with the inheritance

@@ -8,14 +8,15 @@ import org.eclipse.emf.common.util.Monitor
 import org.eclipse.emf.ecore.EObject
 import java.io.File
 import java.io.IOException
+import java.nio.file.Paths
 
 class RestAssuredAcceleoGenerator : AbstractAcceleoGenerator() {
 
     private val moduleName = "generateCode.mtl"
     private val templateNames = arrayOf("generateTestScenario")
     private val acceleoTransformationsInputFolder = Resources.getResource("code-generation").path
-    private val compiledAcceleoTransformationsOutputFolder = System.getProperty("user.dir") +
-            "/build/classes/kotlin/main/de/unia/se/mdd/"
+    private val compiledAcceleoTransformationsOutputFolder = Paths.get(System.getProperty("user.dir"),
+        "build", "classes", "kotlin", "main", "de", "unia", "se", "mdd").toString()
 
     override fun initialize(model: EObject, targetFolder: File, arguments: List<Any>) {
         println("Compiling .mtl file for generating code from Rest assured Model")

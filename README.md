@@ -82,7 +82,7 @@ Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/
 ### Acceleo
 
 Acceleo is for a template-based source code generation.
-It is model-to-text transformation tool.  
+It is a model-to-text transformation tool.  
 It is a Markup language with open and closing tags, which are in square brackets.
 Not enclosed text is directly added to the generated file.  
 Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
