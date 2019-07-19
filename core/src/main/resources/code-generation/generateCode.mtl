@@ -3,9 +3,16 @@
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
-	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
+	[file (testScenario.name.concat('.java'), false, 'UTF-8')]
 
-	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] { 
+    import org.apache.commons.text.StringSubstitutor;
+	import com.moandjiezana.toml;
+
+    String paramsFilePath = "";
+    String paramsFileContent = new String (Files.readAllBytes(Paths.get(paramsFilePath)));
+    Map<String, Object> paramsMap = new Toml().read(paramsFileContent).toMap();
+
+	public void test() {
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
             [comment]
@@ -20,7 +27,7 @@
 				.param([requestParam.key/], [requestParam.value/])
 			[/for]
 			.when()
-				.[testRoundtrip.requestspecification.method/]([testRoundtrip.requestspecification.path/])
+				.[testRoundtrip.requestspecification.method/](StringSubstitutor.replace([testRoundtrip.requestspecification.path/], paramsMap))
 			.then()
 				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
 					.assertThat()
