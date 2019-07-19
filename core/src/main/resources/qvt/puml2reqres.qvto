@@ -48,6 +48,7 @@ mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
 
 mapping UmlUse :: UmlUse2Request() : Request {
    var pathIndex : Integer := 1;
+   // GET is the default method of a request
    method := RequestResponsePairs::Method::GET;
    if (self.text->at(1) = "GET") {
         pathIndex := 2;
