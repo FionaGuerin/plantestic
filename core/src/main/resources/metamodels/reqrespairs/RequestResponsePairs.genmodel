@@ -10,44 +10,35 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="RequestResponsePairs" basePackage="request-response-pairs"
       disposableProviderFactory="true" ecorePackage="RequestResponsePairs.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RequestResponsePairs.ecore#//Method">
-      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/GET"/>
-      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/POST"/>
-      <genEnumLiterals ecoreEnumLiteral="RequestResponsePairs.ecore#//Method/PUT"/>
-    </genEnums>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Roundtrip">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/request"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/response"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Roundtrip/alternative"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Roundtrip/roundtripName"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Request">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Request/method"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/requestparam"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Request/url"/>
-    </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//RequestParam">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//RequestParam/key"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//HttpRequest">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//HttpRequest/httpMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//HttpRequest/url"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//HttpRequest/httpRequestData"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//BodyExpectations">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//BodyExpectations/paramexistsexpectation"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//URL">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//URL/path"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//HTTPResponse">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//HTTPResponse/assertbody"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//HTTPResponse/status"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//HTTPResponse/responseparam"/>
     </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//Response">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertbody"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/assertstatus"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Response/responseparam"/>
-    </genClasses>
-    <genClasses ecoreClass="RequestResponsePairs.ecore#//StatusExpectation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//StatusExpectation/allowedStatusCodes"/>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//HttpStatus">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//HttpStatus/httpStatus"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//ParamExistsExpectation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ParamExistsExpectation/jsonPath"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Scenario">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/roundtrip"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Scenario/scenarioName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequestResponsePairs.ecore#//Scenario/parameter"/>
     </genClasses>
     <genClasses ecoreClass="RequestResponsePairs.ecore#//Alternative">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Alternative/condition"/>
@@ -55,6 +46,10 @@
     <genClasses ecoreClass="RequestResponsePairs.ecore#//ResponseParam">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ResponseParam/key"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//ResponseParam/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RequestResponsePairs.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/parameterType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequestResponsePairs.ecore#//Parameter/parameterName"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
