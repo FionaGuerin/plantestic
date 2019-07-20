@@ -4,6 +4,7 @@ import com.google.common.io.Resources
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.m2m.qvt.oml.BasicModelExtent
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl
 import org.eclipse.m2m.qvt.oml.TransformationExecutor
@@ -54,6 +55,7 @@ object M2MTransformer {
 
         val context = ExecutionContextImpl()
         context.setConfigProperty("keepModeling", true)
+        context.setConfigProperty("diagramName", EcoreUtil.getURI(inputModel).trimFileExtension().lastSegment())
 
         require(System.out != null) { "System.out was null!" }
         val outStream = OutputStreamWriter(System.out!!)
