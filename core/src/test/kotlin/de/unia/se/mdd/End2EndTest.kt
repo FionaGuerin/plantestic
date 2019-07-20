@@ -1,7 +1,9 @@
 package de.unia.se.mdd
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.google.common.io.Resources
 import de.unia.se.mdd.Main.runTransformationPipeline
 import io.kotlintest.Description

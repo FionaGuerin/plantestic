@@ -102,7 +102,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.8.9"
 
     // End-2-End Test
-    testImplementation "org.jooq:joor:0.9.12"
+    testImplementation "org.jooq:joor-java-8:0.9.12"
     testImplementation "com.github.tomakehurst:wiremock:2.24.0"
 
     // Needed for running the dynamically compiled test code (runtime dependencies)
