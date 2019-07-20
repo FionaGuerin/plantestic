@@ -20,20 +20,21 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResponseSpecification" instanceTypeName="ResponseSpecification">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyMatchers" eType="#//BodyMatcherGroup"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodymatchergroup" eType="#//BodyMatcherGroup"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expectedStatusCode" eType="#//Matcher"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="statusmatcher" eType="#//Matcher"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responseParameters" upperBound="-1"
-        eType="#//ResponseParam" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="responsedatum" upperBound="-1"
+        eType="#//ResponseDatum" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BodyMatcherGroup" instanceTypeName="BodyMatcherGroup">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyMatchers" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodymatcher" upperBound="-1"
         eType="#//BodyMatcher" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Matcher" instanceClassName="Matcher"/>
   <eClassifiers xsi:type="ecore:EClass" name="IsIn" instanceClassName="IsIn" eSuperTypes="#//Matcher">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedValues" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IDREFS"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TestScenario" instanceClassName="TestScenario">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testroundtrip" lowerBound="1"
@@ -42,14 +43,16 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="HasXPath" eSuperTypes="#//Matcher">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pathString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xPath" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BodyMatcher" instanceTypeName="BodyMatcher">
     <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" lowerBound="1"
         eType="#//Matcher" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ResponseParam" instanceTypeName="ResponseParam">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ResponseDatum" instanceTypeName="ResponseDatum">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="responseDatumName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="responseDatumXPath" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
