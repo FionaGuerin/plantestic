@@ -16,12 +16,13 @@ val wireMockServer = WireMockServer(8080)
 class End2EndTest : StringSpec({
 
     "End2End test does not fail" {
-        wireMockServer.stubFor(get(urlEqualTo("/hello")).willReturn(aResponse().withBody("test")))
+        wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(INPUT_PATH, OUTPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText()).create()
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText())
+            .create(Resources.getResource("test_config.toml").path)
         compiledTest.call("test")
 
         // Check if we received at least one request

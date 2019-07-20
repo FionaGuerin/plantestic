@@ -7,6 +7,7 @@
 package com.mdd.test;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.apache.commons.text.StringSubstitutor;
@@ -16,9 +17,16 @@ import io.restassured.response.ValidatableResponse;
 
 public class Test {
 
-    String paramsFilePath = "";
-    String paramsFileContent = "";//new String(Files.readAllBytes(Paths.get(paramsFilePath)));
-    Map<String, Object> paramsMap = new Toml().read(paramsFileContent).toMap();
+    Map<String, Object> paramsMap = new HashMap();
+
+    public Test(String configFile) {
+        try {
+            String paramsFileContent = new String(Files.readAllBytes(Paths.get(configFile)));
+            paramsMap = new Toml().read(paramsFileContent).toMap();
+        } catch (Exception e) {
+            System.out.println("Could not read TOML config file");
+        }
+    }
 
 	public void test() {
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
