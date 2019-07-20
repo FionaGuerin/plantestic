@@ -21,7 +21,6 @@ public class Test {
     Map<String, Object> paramsMap = new Toml().read(paramsFileContent).toMap();
 
 	public void test() {
-	[comment]
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
             [comment]
@@ -64,7 +63,6 @@ public class Test {
 				[/let]
 		// Todo implementation for Variables that come from response (not part of this small example)
 		[/for]
-		[/comment]
 	}
 }
 	[/file]

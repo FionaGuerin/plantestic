@@ -105,10 +105,11 @@ dependencies {
     testImplementation "org.jooq:joor:0.9.12"
     testImplementation "com.github.tomakehurst:wiremock:2.24.0"
 
-    // Needed for running the dynamically compiled test code
+    // Needed for running the dynamically compiled test code (runtime dependencies)
     testImplementation "org.apache.commons:commons-text:1.7"
     testImplementation "com.moandjiezana.toml:toml4j:0.7.2"
     testImplementation "io.rest-assured:rest-assured:3.0.0"
+    testImplementation "javax.xml.bind:jaxb-api:2.3.1"
 
     ktlint "com.github.shyiko:ktlint:0.29.0"
 }
