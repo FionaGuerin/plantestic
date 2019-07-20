@@ -1,5 +1,8 @@
 package de.unia.se.mdd
 
+import com.google.common.io.Resources
+import java.io.File
+
 object Main {
 
     @JvmStatic
@@ -15,6 +18,8 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        // TODO: generate output
+        val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
+
+        AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
     }
 }
