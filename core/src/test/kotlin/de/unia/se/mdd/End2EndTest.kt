@@ -1,14 +1,12 @@
 package de.unia.se.mdd
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.google.common.io.Resources
 import de.unia.se.mdd.Main.runTransformationPipeline
 import io.kotlintest.Description
 import io.kotlintest.TestResult
-import io.kotlintest.shouldNotBe
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import org.joor.Reflect
 import java.io.File
@@ -35,14 +33,16 @@ class End2EndTest : StringSpec({
             .create(CONFIG_PATH)
         compiledTest.call("test")
 
-        // Check if we received at least one request
-        wireMockServer.allServeEvents.size shouldNotBe 0
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 }) {
     companion object {
         private val INPUT_PATH = Resources.getResource("minimal_hello.puml").path
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
-        private val CONFIG_PATH = Resources.getResource("test_config.toml").path
+        private val CONFIG_PATH = Resources.getResource("end2end_test_config.toml").path
     }
 
     override fun beforeTest(description: Description) {
