@@ -18,11 +18,14 @@ import io.restassured.response.ValidatableResponse;
 public class Test {
 
     Map<String, Object> paramsMap = new HashMap();
+    StringSubstitutor substitutor;
 
     public Test(String configFile) {
         try {
             String paramsFileContent = new String(Files.readAllBytes(Paths.get(configFile)));
             paramsMap = new Toml().read(paramsFileContent).toMap();
+            substitutor = new StringSubstitutor(paramsMap);
+            test();
         } catch (Exception e) {
             System.out.println("Could not read TOML config file");
         }
@@ -58,7 +61,7 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification)]
-//.auth().basic(xxx.username([requestSpecification.receiver/]), xxx.password([requestSpecification.receiver/]))
+.auth().basic(substitutor.replace("[requestSpecification.receiver/].username", paramsMap), substitutor.replace("[requestSpecification.receiver/].password", paramsMap))
 [if (requestSpecification.requestDatum->notEmpty())]
 [for (rd : String | requestSpecification.requestDatum)]
 .param([rd/], [rd/])
@@ -67,7 +70,7 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification)]
-.request("[requestSpecification.method/]", StringSubstitutor.replace("[requestSpecification.url/]", paramsMap))
+.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.url/]", paramsMap))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification)]
@@ -95,7 +98,7 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 [for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
 [if (matcher.oclIsTypeOf(HasXPath))]
 [let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-	.body([bodyXPath.xPath/], contains("UI_SWTICH")) // Todo: needs correction
+	.body(hasXPath([bodyXPath.xPath/]))
 [/let]
 [/if]
 [if (matcher.oclIsTypeOf(IsIn))]
