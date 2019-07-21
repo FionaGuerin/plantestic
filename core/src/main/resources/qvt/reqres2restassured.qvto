@@ -13,7 +13,7 @@ main() {
 }
 
 mapping Scenario::scenario2testScenario(): TestScenario {
-     log('Transforming Scenario to TestScenario');
+    log('Transforming Scenario to TestScenario');
 
     testScenarioName := self.scenarioName;
     testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
@@ -29,28 +29,28 @@ mapping Scenario::scenario2testScenario(): TestScenario {
 }
 
 mapping HttpRequest::httprequest2requestSpecification(): RequestSpecification {
-    log('Transforming HTTPRequest to RequestSpecification');
+     log('Transforming HTTPRequest to RequestSpecification');
 
-    method := self.httpMethod;
-    url := self.url;
-    requestDatum := self.httpRequestDatum;
-    receiver := self.receiver;
+     method := self.httpMethod;
+     url := self.url;
+     requestDatum := self.httpRequestDatum;
+     receiver := self.receiver;
 }
 
 mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecification {
      log('Transforming HTTPResponse to ResponseSpecification');
 
      responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
+
      statusmatcher := object IsIn {
         value := self.httpStatus;
      };
 
      var bodyMatcherGroup := new BodyMatcherGroup();
-
      self.httpresponsedatum->forEach(httpresponsedatum) {
         var bodyMatcher := new BodyMatcher();
         bodyMatcher.matcher = object HasXPath {
-                                xPath := httpresponsedatum.httpResponseDatumXPath; //xPathQuery(self.httpresponsedatum);
+                                xPath := httpresponsedatum.httpResponseDatumXPath;
                               };
         bodyMatcherGroup.bodymatcher += bodyMatcher;
      };
