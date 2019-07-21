@@ -41,11 +41,11 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End works for a minimal example" {
+    "End2End works for the rerouting example".config(enabled = false) {
         runTransformationPipeline(REROUTE_INPUT_PATH, OUTPUT_PATH)
     }
 
-    "End2End test works for the rerouting example".config(enabled = false) {
+    "End2End test works for the xcall example".config(enabled = false) {
         runTransformationPipeline(XCALL_INPUT_PATH, OUTPUT_PATH)
     }
 }) {
