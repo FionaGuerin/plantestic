@@ -18,20 +18,20 @@ val wireMockServer = WireMockServer(8080)
 class End2EndTest : StringSpec({
 
     "End2End test produces valid Java code for the minimal example".config(enabled = false) {
-        runTransformationPipeline(PUML_INPUT_URI_STRING, OUTPUT_PATH)
+        runTransformationPipeline(PUML_INPUT_PATH, OUTPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText())
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/TestName.java").readText())
             .create(CONFIG_PATH)
     }
 
     "End2End test receives request on mock server for the minimal example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
-        runTransformationPipeline(PUML_INPUT_URI_STRING, OUTPUT_PATH)
+        runTransformationPipeline(PUML_INPUT_PATH, OUTPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText())
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/TestName.java").readText())
             .create(CONFIG_PATH)
         compiledTest.call("test")
 
@@ -40,21 +40,23 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents[0].response.status shouldBe 200
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
-    
+
     "End2End works for a minimal example" {
-        runTransformationPipeline(PUML_INPUT_URI_STRING)
+        runTransformationPipeline(REROUTE_INPUT_PATH, OUTPUT_PATH)
     }
 
     "End2End test works for the rerouting example".config(enabled = false) {
-        runTransformationPipeline(REROUTE_INPUT_URI_STRING)
+        runTransformationPipeline(XCALL_INPUT_PATH, OUTPUT_PATH)
     }
 }) {
     companion object {
-        private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello.puml").path
-        private val REROUTE_INPUT_URI_STRING = Resources.getResource("rerouting.puml").path
-        private val XCALL_INPUT_URI_STRING = Resources.getResource("xcall.puml").path
+        private val PUML_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
+        private val CONFIG_PATH = Resources.getResource("end2end_test_config_minimal_hello.toml").path
+
+        private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
+        private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
+
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
-        private val CONFIG_PATH = Resources.getResource("end2end_test_config.toml").path
     }
 
     override fun beforeTest(description: Description) {
