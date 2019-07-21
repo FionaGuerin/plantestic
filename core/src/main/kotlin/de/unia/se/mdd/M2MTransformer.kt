@@ -14,10 +14,10 @@ import java.io.OutputStreamWriter
 object M2MTransformer {
 
     private val QVT_PUML2REQRES_TRANFORMATION_URI =
-        URI.createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)
+        URI.createURI(Resources.getResource("qvt/puml2reqres.qvto").toExternalForm())
 
     private val QVT_REQRES2RESTASSURED_TRANFORMATION_URI =
-        URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
+        URI.createURI(Resources.getResource("qvt/reqres2restassured.qvto").toExternalForm())
 
     /**
      * Transforms a UmlDiagram EObject to a Request Response Pair EObject.
@@ -45,7 +45,10 @@ object M2MTransformer {
 
         val executor = TransformationExecutor(transformationUri)
         val validationDiagnostic = executor.loadTransformation()
-        require(validationDiagnostic.message == "OK") { "Validation diagnostic is not OK" }
+        require(validationDiagnostic.message == "OK") {
+            for (child in validationDiagnostic.children) {
+                println(child)
+            } }
 
         val input = BasicModelExtent(listOf(inputModel))
         val output = BasicModelExtent()

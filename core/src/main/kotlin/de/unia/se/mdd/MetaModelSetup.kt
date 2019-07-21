@@ -9,9 +9,9 @@ import plantuml.PumlStandaloneSetup
 object MetaModelSetup {
 
     private val REQUEST_RESPONSE_PAIRS_METAMODEL_URI =
-        URI.createFileURI(Resources.getResource("metamodels/reqrespairs/RequestResponsePairs.ecore").path)
+        URI.createURI(Resources.getResource("metamodels/reqrespairs/RequestResponsePairs.ecore").toExternalForm())
     private val REST_ASSURED_METAMODEL_URI =
-        URI.createFileURI(Resources.getResource("metamodels/restassured/RestAssured.ecore").path)
+        URI.createURI(Resources.getResource("metamodels/restassured/RestAssured.ecore").toExternalForm())
 
     fun doSetup() {
         PumlStandaloneSetup.doSetup()

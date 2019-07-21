@@ -1,10 +1,12 @@
 package de.unia.se.mdd
 
+import com.google.common.io.Resources
+
 object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        // runTransformationPipeline()
+        runTransformationPipeline("/home/andi/Projects/SE-Master/mdd/core/src/test/resources/minimal_hello.puml")
     }
 
     fun runTransformationPipeline(inputUriString: String) {

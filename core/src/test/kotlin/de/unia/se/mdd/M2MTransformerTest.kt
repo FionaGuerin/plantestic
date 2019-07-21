@@ -12,7 +12,7 @@ class M2MTransformerTest : StringSpec({
     "Transform a simple puml input to Request Response Pairs " {
         MetaModelSetup.doSetup()
 
-        val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(PUML_INPUT_URI_STRING), true).contents[0]
+        val pumlInputModel = ResourceSetImpl().getResource(URI.createURI(PUML_INPUT_URI_STRING), true).contents[0]
 
         val reqRespOutputModel = M2MTransformer.transformPuml2ReqRes(pumlInputModel)
         reqRespOutputModel shouldNotBe null
@@ -23,7 +23,7 @@ class M2MTransformerTest : StringSpec({
     "Transform a simple Request Response Pair input to a Rest Assured EObject" {
         MetaModelSetup.doSetup()
 
-        val reqresInputModel = ResourceSetImpl().getResource(URI.createFileURI(REQRES_INPUT_URI_STRING), true).contents[0]
+        val reqresInputModel = ResourceSetImpl().getResource(URI.createURI(REQRES_INPUT_URI_STRING), true).contents[0]
 
         val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
         restAssuredOutputModel shouldNotBe null
@@ -32,8 +32,8 @@ class M2MTransformerTest : StringSpec({
     }
 }) {
     companion object {
-        private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello_puml.xmi").path
-        private val REQRES_INPUT_URI_STRING = Resources.getResource("minimal_hello_reqres.xmi").path // TODO
+        private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello_puml.xmi").toExternalForm()
+        private val REQRES_INPUT_URI_STRING = Resources.getResource("minimal_hello_reqres.xmi").toExternalForm() // TODO
 
         fun printModel(model: EObject) {
             val resource = ResourceSetImpl().createResource(URI.createURI("dummy:/test.ecore"))
