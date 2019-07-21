@@ -1,8 +1,12 @@
 [comment encoding = UTF-8 /]
+(module generateCode('http://www.example.org/RestAssured')]
+
 [comment]
-	(module generateCode('http://www.example.org/RestAssured', 'platform:/resource/mdd/core/src/main/resources/metamodels/restassured/RestAssured.ecore')]
+- Klasse anlegen
+- import von template Engine --> Raussuchen, möglichst einfach, String2String-Map
+- template mit YAML map Aufrufen
+- 
 [/comment]
-[module generateCode('platform:/resource/mdd/core/src/main/resources/metamodels/restassured/RestAssured.ecore')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
@@ -24,6 +28,7 @@
 			[/for]
 			.when()
 				.[testRoundtrip.requestspecification.method/]([testRoundtrip.requestspecification.path/])
+				[generateURL(testRoundtrip.)/] [comment] //TODO call other accceloe template function [/comment]
 			.then()
 				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
 					.assertThat()
@@ -46,7 +51,7 @@
 									//Todo: is this needed?
 								[/let]
 							[/if]
-							[if (matcher.oclIsTypeOf(Extract))]
+							[if (testRoundtrip.assertresponse.responseParameters -> isEmpty)]
 								//Todo: missing in Metamodel
 							[/if]
 						[/for]
@@ -58,4 +63,8 @@
 		[/for]
 	}
 	[/file]
+[/template]
+
+[template private generateURLPath(url : URL) ]
+	
 [/template]
