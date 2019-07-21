@@ -18,20 +18,20 @@ val wireMockServer = WireMockServer(8080)
 class End2EndTest : StringSpec({
 
     "End2End test produces valid Java code" {
-        runTransformationPipeline(INPUT_PATH, OUTPUT_PATH)
+        runTransformationPipeline(INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText())
+        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/testScenario.java").readText())
             .create(CONFIG_PATH)
     }
 
     "End2End test receives request on mock server" {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
-        runTransformationPipeline(INPUT_PATH, OUTPUT_PATH)
+        runTransformationPipeline(INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText())
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/testScenario.java").readText())
             .create(CONFIG_PATH)
         compiledTest.call("test")
 
