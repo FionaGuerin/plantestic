@@ -9,6 +9,7 @@ package com.mdd.test;
 import java.util.Map;
 import java.util.HashMap;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.text.StringSubstitutor;
 import com.moandjiezana.toml.Toml;
@@ -19,15 +20,19 @@ public class Test {
 
     Map<String, Object> paramsMap = new HashMap();
     StringSubstitutor substitutor;
+	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
     public Test(String configFile) {
         try {
-            String paramsFileContent = new String(Files.readAllBytes(Paths.get(configFile)));
-            paramsMap = new Toml().read(paramsFileContent).toMap();
+			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
+			Path path = Paths.get(osAppropriatePath);
+			String paramsFileContent = new String(Files.readAllBytes(path));
+			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
             test();
-        } catch (Exception e) {
+		} catch(Exception e) {
             System.out.println("Could not read TOML config file");
+			System.out.println("Stack trace: " + e);
         }
     }
 
@@ -61,7 +66,7 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification)]
-.auth().basic(substitutor.replace("[requestSpecification.receiver/].username", paramsMap), substitutor.replace("[requestSpecification.receiver/].password", paramsMap))
+.auth().basic(substitutor.replace("[requestSpecification.receiver/].username"), substitutor.replace("[requestSpecification.receiver/].password"))
 [if (requestSpecification.requestDatum->notEmpty())]
 [for (rd : String | requestSpecification.requestDatum)]
 .param([rd/], [rd/])
@@ -70,7 +75,7 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification)]
-.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.url/]", paramsMap))
+.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.url/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification)]
