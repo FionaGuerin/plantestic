@@ -16,7 +16,7 @@ class PumlParserTest : StringSpec({
     "Parsing works for the minimal example" {
         MetaModelSetup.doSetup()
 
-        val umlDiagram = PumlParser.parse(PUML_INPUT_PATH)
+        val umlDiagram = PumlParser.parse(MINIMAL_EXAMPLE_INPUT_PATH)
 
         printModel(umlDiagram)
 
@@ -48,7 +48,7 @@ class PumlParserTest : StringSpec({
     }
 }) {
     companion object {
-        private val PUML_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
+        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
         private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
         private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
 
