@@ -39,8 +39,8 @@ mapping Scenario::scenario2testScenario(): TestScenario {
      assertresponse := self.response .map response2responseSpecification();
 }
 
- mapping Request::request2requestSpecification(): RequestSpecification {
-     log('Transforming Request to RequestSpecification');
+mapping Request::request2requestSpecification(): RequestSpecification {
+    log('Transforming Request to RequestSpecification');
 
     if (self.method.toString() = "POST") then {
         method := RestAssured::Method::POST;
