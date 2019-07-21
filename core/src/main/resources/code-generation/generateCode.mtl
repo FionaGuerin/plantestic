@@ -3,7 +3,7 @@
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
-	[file (testScenario.name.concat('.java'), false, 'UTF-8')]
+	[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
 package com.mdd.test;
 
 import java.util.Map;
@@ -30,7 +30,7 @@ public class Test {
 
 	public void test() {
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
-		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
+		ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
             [comment]
                 .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
                 (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
@@ -39,27 +39,26 @@ public class Test {
                     (/let)
                 (/if)
             [/comment]
-			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
-				.param([requestParam.key/], [requestParam.value/])
+			[for (rd : String | testRoundtrip.requestspecification.requestDatum)]
+				.param([rd/], [rd/])
 			[/for]
 			.when()
-				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap))
-				[testRoundtrip.requestspecification/] [comment] //TODO call other acccelo template function [/comment]
+				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.url/]", paramsMap))
 			.then()
-				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
+				[let responseSpecification : ResponseSpecification = testRoundtrip.responsespecification]
 					.assertThat();
-					[if (responseSpecification.expectedStatusCode->notEmpty())]
-						[if (responseSpecification.expectedStatusCode.oclIsTypeOf(IsIn))]
-							[let statusCode : IsIn = responseSpecification.expectedStatusCode.oclAsType(IsIn)]
-								.statusCode(in([statusCode.allowedValues/])
+					[if (responseSpecification.statusmatcher->notEmpty())]
+						[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
+							[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
+								.statusCode(in([statusCode.value/])
 							[/let]
 						[/if]
 					[/if]
-					[if (responseSpecification.bodyMatchers->notEmpty())]
-						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
+					[if (responseSpecification.bodymatchergroup->notEmpty())]
+						[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
 						    [if (matcher.oclIsTypeOf(HasXPath))]
 								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath.pathString/]) //Todo: needs correction after dealing with the inheritance
+									.body([bodyXPath.xPath/]) //Todo: needs correction after dealing with the inheritance
 								[/let]
 							[/if]
 							[if (matcher.oclIsTypeOf(IsIn))]
@@ -67,14 +66,15 @@ public class Test {
 									//Todo: is this needed?
 								[/let]
 							[/if]
-							[if (testRoundtrip.assertresponse.responseParameters -> isEmpty)]
-								//Todo: missing in Metamodel
+							[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+								.and().extract().response()
 							[/if]
 						[/for]
 					[/if]
 				[/let];
-			[for (responseParam : ResponseParam | testRoundtrip.assertresponse.responseParameters)]
-				String [responseParam.key/] = [testRoundtrip.name/].path("[responseParam.key/]");
+
+			[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
+				String [responseDatum.responseDatumName/] = [responseDatum.responseDatumName/].path("[responseDatum.responseDatumXPath/]");
 			[/for]
 		[/for]
 	}
@@ -82,6 +82,6 @@ public class Test {
 	[/file]
 [/template]
 
-[template private generateURLPath(url : URL) ]
+[template private generateTestRoundtrip(testRoundTrip : TestRoundtrip) ]
 	
 [/template]
