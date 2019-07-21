@@ -1,0 +1,77 @@
+[comment encoding = UTF-8 /]
+[module generateCode('http://www.example.org/RestAssured')]
+
+[template public generateTestScenario(testScenario : TestScenario)]
+	[comment @main /]
+	[file (testScenario.name.concat('.java'), false, 'UTF-8')]
+package com.mdd.test;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.apache.commons.text.StringSubstitutor;
+import com.moandjiezana.toml.Toml;
+import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
+
+public class Test {
+
+    Map<String, Object> paramsMap = new HashMap();
+
+    public Test(String configFile) {
+        try {
+            String paramsFileContent = new String(Files.readAllBytes(Paths.get(configFile)));
+            paramsMap = new Toml().read(paramsFileContent).toMap();
+        } catch (Exception e) {
+            System.out.println("Could not read TOML config file");
+        }
+    }
+
+	public void test() {
+		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
+		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
+            [comment]
+                .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
+                (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
+                    (let basicAuthScheme : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
+                        .auth().basic((basicAuthScheme.user/), (basicAuthScheme.password/))
+                    (/let)
+                (/if)
+            [/comment]
+			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
+				.param([requestParam.key/], [requestParam.value/])
+			[/for]
+			.when()
+				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap))
+			.then()
+				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
+					.assertThat();
+					[if (responseSpecification.expectedStatusCode->notEmpty())]
+						[if (responseSpecification.expectedStatusCode.oclIsTypeOf(IsIn))]
+							[let statusCode : IsIn = responseSpecification.expectedStatusCode.oclAsType(IsIn)]
+								.statusCode(in([statusCode.allowedValues/])
+							[/let]
+						[/if]
+					[/if]
+					[if (responseSpecification.bodyMatchers->notEmpty())]
+						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
+						    [if (matcher.oclIsTypeOf(HasXPath))]
+								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
+									.body([bodyXPath/]) //Todo: needs correction after dealing with the inheritance
+								[/let]
+							[/if]
+							[if (matcher.oclIsTypeOf(IsIn))]
+								[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
+									//Todo: is this needed?
+								[/let]
+							[/if]
+						[/for]
+					[/if]
+				[/let]
+		// Todo implementation for Variables that come from response (not part of this small example)
+		[/for]
+	}
+}
+	[/file]
+[/template]

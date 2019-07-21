@@ -9,9 +9,18 @@ main() {
     assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-    input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+     input.objectsOfType(UmlDiagram).map transformUmlDiagram();
 }
 
 mapping UmlDiagram::transformUmlDiagram(): Scenario {
-
+    scenarioName := "scenario";
+    var httpRequestElement := new HttpRequest();
+    httpRequestElement.httpMethod := "GET";
+    httpRequestElement.url := "/test";
+    httpRequestElement.receiver := "testReceiver";
+    var roundtripElement = new Roundtrip();
+    roundtripElement.roundtripName := "roundtrip";
+    roundtripElement.httprequest := httpRequestElement;
+    roundtripElement.httpresponse := new HttpResponse();
+    roundtrip += roundtripElement;
 }
