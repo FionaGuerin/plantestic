@@ -37,27 +37,27 @@ mapping Scenario::scenario2testScenario(): TestScenario {
      name := "$testRoundtripName";
      requestspecification :=  self.request .map request2requestSpecification();
      assertresponse := self.response .map response2responseSpecification();
- }
-
-  mapping Request::request2requestSpecification(): RequestSpecification {
-      log('Transforming Request to RequestSpecification');
-
-     if (self.method.toString() = "POST") then {
-        method := RestAssured::Method::POST;
-     } endif;
-     if (self.method.toString() = "PUT") then {
-        method := RestAssured::Method::PUT;
-     } endif;
-     method is not set if it is "GET", as get is the default
-
-     path := pathQuery(self.url);
 }
 
- mapping Response::response2responseSpecification(): ResponseSpecification {
+ mapping Request::request2requestSpecification(): RequestSpecification {
+     log('Transforming Request to RequestSpecification');
+
+    if (self.method.toString() = "POST") then {
+        method := RestAssured::Method::POST;
+     } endif;
+    if (self.method.toString() = "PUT") then {
+        method := RestAssured::Method::PUT;
+     } endif;
+     // method is not set if it is "GET", as get is the default
+
+    path := pathQuery(self.url);
+}
+
+mapping Response::response2responseSpecification(): ResponseSpecification {
      log('Transforming Responne to ResponseSpecification');
 }
 
- query pathQuery( url: URL) : String {
+query pathQuery( url: URL) : String {
     log('Query path of URL');
 
     return url.path;
