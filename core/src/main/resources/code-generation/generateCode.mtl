@@ -5,7 +5,7 @@
 	[comment @main /]
 	[file (testScenario.name.concat('.ra'), false, 'UTF-8')]
 
-	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] { 
+	public void [testScenario.name /] [for (param : Parameter | testScenario.parameter) before ('(') separator(',') after (')')][param.type/] [param.name/][/for] {
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
             [comment]
