@@ -2,8 +2,8 @@
 [module generateCode('http://www.example.org/RestAssured')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
-	[comment @main /]
-	[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
+[comment @main /]
+[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
 package com.mdd.test;
 
 import java.util.Map;
@@ -30,58 +30,84 @@ public class Test {
 
 	public void test() {
 		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
-		ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
-            [comment]
-                .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
-                (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
-                    (let basicAuthScheme : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
-                        .auth().basic((basicAuthScheme.user/), (basicAuthScheme.password/))
-                    (/let)
-                (/if)
-            [/comment]
-			[for (rd : String | testRoundtrip.requestspecification.requestDatum)]
-				.param([rd/], [rd/])
-			[/for]
-			.when()
-				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.url/]", paramsMap))
-			.then()
-				[let responseSpecification : ResponseSpecification = testRoundtrip.responsespecification]
-					.assertThat();
-					[if (responseSpecification.statusmatcher->notEmpty())]
-						[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
-							[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
-								.statusCode(in([statusCode.value/])
-							[/let]
-						[/if]
-					[/if]
-					[if (responseSpecification.bodymatchergroup->notEmpty())]
-						[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
-						    [if (matcher.oclIsTypeOf(HasXPath))]
-								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath.xPath/]) //Todo: needs correction after dealing with the inheritance
-								[/let]
-							[/if]
-							[if (matcher.oclIsTypeOf(IsIn))]
-								[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
-									//Todo: is this needed?
-								[/let]
-							[/if]
-							[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
-								.and().extract().response()
-							[/if]
-						[/for]
-					[/if]
-				[/let];
-
-			[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
-				String [responseDatum.responseDatumName/] = [responseDatum.responseDatumName/].path("[responseDatum.responseDatumXPath/]");
-			[/for]
+		[if (testRoundtrip.precondition->isEmpty())]
+		[testRoundtrip.generateTestRoundtrip()/]
+		[/if]
+		[if (testRoundtrip.precondition->notEmpty())]
+		if([testRoundtrip.precondition/]) {
+			[testRoundtrip.generateTestRoundtrip()/]
+		}		
+		[/if]		
 		[/for]
 	}
 }
-	[/file]
+[/file]
 [/template]
 
-[template private generateTestRoundtrip(testRoundTrip : TestRoundtrip) ]
-	
+[template private generateTestRoundtrip(testRoundtrip : TestRoundtrip) ]
+ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
+   		[testRoundtrip.requestspecification.generateGivenPart()/]
+	.when()
+		[testRoundtrip.requestspecification.generateWhenPart()/]
+	.then()
+		[testRoundtrip.responsespecification.generateThenPart()/];
+[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+
+[testRoundtrip.responsespecification.generateExtractions()/]
+[/if]
+[/template]
+
+[template private generateGivenPart(requestSpecification : RequestSpecification)]
+//.auth().basic(xxx.username([requestSpecification.receiver/]), xxx.password([requestSpecification.receiver/]))
+[if (requestSpecification.requestDatum->notEmpty())]
+[for (rd : String | requestSpecification.requestDatum)]
+.param([rd/], [rd/])
+[/for]
+[/if]
+[/template]
+
+[template private generateWhenPart(requestSpecification : RequestSpecification)]
+.request("[requestSpecification.method/]", StringSubstitutor.replace("[requestSpecification.url/]", paramsMap))
+[/template]
+
+[template private generateThenPart(responseSpecification : ResponseSpecification)]
+.assertThat()
+[responseSpecification.generateExpectStatusCode()/]
+[if (responseSpecification.bodymatchergroup->notEmpty())]
+[responseSpecification.generateExpectations()/]
+[/if]
+[if (responseSpecification.responsedatum->notEmpty())]
+	.and().extract().response()
+[/if]
+[/template]
+
+[template private generateExpectStatusCode(responseSpecification : ResponseSpecification)]
+[if (responseSpecification.statusmatcher->notEmpty())]
+[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
+[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
+	.statusCode(in([for (val : String | statusCode.value) separator (', ')][val/])[/for]
+[/let]
+[/if]
+[/if]
+[/template]
+
+[template private generateExpectations(responseSpecification : ResponseSpecification)]
+[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
+[if (matcher.oclIsTypeOf(HasXPath))]
+[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
+	.body([bodyXPath.xPath/], contains("UI_SWTICH")) // Todo: needs correction
+[/let]
+[/if]
+[if (matcher.oclIsTypeOf(IsIn))]
+[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
+	// Todo: is this needed?
+[/let]
+[/if]
+[/for]
+[/template]
+
+[template private generateExtractions(responseSpecification : ResponseSpecification)]
+[for (responseDatum : ResponseDatum | responseSpecification.responsedatum)]
+	String [responseDatum.responseDatumName/] = [responseDatum.responseDatumName/].path("[responseDatum.responseDatumXPath/]");
+[/for]
 [/template]
