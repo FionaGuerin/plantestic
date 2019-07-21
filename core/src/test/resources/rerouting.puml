@@ -1,0 +1,27 @@
+@startuml
+
+participant "Voicemanager" as VM
+participant CRS
+participant CCC
+
+== Rerouting preparation ==
+
+'##### CCC checks VoiceManager connection status
+CCC -[#5B57FF]> CRS : POST /ccc/rerouteOptions (countryCode: ${countryCode}, positionCountryCode: ${positionCountryCode}, sourceEventType: ${sourceEventType})
+activate CCC
+activate CRS
+CRS -> CCC : 200 - (uiswitch:"UISWITCH",reroute:"REROUTE",warmhandover:"WARMHANDOVER")
+    deactivate CRS
+
+    '##### CCC checks VoiceManager connection status
+    CCC -[#5B57FF]> VM : GET /ccc/events/${eventId}/isconnected
+    activate VM
+alt ${voiceEstablished} == true
+    VM -[#5B57FF]> CCC : 200 - (eventid1:"VoiceStatus/eventId1", agent1:"VoiceStatus/agent1/connectionStatus", agent2:"VoiceStatus/agent2/connectionStatus")
+else ${voiceEstablished} == false
+    VM -[#5B57FF]> CCC: 400,404,500
+    deactivate VM
+    note over CCC : Error is displayed \n reroute may not be triggered
+end
+
+@enduml
