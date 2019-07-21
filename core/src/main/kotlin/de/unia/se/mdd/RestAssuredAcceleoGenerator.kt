@@ -25,7 +25,7 @@ class RestAssuredAcceleoGenerator : AbstractAcceleoGenerator() {
         acceleoCompiler.setSourceFolder(acceleoTransformationsInputFolder)
         acceleoCompiler.setOutputFolder(compiledAcceleoTransformationsOutputFolder)
         acceleoCompiler.setBinaryResource(false)
-        acceleoCompiler.execute()
+//        acceleoCompiler.execute()
 
         super.initialize(model, targetFolder, arguments)
     }
