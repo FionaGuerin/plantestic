@@ -31,7 +31,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH, OUTPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/TestName.java").readText())
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
             .create(CONFIG_PATH)
         compiledTest.call("test")
 
