@@ -1,7 +1,7 @@
 package de.unia.se.mdd
 
-import com.google.common.io.Resources
-import java.io.File
+// import com.google.common.io.Resources
+// import java.io.File
 
 object Main {
 
