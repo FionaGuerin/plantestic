@@ -1,6 +1,5 @@
 package de.unia.se.mdd
 
-// import com.google.common.io.Resources
 // import java.io.File
 
 object Main {
@@ -10,7 +9,7 @@ object Main {
         // runTransformationPipeline()
     }
 
-    fun runTransformationPipeline(inputUriString: String) {
+    fun runTransformationPipeline(inputUriString: String, outputPath: String) {
         MetaModelSetup.doSetup()
 
         val pumlDiagramModel = PumlParser.parse(inputUriString)
@@ -18,8 +17,6 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        // val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
-
-        // AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
+        // AcceleoCodeGenerator.generateCode(restAssuredModel, File(outputPath))
     }
 }
