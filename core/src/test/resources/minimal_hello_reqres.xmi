@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs">
-  <roundtrip>
-    <request>
-      <url path="/hello"/>
-    </request>
-    <response/>
+    xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="scenario">
+  <roundtrip roundtripName="roundtrip">
+    <httprequest httpMethod="GET" url="/test" receiver="testReceiver"/>
+    <httpresponse/>
   </roundtrip>
 </RequestResponsePairs:Scenario>
