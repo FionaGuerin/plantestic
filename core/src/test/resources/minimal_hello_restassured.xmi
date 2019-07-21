@@ -2,7 +2,7 @@
 <RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:RestAssured="http://www.example.org/RestAssured"
     testScenarioName="testScenario">
   <testroundtrip testRoundtripName="testRoundtrip">
-    <requestspecification method="GET" url="/test" receiver="testReceiver"/>
+    <requestspecification method="GET" url="/test/${id}" receiver="testReceiver"/>
     <responsespecification/>
   </testroundtrip>
 </RestAssured:TestScenario>
