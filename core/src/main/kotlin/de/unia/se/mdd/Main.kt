@@ -1,6 +1,6 @@
 package de.unia.se.mdd
 
-import java.io.File
+// import java.io.File
 
 object Main {
 
@@ -17,6 +17,6 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        AcceleoCodeGenerator.generateCode(restAssuredModel, File(outputPath))
+        // AcceleoCodeGenerator.generateCode(restAssuredModel, File(outputPath))
     }
 }

@@ -13,15 +13,25 @@ main() {
 }
 
 mapping Scenario::scenario2testScenario(): TestScenario {
-     name := "$scenarioName";
-     testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
-     parameter := object Parameter {
-        type := "$parameterType";
-        name := "$parameterName";
-     }
+    testScenarioName := "testScenario";
+    var requestSpecificationElement := new RequestSpecification();
+    requestSpecificationElement.method := "GET";
+    requestSpecificationElement.url := "/test";
+    requestSpecificationElement.receiver := "testReceiver";
+    var testRoundtripElement := new TestRoundtrip();
+    testRoundtripElement.testRoundtripName := "testRoundtrip";
+    testRoundtripElement.requestspecification := requestSpecificationElement;
+    testRoundtripElement.responsespecification := new ResponseSpecification();
+    testroundtrip += testRoundtripElement;
+     // name := "$scenarioName";
+     // testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
+     // parameter := object Parameter {
+       // type := "$parameterType";
+      //  name := "$parameterName";
+   //  }
 }
 
-mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip {
+ /* mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip {
      log('Transforming Roundtrip to TestRooundtrip');
 
      name := "$testRoundtripName";
@@ -38,7 +48,7 @@ mapping Request::request2requestSpecification(): RequestSpecification {
     if (self.method.toString() = "PUT") then {
         method := RestAssured::Method::PUT;
      } endif;
-     //method is not set if it is "GET", as get is the default
+     // method is not set if it is "GET", as get is the default
 
     path := pathQuery(self.url);
 }
@@ -51,4 +61,4 @@ query pathQuery( url: URL) : String {
     log('Query path of URL');
 
     return url.path;
-}
+} */
