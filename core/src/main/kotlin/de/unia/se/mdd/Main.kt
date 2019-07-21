@@ -18,8 +18,8 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
+        // val outputFolder = File(Resources.getResource("code-generation").path + "/generatedCode")
 
-        AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
+        // AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
     }
 }
