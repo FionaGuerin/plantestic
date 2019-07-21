@@ -17,7 +17,7 @@ val wireMockServer = WireMockServer(8080)
 
 class End2EndTest : StringSpec({
 
-    "End2End test produces valid Java code" {
+    "End2End test produces valid Java code".config(enabled = true) {
         runTransformationPipeline(INPUT_PATH)
 
         // Now compile the resulting code
@@ -25,7 +25,7 @@ class End2EndTest : StringSpec({
             .create(CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server" {
+    "End2End test receives request on mock server".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(INPUT_PATH)
