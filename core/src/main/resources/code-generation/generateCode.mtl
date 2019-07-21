@@ -43,7 +43,7 @@
 						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
 						    [if (matcher.oclIsTypeOf(HasXPath))]
 								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath.pathString/])
+									.body([bodyXPath.pathString/]) //Todo: needs correction after dealing with the inheritance
 								[/let]
 							[/if]
 							[if (matcher.oclIsTypeOf(IsIn))]
