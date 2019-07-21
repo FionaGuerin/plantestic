@@ -1,12 +1,5 @@
 [comment encoding = UTF-8 /]
-(module generateCode('http://www.example.org/RestAssured')]
-
-[comment]
-- Klasse anlegen
-- import von template Engine --> Raussuchen, möglichst einfach, String2String-Map
-- template mit YAML map Aufrufen
-- 
-[/comment]
+[module generateCode('http://www.example.org/RestAssured')]
 
 [template public generateTestScenario(testScenario : TestScenario)]
 	[comment @main /]
@@ -51,7 +44,7 @@ public class Test {
 			[/for]
 			.when()
 				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap))
-				[generateURL(testRoundtrip.)/] [comment] //TODO call other accceloe template function [/comment]
+				[testRoundtrip.requestspecification/] [comment] //TODO call other acccelo template function [/comment]
 			.then()
 				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
 					.assertThat();
