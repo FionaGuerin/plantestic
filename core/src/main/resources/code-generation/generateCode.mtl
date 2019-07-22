@@ -30,18 +30,14 @@ public class Test {
 
     public Test(String configFile) {
         try {
-			System.out.println(configFile);
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);
-			System.out.println(osAppropriatePath);
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
 			System.out.println("isEnableUndefinedVariable Allowed: " + substitutor.isEnableUndefinedVariableException());
             ScriptEngineManager factory = new ScriptEngineManager();
             engine = factory.getEngineByName("JavaScript");
-			System.out.println(paramsMap);
-            //test();
 		} catch(Exception e) {
             System.out.println("Could not read TOML config file");
 			System.out.println("Stack trace: " + e);
