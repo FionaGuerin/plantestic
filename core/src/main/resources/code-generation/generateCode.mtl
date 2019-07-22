@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module generateCode('http://www.example.org/RestAssured')]
 
-[template public generateTestScenario(testScenario : TestScenario)]
+[template public generateTestScenario(testScenario : TestScenario) post(trim())]
 [comment @main /]
 [file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
 package com.mdd.test;
@@ -88,9 +88,9 @@ public class Test {
 [/template]
 
 [template private generateTestRoundtrip(testRoundtrip : TestRoundtrip) post(trim())]
-[if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
+	[if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
 [testRoundtrip.requestspecification.generadeAddRequestParams()/]
-[/if]
+	[/if]
 try {
 	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
 			[testRoundtrip.requestspecification.generateGivenPart()/]
@@ -99,53 +99,70 @@ try {
 		.then()
 			[testRoundtrip.responsespecification.generateThenPart()/];
 	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+    [testRoundtrip.generateExtractions()/]
 
-	[testRoundtrip.generateExtractions()/]
 	[/if]
-} catch (Exception e) {
+} catch (Exception exception) {
 	System.out.println("An error occured during evaluating the communication with testReceiver: ");
-	e.printStackTrace();
+	exception.printStackTrace();
+	throw exception;
 }
 [/template]
 
 [template private generadeAddRequestParams(requestSpecification : RequestSpecification)]
-[if (requestSpecification.requestdatum->notEmpty())][for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
+	[if (requestSpecification.requestdatum->notEmpty())]
+		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
 paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
-[/for][/if]
+		[/for]
+	[/if]
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
 .auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
-[if (requestSpecification.requestdatum->notEmpty())][for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
+	[if (requestSpecification.requestdatum->notEmpty())]
+		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
 .param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
-[/for][/if]
+		[/for]
+	[/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
+	.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
-.assertThat()
-[responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())][responseSpecification.generateExpectations()/][/if][if (responseSpecification.responsedatum->notEmpty())]
-.and().extract().response()[/if]
+	.assertThat()
+    [responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())]
+        [responseSpecification.generateExpectations()/]
+    [/if]
+	[if (responseSpecification.responsedatum->notEmpty())]
+	.and().extract().response()
+	[/if]
 [/template]
 
 [template private generateExpectStatusCode(responseSpecification : ResponseSpecification) post(trim())]
-[if (responseSpecification.statusmatcher->notEmpty())][if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))][let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
+	[if (responseSpecification.statusmatcher->notEmpty())]
+		[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
+			[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
 .statusCode(IsIn.isIn(Arrays.asList([for (val : String | statusCode.value) separator (', ')][val/][/for])))
-[/let][/if][/if]
+			[/let]
+		[/if]
+	[/if]
 [/template]
 
 [template private generateExpectations(responseSpecification : ResponseSpecification) post(trim())]
-[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
-[if (matcher.oclIsTypeOf(HasXPath))][let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)].body(hasXPath([bodyXPath.xPath/]))[/let][/if]
-[if (matcher.oclIsTypeOf(IsIn))][let bodyIsIn : IsIn = matcher.oclAsType(IsIn)][/let][/if]
-[/for]
+	[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
+		[if (matcher.oclIsTypeOf(HasXPath))]
+			[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)].body(hasXPath([bodyXPath.xPath/]))[/let]
+		[/if]
+		[if (matcher.oclIsTypeOf(IsIn))]
+			[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)][/let]
+		[/if]
+	[/for]
 [/template]
 
 [template private generateExtractions(testRoundtrip : TestRoundtrip) post(trim())]
-[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
+	[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
 paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].jsonPath().getString("[responseDatum.xPath/]"));
-[/for]
+	[/for]
 [/template]
