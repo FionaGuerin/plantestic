@@ -261,6 +261,20 @@ QualifiedName:
 	{QualifiedName}
 	PUMLID;
 
+Request:
+    {Request}
+    method=RequestMethod url=STRING;
+
+terminal RequestMethod:
+    'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+Response:
+    {Response}
+    codes+=INT (',' codes+=INT)* ('-' '(' extractParams+=ExtractParam (',' extractParams+=ExtractParam)* ')')?;
+
+ExtractParam:
+    {ExtractParam}
+    name=PUMLID ':' value=STRING;
 
 Space:
 	{Space}
@@ -350,14 +364,14 @@ UseLeft returns UmlUse:
 	(userOne=[Participant|PUMLID] | '[')
 	associationArrow=ARROW
 	// ('o<-' | '<-o' | 'o<-o' | '<-' | 'o<--' | '<--o' | 'o<--o' | '<--' | 'x<-' | '<-x' | 'x<-x' | 'x<--' | '<--x' | 'x<--x')
-	userTwo=[Participant|PUMLID] (':' text+=(PUMLID)*)?;
+	userTwo=[Participant|PUMLID] (':' (content=(Request | Response) | text+=(PUMLID)*))?;
 
 UseRight returns UmlUse:
 	{UseRight}
 	(userOne=[Participant|PUMLID])
 	associationArrow=ARROW
 	//('o->' | '->o' | 'o->o' | '->' | 'o-->' | '-->o' | 'o-->o' | '-->' | 'x->' | '->x' | 'x->x' | 'x-->' | '-->x' | 'x-->x')
-	(userTwo=[Participant|PUMLID] | ']') (':' text+=(PUMLID)*)?;
+	(userTwo=[Participant|PUMLID] | ']') (':' (content=(Request | Response) | text+=(PUMLID)*))?;
 
 UmlElementsContainer:
 	{UmlElementsContainer}
