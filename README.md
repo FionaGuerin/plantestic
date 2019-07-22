@@ -1,6 +1,7 @@
 # Plantestic
 
-## Model-driven Software Engineering
+This project was part of our Model-driven Software Engineering lecture at the University of Augsburg.
+
 This test case generator produces test cases from a sequence diagram. 
 A sequence diagram models a sequence of interactions between objects. 
 A test case then checks for such an interaction whether it is implemented as the sequence diagram defines it. 
@@ -25,39 +26,48 @@ With our test case generator, developers can quickly uncover inconsistencies, fi
 ## Build status
 [![Build Status](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
 
+## Demo
+
+**_add text..._**
+
+## Features
+
+**_add text..._**
+
 ## Technologies
 ### Eclipse Modelling Framework (EMF)
 The Eclipse Modeling Framework serves modeling and code generation. 
-From a model specification in XMI, it produces an equivalent set of classes in Kotlin.
+From a model specification in XMI, it produces an equivalent set of classes in Kotlin.  
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
 
 ### XML Metadata Interchange (XMI)
 XML Metadata Interchange is an exchange format among software development tools. 
-For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.
+For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.  
 Website: [https://www.omg.org/spec/XMI/About-XMI/](https://www.omg.org/spec/XMI/About-XMI/)
 
 ### PlantUML
 The open source tool PlantUML produces a UML diagram from simple text language. 
 Such a PlantUML diagram can be a sequence diagram, use case diagram, class diagram, activity diagram, component diagram, 
-state diagram, object diagram, deployment diagram, or timing diagram.
+state diagram, object diagram, deployment diagram, or timing diagram.  
 Website: [http://plantuml.com](http://plantuml.com)
 
 ### REST Assured
 The Rest-assured library simplifies the verification and validation of REST APIs. 
 As such, the test techniques of Rest-assured follow the test techniques of dynamic languages such as Ruby and Groovy. 
-The library offers all standardized HTTP operations.
+The library offers all standardized HTTP operations.  
 Website: [http://rest-assured.io](http://rest-assured.io)
 
 ### Xtext
 The Eclipse framework Xtext produces a domain-specific language from a grammar. 
 On the one hand, Xtext generates a class diagram for the abstract syntax of the domain-specific language. 
-On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker. 
+On the other hand, Xtext provides a parser, a linker, a compiler, and a typechecker.  
 Website: [https://www.eclipse.org/Xtext/](https://www.eclipse.org/Xtext/) 
 
 ### Query View Transformation (QVT)
 The programming language set Query View Transformation, which the Object Management Group specifies, describes model-to-model transformations. 
 Query View Transformation contains the languages Query View Transformation Operational, Query View Transformation Relations, and Query View Transformation Core. 
-The imperative language Query-View-Transformation-Operational serves unidirectional model transformations. 
+The imperative language Query-View-Transformation-Operational serves unidirectional model transformations.  
+Website: 
 
 ### Acceleo
 
@@ -67,6 +77,15 @@ It is a Markup language with open and closing tags, which are in square brackets
 Not enclosed text is directly added to the generated file.  
 Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
+## Abstract Syntaxes
+
+**_add text..._**  
+**_add images..._**
+
+## Installation
+
+**_add text..._**
+
 ## API reference
 To generate the language, you can run
 ```
@@ -75,6 +94,10 @@ To generate the language, you can run
 The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
 The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
 This gradle task is also automatically executed when you build the project.
+
+## How to use
+
+**_add text..._**
 
 ## Conventions
 ### Repository language
@@ -119,25 +142,27 @@ Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3
 
 \* contributed equally
 
-## Repositories
-### PlantUML-Eclipse-Xtext
+### Repositories
+#### PlantUML-Eclipse-Xtext
 [https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
-   developed a grammar file for PlantUML.
-   We built upon their work from their repository and marked their contributions in the repository.
+    developed a grammar file for PlantUML.
+    We built upon their work from their repository and marked their contributions in the repository.
    
-### QVTO-CLI
+#### QVTO-CLI
 [https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
-    gave us a lot of insights in how to run `qvt` without Eclipse.
+    gave us a lot of insights in how to run `qvt` without Eclipse.  
    
-## Articles
-### Standalone Parsing with Xtext
+
+### Articles
+#### Standalone Parsing with Xtext
 [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
    wrote a very useful article on how to use an Xtext parser in standalone mode.
     
-### QVTOML/Examples/InvokeInJava
+#### QVTOML/Examples/InvokeInJava
 [https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
    shows how to invoke `qvt` programmatically.
    
+
 ## License
 Copyright [2019] [Stefan Grafberger, Fiona Guerin, Michelle Martin, Daniela Neupert, Andreas Zimmerer]
 
