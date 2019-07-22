@@ -3,7 +3,8 @@
     xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="scenario">
   <testroundtrip testRoundtripName="roundtrip" precondition="${testCondition} == &quot;SomeValue&quot;">
     <requestspecification method="GET" url="/test" receiver="testReceiver">
-      <requestDatum>requestDatum</requestDatum>
+      <requestdatum variableName="variableName" value="value"/>
+      <requestdatum variableName="variableName2" value="value2"/>
     </requestspecification>
     <responsespecification>
       <bodymatchergroup>
@@ -13,16 +14,12 @@
         <bodymatcher>
           <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath2"/>
         </bodymatcher>
-        <bodymatcher>
-          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath3"/>
-        </bodymatcher>
       </bodymatchergroup>
       <statusmatcher xsi:type="RestAssured:IsIn">
         <value>404</value>
       </statusmatcher>
-      <responsedatum responseDatumName="httpResponseDatumName" responseDatumXPath="httpResponseDatumXPath"/>
-      <responsedatum responseDatumName="httpResponseDatumName2" responseDatumXPath="httpResponseDatumXPath2"/>
-      <responsedatum responseDatumName="httpResponseDatumName3" responseDatumXPath="httpResponseDatumXPath3"/>
+      <responsedatum variableName="variableName" xPath="httpResponseDatumXPath"/>
+      <responsedatum variableName="variableName2" xPath="httpResponseDatumXPath2"/>
     </responsespecification>
   </testroundtrip>
 </RestAssured:TestScenario>
