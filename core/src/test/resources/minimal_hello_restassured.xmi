@@ -9,17 +9,17 @@
     <responsespecification>
       <bodymatchergroup>
         <bodymatcher>
-          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath"/>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="itemA"/>
         </bodymatcher>
         <bodymatcher>
-          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath2"/>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="itemB"/>
         </bodymatcher>
       </bodymatchergroup>
       <statusmatcher xsi:type="RestAssured:IsIn">
-        <value>404</value>
+        <value>200</value>
       </statusmatcher>
-      <responsedatum variableName="variableName" xPath="httpResponseDatumXPath"/>
-      <responsedatum variableName="variableName2" xPath="httpResponseDatumXPath2"/>
+      <responsedatum variableName="variableName" xPath="itemA"/>
+      <responsedatum variableName="variableName2" xPath="itemB"/>
     </responsespecification>
   </testroundtrip>
 </RestAssured:TestScenario>

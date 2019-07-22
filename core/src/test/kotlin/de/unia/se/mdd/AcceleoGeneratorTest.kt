@@ -44,8 +44,15 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2", "key" : "value" }"""
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123?variableName=%24%7BvariableName%7D&variableName2=%24%7BvariableName2%7D")).willReturn(WireMock.aResponse().withStatus(404).withBody(body)))
+        val body = """{
+            |"itemA" : "value1",
+            |"itemB" : "value2",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/testReceiver/test/123"))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
         MetaModelSetup.doSetup()
 
@@ -56,12 +63,16 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        val compiledTest = Reflect.compile(
+            "com.mdd.test.Test",
+            File("$OUTPUT_PATH/scenario.java")
+            .readText()
+        ).create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
-        wireMockServer.allServeEvents[0].response.status shouldBe 404
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 

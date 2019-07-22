@@ -23,33 +23,33 @@ import javax.script.ScriptException;
 
 public class Test {
 
-    Map<String, Object> paramsMap = new HashMap();
-    ScriptEngine engine;
-    StringSubstitutor substitutor;
+	Map<String, Object> paramsMap = new HashMap();
+	ScriptEngine engine;
+	StringSubstitutor substitutor;
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
-    public Test(String configFile) {
-        try {
+	public Test(String configFile) {
+		try {
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
-            substitutor = new StringSubstitutor(unnestTomlMap(paramsMap));
-            ScriptEngineManager factory = new ScriptEngineManager();
-            engine = factory.getEngineByName("JavaScript");
-		} catch(Exception e) {
-            System.out.println("An Error occured, possible during reading the TOML config file: " + e);
-        }
-    }
+			substitutor = new StringSubstitutor(unnestTomlMap(paramsMap));
+			ScriptEngineManager factory = new ScriptEngineManager();
+			engine = factory.getEngineByName("JavaScript");
+		} catch(Exception exception) {
+			System.out.println("An Error occured, possible during reading the TOML config file: " + exception);
+		}
+	}
 
 	public void test() {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
 		try {
-        	String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{templating.')/]");
-        	assert engine != null;
-        	Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{templating.')/]");
+			assert engine != null;
+			Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
 			if(evaluatedCondition) {
 				[testRoundtrip.generateTestRoundtrip()/]
 			}
@@ -62,24 +62,24 @@ public class Test {
 		} catch (Exception e) {
 			System.out.println("An error occured: " + e);
 		}
-		[/if]		
+		[/if]
 	[/for]
 	}
 
 	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
-        Map<String, Object> resultMap = new HashMap<>();
-        for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
-            if(entry.getValue() instanceof Map){
-                Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
-                for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
-                    resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
-                }
-            } else {
-                resultMap.put(entry.getKey(), entry.getValue());
-            }
-        }
-        return resultMap;
-    }
+		Map<String, Object> resultMap = new HashMap<>();
+		for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
+			if(entry.getValue() instanceof Map){
+				Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
+				for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
+					resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
+				}
+			} else {
+				resultMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return resultMap;
+	}
 }
 [/file]
 [/template]
@@ -90,7 +90,7 @@ public class Test {
 [/if]
 try {
 	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
-   			[testRoundtrip.requestspecification.generateGivenPart()/]
+			[testRoundtrip.requestspecification.generateGivenPart()/]
 		.when()
 			[testRoundtrip.requestspecification.generateWhenPart()/]
 		.then()
@@ -124,7 +124,8 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
 .assertThat()
-[responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())][responseSpecification.generateExpectations()/][/if][if (responseSpecification.responsedatum->notEmpty())]	.and().extract().response()[/if]
+[responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())][responseSpecification.generateExpectations()/][/if][if (responseSpecification.responsedatum->notEmpty())]
+.and().extract().response()[/if]
 [/template]
 
 [template private generateExpectStatusCode(responseSpecification : ResponseSpecification) post(trim())]
@@ -136,7 +137,7 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [template private generateExpectations(responseSpecification : ResponseSpecification) post(trim())]
 [for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
 [if (matcher.oclIsTypeOf(HasXPath))][let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)].body(hasXPath([bodyXPath.xPath/]))[/let][/if]
-[if (matcher.oclIsTypeOf(IsIn))][let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]// Todo: is this needed?[/let][/if]
+[if (matcher.oclIsTypeOf(IsIn))][let bodyIsIn : IsIn = matcher.oclAsType(IsIn)][/let][/if]
 [/for]
 [/template]
 
