@@ -66,9 +66,9 @@ public class Test {
 	}
 
 	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
-        HashMap<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
-            if(entry.getValue() instanceof HashMap){
+            if(entry.getValue() instanceof Map){
                 Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
                 for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
                     resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
@@ -100,7 +100,8 @@ try {
 	[testRoundtrip.generateExtractions()/]
 	[/if]
 } catch (Exception e) {
-	System.out.println("An error occured during evaluating the communication with [testRoundtrip.requestspecification.receiver/]: " + e);
+	System.out.println("An error occured during evaluating the communication with testReceiver: ");
+	e.printStackTrace();
 }
 [/template]
 
