@@ -20,10 +20,11 @@ class M2MTransformerTest : StringSpec({
         printModel(reqRespOutputModel)
     }
 
-   "Transform a simple Request Response Pair input to a Rest Assured EObject" {
+    "Transform a simple Request Response Pair input to a Rest Assured EObject" {
         MetaModelSetup.doSetup()
 
-        val reqresInputModel = ResourceSetImpl().getResource(URI.createFileURI(REQRES_INPUT_URI_STRING), true).contents[0]
+        val reqresInputModel =
+            ResourceSetImpl().getResource(URI.createFileURI(REQRES_INPUT_URI_STRING), true).contents[0]
 
         val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
         restAssuredOutputModel shouldNotBe null
@@ -34,7 +35,8 @@ class M2MTransformerTest : StringSpec({
     "Transform complex Request Response Pair input to a Rest Assured EObject" {
         MetaModelSetup.doSetup()
 
-        val reqresInputModel = ResourceSetImpl().getResource(URI.createFileURI(COMPLEX_REQRES_INPUT_URI_STRING), true).contents[0]
+        val reqresInputModel =
+            ResourceSetImpl().getResource(URI.createFileURI(COMPLEX_REQRES_INPUT_URI_STRING), true).contents[0]
 
         val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
         restAssuredOutputModel shouldNotBe null
