@@ -142,6 +142,6 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 
 [template private generateExtractions(testRoundtrip : TestRoundtrip) post(trim())]
 [for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
-paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].path("[responseDatum.xPath/]"));
+paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].jsonPath().getString("/[responseDatum.xPath/]"));
 [/for]
 [/template]

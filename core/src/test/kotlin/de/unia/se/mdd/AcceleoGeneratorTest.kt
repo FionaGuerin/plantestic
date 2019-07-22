@@ -43,8 +43,9 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the minimal example".config(enabled = false) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123")).willReturn(WireMock.aResponse().withBody("+")))
+    "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
+        val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2" }"""
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123")).willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
         MetaModelSetup.doSetup()
 
