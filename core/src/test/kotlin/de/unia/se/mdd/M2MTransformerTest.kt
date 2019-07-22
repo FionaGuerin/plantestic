@@ -20,10 +20,21 @@ class M2MTransformerTest : StringSpec({
         printModel(reqRespOutputModel)
     }
 
-    "Transform a simple Request Response Pair input to a Rest Assured EObject" {
+   "Transform a simple Request Response Pair input to a Rest Assured EObject" {
         MetaModelSetup.doSetup()
 
         val reqresInputModel = ResourceSetImpl().getResource(URI.createFileURI(REQRES_INPUT_URI_STRING), true).contents[0]
+
+        val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
+        restAssuredOutputModel shouldNotBe null
+
+        printModel(restAssuredOutputModel)
+    }
+
+    "Transform complex Request Response Pair input to a Rest Assured EObject" {
+        MetaModelSetup.doSetup()
+
+        val reqresInputModel = ResourceSetImpl().getResource(URI.createFileURI(COMPLEX_REQRES_INPUT_URI_STRING), true).contents[0]
 
         val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
         restAssuredOutputModel shouldNotBe null
@@ -34,6 +45,7 @@ class M2MTransformerTest : StringSpec({
     companion object {
         private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello_puml.xmi").path
         private val REQRES_INPUT_URI_STRING = Resources.getResource("minimal_hello_reqres.xmi").path // TODO
+        private val COMPLEX_REQRES_INPUT_URI_STRING = Resources.getResource("complex_hello_reqres.xmi").path
 
         fun printModel(model: EObject) {
             val resource = ResourceSetImpl().createResource(URI.createURI("dummy:/test.ecore"))
