@@ -1,19 +1,18 @@
-id = '123'
-testCondition = '"SomeValue"'
-
-testReceiver_path = 'https://www.testReceiver.com'
+[templating]
+    id = '123'
+    testCondition = '"SomeValue"'
 
 [A]
     username = 'Test'
-    password = '123test'
+    password = 'password'
     path = 'https://www.A.com'
 
 [B]
     username = 'Test'
-    password = '123test'
+    password = 'password'
     path = 'https://www.B.com'
 
 [testReceiver]
     username = 'Test'
-    password = '123test'
-    path = 'https://www.testReceiver.com'
+    password = 'password'
+    path = 'localhost:8080'
