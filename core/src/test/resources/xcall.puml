@@ -11,36 +11,36 @@ participant CCC
 
 activate XCS
 
-XCS -> DataService : GET  /vehicle/internal/${vin}
+XCS -> DataService : GET  "/vehicle/internal/${vin}"
 activate DataService
-DataService --> XCS : 200 - (homeCountry:"/homeCountry", positionCountry:"/positionCountry", brand:"/brand")
+DataService --> XCS : 200 - (homeCountry : "/homeCountry", positionCountry : "/positionCountry", brand : "/brand")
 deactivate DataService
 
-XCS -> CRS : POST routingTargets/find (eventId: ${eventId}, serviceType: ${serviceType}, vin: ${vin}, homeCountry: ${homeCountry}, positionCountry: ${positionCountry}, brand: ${brand})
+XCS -> CRS : POST "routingTargets/find" (eventId : "${eventId}", serviceType : "${serviceType}", vin : "${vin}", homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
 activate CRS
-CRS --> XCS : 200 - (voiceTargets: "/voiceTargets")
+CRS --> XCS : 200 - (voiceTargets : "/voiceTargets")
 deactivate CRS
 
-alt ${xcsServiceType} == "ACall"
-XCS -> EventNotifier : PUT xcs/notify/${eventId} (homeCountry: ${homeCountry}, positionCountry: ${positionCountry}, brand: ${brand})
+alt "${xcsServiceType} == 'ACall'"
+XCS -> EventNotifier : PUT "xcs/notify/${eventId}" (homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
 activate EventNotifier
 EventNotifier --> XCS : 200
 deactivate EventNotifier
 end
 
-alt ${xcsServiceType} == "BCall"
-XCS->ELOS : PUT xcs/notify/${eventId} (homeCountry:${homeCountry}, positionCountry:${positionCountry}, brand:${brand})
+alt "${xcsServiceType} == 'BCall'"
+XCS->ELOS : PUT "xcs/notify/${eventId}" (homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
 activate ELOS
 ELOS --> XCS : 200
 deactivate 
 end
 
-XCS -> CCC : POST xcs/eventReceived (eventId:${eventId}, serviceType:${serviceType}, homeCountry:${homeCountry}, positionCountry:${positionCountry}, brand:${brand})
+XCS -> CCC : POST "xcs/eventReceived" (eventId : "${eventId}", serviceType : "${serviceType}", homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
 activate CCC
 CCC --> XCS : 200
 deactivate CCC
 
-XCS -> VM : POST /setupCall (eventId:${eventId}, vin:${vin}, voiceTargets:${voiceTargets})
+XCS -> VM : POST "/setupCall" (eventId : "${eventId}", vin : "${vin}", voiceTargets : "${voiceTargets}")
 activate VM
 VM --> XCS : 200
 deactivate XCS

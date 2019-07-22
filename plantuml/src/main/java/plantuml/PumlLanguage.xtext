@@ -329,20 +329,20 @@ Autonumber:
 
 Activate returns UmlElementsContainer:
 	{Activate}
-	'ACTIVATE' activate=Participant
+	'ACTIVATE' activate=[Participant|PUMLID]
 	umlElements+=(SequenceElement)*
-	('DEACTIVATE' | 'DESTROY') deactivate=Participant;
+	('DEACTIVATE' | 'DESTROY') deactivate=[Participant|PUMLID];
 
 Alternative returns UmlElementsContainer:
 	{Alternative}
-	'ALT' text+=(PUMLID)*
+	'ALT' text=STRING
 	umlElements+=(SequenceElement)*
 	elseBlocks+=(Else)*
 	=> 'END';
 
 Else returns UmlElementsContainer:
 	{Else}
-	'ELSE' text+=(PUMLID)*
+	'ELSE' text=STRING
 	umlElements+=(SequenceElement)*;
 
 Group returns UmlElementsContainer:
@@ -483,8 +483,8 @@ terminal NEWLINE:
 terminal PUMLID:
 	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | '*' | '?')
 	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | ':' | '*' | '?')*;
-// Single line comment
 
+// Single line comment
 terminal SL_COMMENT:
 	"'" !('\n' | '\r')* ('\r'? '\n')?;
 

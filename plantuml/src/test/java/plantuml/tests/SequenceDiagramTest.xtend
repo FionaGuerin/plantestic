@@ -136,18 +136,18 @@ class SequenceDiagramTest {
 			SEQUENCE @startuml
 			PARTICIPANT test
 			PARTICIPANT test2
-			ALT Successful ABC lookup
+			ALT "Successful ABC lookup"
 				test ->] : Forward something via ABC
-			ELSE Failed ABS lookup
+			ELSE "Failed ABS lookup"
 				test2 -> test : Reject ABC\nvia DEV 
 			END
 			@enduml
 		'''.parse
 		assertEquals(3, ((heros.umlDiagrams.head as SequenceUml).umlElements.size))
-		assertEquals("[Successful, ABC, lookup]",
+		assertEquals("Successful ABC lookup",
 			((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).text.toString())
 		assertEquals(1, ((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.size)
-		assertEquals("[Failed, ABS, lookup]",
+		assertEquals("Failed ABS lookup",
 			(((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.get(0) as Else).text.toString())
 		assertEquals("[Reject, ABC\\nvia, DEV]",
 			((((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.get(0) as Else).umlElements.
