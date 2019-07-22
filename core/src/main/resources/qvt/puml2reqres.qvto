@@ -1,74 +1,26 @@
 modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
 
-configuration property diagramName : String;
-
 transformation puml2reqres(in input: puml, out output: reqres);
 
 main() {
     log('Started transforming PlantUML to RequestResponse pairs');
-    log(diagramName);
 
-    assert fatal ( input.rootObjects()[UmlDiagram].umlDiagrams[SequenceUml]->size() = 1 )
+    assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-    input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map SequenceUml2Scenario();
+     input.objectsOfType(UmlDiagram).map transformUmlDiagram();
 }
 
-mapping SequenceUml :: SequenceUml2Scenario() : Scenario {
-    var size : Integer := self.umlElements[UmlUse]->size();
-    var index : Integer := 1;
-    while (index <= size) {
-        var currentRoundtrip : Roundtrip := new Roundtrip();
-
-        var message : UmlUse := self.umlElements[UmlUse]->at(index);
-        var hasRequest : Boolean := false;
-        var hasResponse : Boolean := false;
-
-        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
-            hasRequest := true;
-            currentRoundtrip.request := message.UmlUse2Request();
-            index := index + 1;
-            message := self.umlElements[UmlUse]->at(index);
-        };
-        if (message.associationArrow = AssociationType::DIRECTIONALLEFT) {
-             hasResponse := true;
-             currentRoundtrip.response := message.UmlUse2Response();
-             index := index + 1;
-         };
-         if (hasRequest = false) {
-            currentRoundtrip.request := new Request();
-         };
-         if (hasResponse = false) {
-             currentRoundtrip.response := new Response();
-          };
-
-         index := index + 1;
-         roundtrip += currentRoundtrip;
-    }
+mapping UmlDiagram::transformUmlDiagram(): Scenario {
+    scenarioName := "scenario";
+    var httpRequestElement := new HttpRequest();
+    httpRequestElement.httpMethod := "GET";
+    httpRequestElement.url := "/test";
+    httpRequestElement.receiver := "testReceiver";
+    var roundtripElement = new Roundtrip();
+    roundtripElement.roundtripName := "roundtrip";
+    roundtripElement.httprequest := httpRequestElement;
+    roundtripElement.httpresponse := new HttpResponse();
+    roundtrip += roundtripElement;
 }
-
-mapping UmlUse :: UmlUse2Request() : Request {
-   var pathIndex : Integer := 1;
-   // GET is the default method of a request
-   method := RequestResponsePairs::Method::GET;
-   if (self.text->at(1) = "GET") {
-        pathIndex := 2;
-        method := RequestResponsePairs::Method::GET;
-   }
-   elif (self.text->at(1) = "POST") {
-        pathIndex := 2;
-        method := RequestResponsePairs::Method::POST;
-   }
-   elif (self.text->at(1) = "PUT") {
-           pathIndex := 2;
-           method := RequestResponsePairs::Method::PUT;
-   };
-   url := new URL("/" + self.text->at(pathIndex));
-}
-
-constructor URL::URL(path: String){
-    result.path := path;
-}
-
-mapping UmlUse :: UmlUse2Response() : Response { }
