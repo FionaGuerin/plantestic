@@ -12,7 +12,7 @@ class AcceleoGeneratorTest : StringSpec({
     "Transform a Rest Assured EObject input to Java Code".config(enabled = false) {
         MetaModelSetup.doSetup()
 
-        val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_URI_STRING)
+        val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
         val outputFolder = File(OUTPUT_PATH)
 
@@ -25,7 +25,7 @@ class AcceleoGeneratorTest : StringSpec({
     "Acceleo generation produces valid Java code".config(enabled = false) {
         MetaModelSetup.doSetup()
 
-        val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_URI_STRING)
+        val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
         val outputFolder = File(OUTPUT_PATH)
 
@@ -36,7 +36,7 @@ class AcceleoGeneratorTest : StringSpec({
     }
 }) {
     companion object {
-        private val RESTASSURED_INPUT_URI_STRING = Resources.getResource("minimal_hello_restassured.xmi").path
+        private val RESTASSURED_INPUT_PATH = Resources.getResource("minimal_hello_restassured.xmi").path
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
 
         fun printCode(folder: File) {
