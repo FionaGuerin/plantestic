@@ -15,10 +15,13 @@ import org.apache.commons.text.StringSubstitutor;
 import com.moandjiezana.toml.Toml;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public class Test {
 
     Map<String, Object> paramsMap = new HashMap();
+    ScriptEngine engine;
     StringSubstitutor substitutor;
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
@@ -34,6 +37,8 @@ public class Test {
             System.out.println("Could not read TOML config file");
 			System.out.println("Stack trace: " + e);
         }
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName("JavaScript");
     }
 
 	public void test() {
@@ -44,6 +49,25 @@ public class Test {
 			[testRoundtrip.generateTestRoundtrip()/]
 		}		
 		[/if]		
+
+		[comment]
+		If we have a alt condition, we can now use the engine to evaluate it. A basic example howo to use it:
+        engine.eval("value = 10");
+        Boolean greaterThan5 = (Boolean) engine.eval("value > 5");
+        Boolean lessThan5 = (Boolean) engine.eval("value < 5");
+
+        System.out.println("10 > 5? " + greaterThan5); // true
+        System.out.println("10 < 5? " + lessThan5); // false
+
+        If altCondition is a String with the condition we need to replace the templating variables first:
+        String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap);
+        Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+
+        Now we can use the boolean in our if-Condition
+        if(evaluatedCondition) ...
+
+		[/comment]
+
 	[/for]
 	}
 }
