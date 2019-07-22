@@ -261,14 +261,17 @@ QualifiedName:
 	{QualifiedName}
 	PUMLID;
 
-Request:
+RequestResponse:
+    {RequestResponse};
+
+Request returns RequestResponse:
     {Request}
     method=RequestMethod url=STRING;
 
 terminal RequestMethod:
     'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-Response:
+Response returns RequestResponse:
     {Response}
     code+=INT (',' code+=INT)* ('-' '(' extractParam+=ExtractParam (',' extractParam+=ExtractParam)* ')')?;
 
