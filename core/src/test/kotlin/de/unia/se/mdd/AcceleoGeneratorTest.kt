@@ -34,11 +34,11 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/test/123")).willReturn(WireMock.aResponse().withBody("test")))
 
         MetaModelSetup.doSetup()
 
@@ -49,7 +49,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -81,7 +81,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for rerouting".config(enabled = false) {
@@ -96,7 +96,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -128,7 +128,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
@@ -143,7 +143,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
