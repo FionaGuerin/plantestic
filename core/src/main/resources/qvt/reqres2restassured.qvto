@@ -23,7 +23,11 @@ mapping Scenario::scenario2testScenario(): TestScenario {
      log('Transforming Roundtrip to TestRoundtrip');
 
      testRoundtripName := self.roundtripName;
-     precondition := self.precondition;
+     log(self.precondition);
+
+     if(self.precondition != null) then {
+             precondition := self.precondition;
+     } endif;
      requestspecification :=  self.httprequest .map httprequest2requestSpecification();
      responsespecification := self.httpresponse .map httpresponse2responseSpecification();
 }
@@ -49,11 +53,12 @@ mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecificatio
      var bodyMatcherGroup := new BodyMatcherGroup();
      self.httpresponsedatum->forEach(httpresponsedatum) {
         var bodyMatcher := new BodyMatcher();
-        bodyMatcher.matcher = object HasXPath {
+        bodyMatcher.matcher := object HasXPath {
                                 xPath := httpresponsedatum.httpResponseDatumXPath;
                               };
         bodyMatcherGroup.bodymatcher += bodyMatcher;
      };
+     bodymatchergroup := bodyMatcherGroup;
 }
 
 mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
