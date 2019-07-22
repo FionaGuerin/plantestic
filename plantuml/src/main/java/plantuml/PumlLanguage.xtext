@@ -270,7 +270,7 @@ terminal RequestMethod:
 
 Response:
     {Response}
-    codes+=INT (',' codes+=INT)* ('-' '(' extractParams+=ExtractParam (',' extractParams+=ExtractParam)* ')')?;
+    code+=INT (',' code+=INT)* ('-' '(' extractParam+=ExtractParam (',' extractParam+=ExtractParam)* ')')?;
 
 ExtractParam:
     {ExtractParam}
