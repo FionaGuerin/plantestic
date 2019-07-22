@@ -4,9 +4,9 @@ PARTICIPANT A
 PARTICIPANT B
 
 alt ${testCondition} == "SomeValue"
-A -> B : /hello
+A -> B : /hello/{id}
 activate B
-B -> A
+B -> A : 200
 deactivate B
 end
 

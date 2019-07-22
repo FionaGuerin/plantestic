@@ -6,12 +6,14 @@ sourceEventType = "Hallo"
 [Voicemanager]
     username = "Test"
     password = "123test"
+    path = "https://www.Voicemanager.com"
 
 [CRS]
     username = "Test"
     password = "123test"
-
+    path = "https://www.CRS.com"
 
 [CCC]
     username = "Test"
     password = "123test"
+    path = "https://www.CCC.com"

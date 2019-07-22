@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:RestAssured="http://www.example.org/RestAssured"
-    testScenarioName="testScenario">
-  <testroundtrip testRoundtripName="testRoundtrip">
-    <requestspecification method="GET" url="/test/${id}" receiver="testReceiver"/>
-    <responsespecification/>
+<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="scenario">
+  <testroundtrip testRoundtripName="roundtrip" precondition="${testCondition} == &quot;SomeValue&quot;">
+    <requestspecification method="GET" url="/test" receiver="testReceiver">
+      <requestDatum>requestDatum</requestDatum>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath2"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="httpResponseDatumXPath3"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>404</value>
+      </statusmatcher>
+      <responsedatum responseDatumName="httpResponseDatumName" responseDatumXPath="httpResponseDatumXPath"/>
+      <responsedatum responseDatumName="httpResponseDatumName2" responseDatumXPath="httpResponseDatumXPath2"/>
+      <responsedatum responseDatumName="httpResponseDatumName3" responseDatumXPath="httpResponseDatumXPath3"/>
+    </responsespecification>
   </testroundtrip>
 </RestAssured:TestScenario>

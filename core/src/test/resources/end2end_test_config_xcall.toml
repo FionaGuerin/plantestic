@@ -3,43 +3,42 @@ eventId = "645"
 vin = "987"
 
 
-[returnValues]
-    homeCountry = ""
-    positionCountryCode = ""
-    brand = ""
-    serviceType = ""
-    voiceTargets = ""
-
-
 [Voicemanager]
     username = "Test"
     password = "123test"
+    path = "https://www.Voicemanager.com"
 
 
 [CRS]
     username = "Test"
     password = "123test"
+    path = "https://www.CRS.com"
 
 
 [CCC]
     username = "Test"
     password = "123test"
+    path = "https://www.CCC.com"
 
 
 [XCS]
     username = "Test"
     password = "123test"
+    path = "https://www.XCS.com"
 
 
 [DataService]
     username = "Test"
     password = "123test"
+    path = "https://www.DataService.com"
 
 [EventNotifier]
     username = "Test"
     password = "123test"
+    path = "https://www.EventNotifier.com"
 
 
 [ELOS]
     username = "Test"
     password = "123test"
+    path = "https://www.ELOS.com"
