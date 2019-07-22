@@ -1,6 +1,7 @@
-id = "123"
-eventId = "645"
-vin = "987"
+[Templating]
+    id = "123"
+    eventId = "645"
+    vin = "987"
 
 
 [Voicemanager]

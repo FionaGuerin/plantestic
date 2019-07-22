@@ -28,26 +28,27 @@ public class Test {
 	StringSubstitutor substitutor;
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
-	public Test(String configFile) {
+	public Test(String configFile) throws Exception {
 		try {
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);
 			String paramsFileContent = new String(Files.readAllBytes(path));
-			paramsMap = new Toml().read(paramsFileContent).toMap();
-			substitutor = new StringSubstitutor(unnestTomlMap(paramsMap));
+			paramsMap = unnestTomlMap(new Toml().read(paramsFileContent).toMap());
+			substitutor = new StringSubstitutor(paramsMap);
 			ScriptEngineManager factory = new ScriptEngineManager();
 			engine = factory.getEngineByName("JavaScript");
 		} catch(Exception exception) {
 			System.out.println("An Error occured, possible during reading the TOML config file: " + exception);
+			throw exception;
 		}
 	}
 
-	public void test() {
+	public void test() throws Exception {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
 		try {
-			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{templating.')/]");
+			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{Templating.')/]");
 			assert engine != null;
 			Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
 			if(evaluatedCondition) {
@@ -56,11 +57,13 @@ public class Test {
 		} catch (ScriptException scriptException) {
 			System.out.println("Error during evaluation the alternative Condition");
 			System.out.println("The error was within: " + scriptException);
+			throw scriptException;
 		} catch (AssertionError assertionError) {
 			System.out.println("An assertion failt: " + assertionError);
 			throw assertionError;
-		} catch (Exception e) {
-			System.out.println("An error occured: " + e);
+		} catch (Exception exception) {
+			System.out.println("An error occured: " + exception);
+			throw exception;
 		}
 		[/if]
 	[/for]
@@ -114,12 +117,12 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
 .auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
 [if (requestSpecification.requestdatum->notEmpty())][for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{templating.')/]}"))
+.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
 [/for][/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{templating.')/]"))
+.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]

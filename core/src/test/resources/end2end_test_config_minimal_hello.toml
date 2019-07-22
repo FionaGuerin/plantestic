@@ -1,4 +1,4 @@
-[templating]
+[Templating]
     id = '123'
     testCondition = '"SomeValue"'
 
@@ -12,7 +12,7 @@
     password = 'password'
     path = '/testB'
 
-[testReceiver]
+[TestReceiver]
     username = 'Test'
     password = 'password'
     path = '/testReceiver'
