@@ -13,12 +13,12 @@ activate XCS
 
 XCS -> DataService : GET  /vehicle/internal/${vin}
 activate DataService
-DataService --> XCS : 200 - (homeCountry:"homeCountry", positionCountry:"positionCountry", brand:"brand")
+DataService --> XCS : 200 - (homeCountry:"/homeCountry", positionCountry:"/positionCountry", brand:"/brand")
 deactivate DataService
 
 XCS -> CRS : POST routingTargets/find (eventId: ${eventId}, serviceType: ${serviceType}, vin: ${vin}, homeCountry: ${homeCountry}, positionCountry: ${positionCountry}, brand: ${brand})
 activate CRS
-CRS --> XCS : 200 - (voiceTargets: "voiceTargets")
+CRS --> XCS : 200 - (voiceTargets: "/voiceTargets")
 deactivate CRS
 
 alt ${xcsServiceType} == "ACall"
