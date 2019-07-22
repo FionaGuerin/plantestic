@@ -35,12 +35,10 @@ public class Test {
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
-			System.out.println("isEnableUndefinedVariable Allowed: " + substitutor.isEnableUndefinedVariableException());
             ScriptEngineManager factory = new ScriptEngineManager();
             engine = factory.getEngineByName("JavaScript");
 		} catch(Exception e) {
-            System.out.println("Could not read TOML config file");
-			System.out.println("Stack trace: " + e);
+            System.out.println("An Error occured, possible during reading the TOML config file: " + e);
         }
     }
 
@@ -49,7 +47,7 @@ public class Test {
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
 		try {
-        	String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"')/]");
+        	String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{templating.')/]");
         	assert engine != null;
         	Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
 			if(evaluatedCondition) {
@@ -57,13 +55,11 @@ public class Test {
 			}
 		} catch (ScriptException e) {
 			System.out.println("Error during evaluation the alternative Condition");
-			System.out.println("Stack trace: " + e);
+			System.out.println("The error was within: " + e);
 		} catch (AssertionError  e) {
-			System.out.println("An assertion failt.");
-			System.out.println("Stack trace: " + e);
+			System.out.println("An assertion failt: " + e);
 		} catch (Exception e) {
-			System.out.println("An error occured. Please evaluate");
-			System.out.println("Stack trace: " + e);
+			System.out.println("An error occured: " + e);
 		}
 		[/if]		
 	[/for]
@@ -76,16 +72,21 @@ public class Test {
 [if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
 [testRoundtrip.requestspecification.generadeAddRequestParams()/]
 [/if]
-Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
-   		[testRoundtrip.requestspecification.generateGivenPart()/]
-	.when()
-		[testRoundtrip.requestspecification.generateWhenPart()/]
-	.then()
-		[testRoundtrip.responsespecification.generateThenPart()/];
-[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+try {
+	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
+   			[testRoundtrip.requestspecification.generateGivenPart()/]
+		.when()
+			[testRoundtrip.requestspecification.generateWhenPart()/]
+		.then()
+			[testRoundtrip.responsespecification.generateThenPart()/];
 
-[testRoundtrip.generateExtractions()/]
-[/if]
+	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+
+	[testRoundtrip.generateExtractions()/]
+	[/if]
+} catch (Exception e) {
+	System.out.println("An error occured during evaluating the communication with [testRoundtrip.requestspecification.receiver/]: " + e);
+}
 [/template]
 
 [template private generadeAddRequestParams(requestSpecification : RequestSpecification)]
@@ -97,12 +98,12 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
 .auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
 [if (requestSpecification.requestdatum->notEmpty())][for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName/]}"))
+.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{templating.')/]}"))
 [/for][/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/]_path}") + substitutor.replace("[requestSpecification.url/]"))
+.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{templating.')/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
