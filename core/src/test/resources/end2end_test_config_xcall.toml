@@ -7,39 +7,39 @@
 [Voicemanager]
     username = "Test"
     password = "123test"
-    path = "https://www.Voicemanager.com"
+    path = "/Voicemanager"
 
 
 [CRS]
     username = "Test"
     password = "123test"
-    path = "https://www.CRS.com"
+    path = "/CRS"
 
 
 [CCC]
     username = "Test"
     password = "123test"
-    path = "https://www.CCC.com"
+    path = "/CCC"
 
 
 [XCS]
     username = "Test"
     password = "123test"
-    path = "https://www.XCS.com"
+    path = "/XCS"
 
 
 [DataService]
     username = "Test"
     password = "123test"
-    path = "https://www.DataService.com"
+    path = "/DataService"
 
 [EventNotifier]
     username = "Test"
     password = "123test"
-    path = "https://www.EventNotifier.com"
+    path = "/EventNotifier"
 
 
 [ELOS]
     username = "Test"
     password = "123test"
-    path = "https://www.ELOS.com"
+    path = "/ELOS"

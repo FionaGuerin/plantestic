@@ -7,14 +7,14 @@
 [Voicemanager]
     username = "Test"
     password = "123test"
-    path = "https://www.Voicemanager.com"
+    path = "/Voicemanager"
 
 [CRS]
     username = "Test"
     password = "123test"
-    path = "https://www.CRS.com"
+    path = "/CRS"
 
 [CCC]
     username = "Test"
     password = "123test"
-    path = "https://www.CCC.com"
+    path = "/CCC"
