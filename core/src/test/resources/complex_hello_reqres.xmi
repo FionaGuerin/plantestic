@@ -2,11 +2,13 @@
 <RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
     xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="scenario">
   <roundtrip roundtripName="roundtrip" precondition="${testCondition} == &quot;SomeValue&quot;">
-    <httprequest httpMethod="GET" url="/test" receiver="testReceiver" httpRequestDatum="requestDatum"/>
+    <httprequest httpMethod="GET" url="/test" receiver="testReceiver">
+        <httprequestdatum  variableName="variableName" value="value"/>
+        <httprequestdatum  variableName="variableName2" value="value2"/>
+    </httprequest>
     <httpresponse httpStatus="404">
-        <httpresponsedatum  httpResponseDatumName="httpResponseDatumName" httpResponseDatumXPath="httpResponseDatumXPath"/>
-        <httpresponsedatum  httpResponseDatumName="httpResponseDatumName2" httpResponseDatumXPath="httpResponseDatumXPath2"/>
-        <httpresponsedatum  httpResponseDatumName="httpResponseDatumName3" httpResponseDatumXPath="httpResponseDatumXPath3"/>
+        <httpresponsedatum  variableName="variableName" xPath="httpResponseDatumXPath"/>
+        <httpresponsedatum  variableName="variableName2" xPath="httpResponseDatumXPath2"/>
     </httpresponse>
   </roundtrip>
 </RequestResponsePairs:Scenario>
