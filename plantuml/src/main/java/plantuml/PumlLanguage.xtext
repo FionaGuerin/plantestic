@@ -266,7 +266,11 @@ RequestResponse:
 
 Request returns RequestResponse:
     {Request}
-    method=RequestMethod url=STRING;
+    method=RequestMethod url=STRING ('(' requestParam+=RequestParam (',' requestParam+=RequestParam)* ')')?;
+
+RequestParam:
+    {RequestParam}
+    name=PUMLID ':' value=STRING;
 
 terminal RequestMethod:
     'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
