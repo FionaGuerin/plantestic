@@ -37,16 +37,14 @@ public class Test {
     }
 
 	public void test() {
-		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
-		[if (testRoundtrip.precondition->isEmpty())]
-		[testRoundtrip.generateTestRoundtrip()/]
-		[/if]
+	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
+		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
 		if([testRoundtrip.precondition/]) {
 			[testRoundtrip.generateTestRoundtrip()/]
 		}		
 		[/if]		
-		[/for]
+	[/for]
 	}
 }
 [/file]
