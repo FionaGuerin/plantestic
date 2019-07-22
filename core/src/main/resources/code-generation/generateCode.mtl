@@ -6,17 +6,20 @@
 [file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
 package com.mdd.test;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.hamcrest.collection.IsIn;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.text.StringSubstitutor;
 import com.moandjiezana.toml.Toml;
-import io.restassured.RestAssured;
-import io.restassured.response.ValidatableResponse;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class Test {
 
@@ -32,40 +35,29 @@ public class Test {
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
+            ScriptEngineManager factory = new ScriptEngineManager();
+            ScriptEngine engine = factory.getEngineByName("JavaScript");
             test();
 		} catch(Exception e) {
             System.out.println("Could not read TOML config file");
 			System.out.println("Stack trace: " + e);
         }
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("JavaScript");
     }
 
 	public void test() {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
-		[comment]
-            If we have a alt condition, we can now use the engine to evaluate it. A basic example how to to use it:
-            engine.eval("value = 10");
-            Boolean greaterThan5 = (Boolean) engine.eval("value > 5");
-            Boolean lessThan5 = (Boolean) engine.eval("value < 5");
-
-            System.out.println("10 > 5? " + greaterThan5); // true
-            System.out.println("10 < 5? " + lessThan5); // false
-
-            If altCondition is a String with the condition we need to replace the templating variables first:
-            String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap);
-            Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
-
-            Now we can use the boolean in our if-Condition
-            if(evaluatedCondition) ...
-        [/comment]
-        String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.precondition/]");
-        Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
-		if(evaluatedCondition) {
-			[testRoundtrip.generateTestRoundtrip()/]
-		}		
+		try {
+        	String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"')/]");
+        	Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+			if(evaluatedCondition) {
+				[testRoundtrip.generateTestRoundtrip()/]
+			}
+		} catch (ScriptException e) {
+			System.out.println("Error during evaluation the alternative Condition");
+			System.out.println("Stack trace: " + e);
+		}
 		[/if]		
 	[/for]
 	}
@@ -73,8 +65,8 @@ public class Test {
 [/file]
 [/template]
 
-[template private generateTestRoundtrip(testRoundtrip : TestRoundtrip) ]
-ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
+[template private generateTestRoundtrip(testRoundtrip : TestRoundtrip) post(trim())]
+Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
    		[testRoundtrip.requestspecification.generateGivenPart()/]
 	.when()
 		[testRoundtrip.requestspecification.generateWhenPart()/]
@@ -82,61 +74,39 @@ ValidatableResponse [testRoundtrip.testRoundtripName/] = RestAssured.given()
 		[testRoundtrip.responsespecification.generateThenPart()/];
 [if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
 
-[testRoundtrip.responsespecification.generateExtractions()/]
+[testRoundtrip.generateExtractions()/]
 [/if]
 [/template]
 
-[template private generateGivenPart(requestSpecification : RequestSpecification)]
+[template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
 .auth().basic(substitutor.replace("[requestSpecification.receiver/].username"), substitutor.replace("[requestSpecification.receiver/].password"))
-[if (requestSpecification.requestDatum->notEmpty())]
-[for (rd : String | requestSpecification.requestDatum)]
-.param([rd/], [rd/])
-[/for]
-[/if]
+[if (requestSpecification.requestDatum->notEmpty())][for (rd : String | requestSpecification.requestDatum)].param("[rd/]", substitutor.replace("[rd/]"))[/for][/if]
 [/template]
 
-[template private generateWhenPart(requestSpecification : RequestSpecification)]
-.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.url/]"))
+[template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
+.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.receiver/]") + substitutor.replace("[requestSpecification.url/]"))
 [/template]
 
-[template private generateThenPart(responseSpecification : ResponseSpecification)]
+[template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
 .assertThat()
-[responseSpecification.generateExpectStatusCode()/]
-[if (responseSpecification.bodymatchergroup->notEmpty())]
-[responseSpecification.generateExpectations()/]
-[/if]
-[if (responseSpecification.responsedatum->notEmpty())]
-	.and().extract().response()
-[/if]
+[responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())][responseSpecification.generateExpectations()/][/if][if (responseSpecification.responsedatum->notEmpty())]	.and().extract().response()[/if]
 [/template]
 
-[template private generateExpectStatusCode(responseSpecification : ResponseSpecification)]
-[if (responseSpecification.statusmatcher->notEmpty())]
-[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
-[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
-	.statusCode(in([for (val : String | statusCode.value) separator (', ')][val/])[/for]
-[/let]
-[/if]
-[/if]
+[template private generateExpectStatusCode(responseSpecification : ResponseSpecification) post(trim())]
+[if (responseSpecification.statusmatcher->notEmpty())][if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))][let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
+.statusCode(IsIn.isIn(Arrays.asList([for (val : String | statusCode.value) separator (', ')][val/][/for])))
+[/let][/if][/if]
 [/template]
 
-[template private generateExpectations(responseSpecification : ResponseSpecification)]
+[template private generateExpectations(responseSpecification : ResponseSpecification) post(trim())]
 [for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
-[if (matcher.oclIsTypeOf(HasXPath))]
-[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-	.body(hasXPath([bodyXPath.xPath/]))
-[/let]
-[/if]
-[if (matcher.oclIsTypeOf(IsIn))]
-[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
-	// Todo: is this needed?
-[/let]
-[/if]
+[if (matcher.oclIsTypeOf(HasXPath))][let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)].body(hasXPath([bodyXPath.xPath/]))[/let][/if]
+[if (matcher.oclIsTypeOf(IsIn))][let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]// Todo: is this needed?[/let][/if]
 [/for]
 [/template]
 
-[template private generateExtractions(responseSpecification : ResponseSpecification)]
-[for (responseDatum : ResponseDatum | responseSpecification.responsedatum)]
-	String [responseDatum.responseDatumName/] = [responseDatum.responseDatumName/].path("[responseDatum.responseDatumXPath/]");
+[template private generateExtractions(testRoundtrip : TestRoundtrip) post(trim())]
+[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
+paramsMap.put("[responseDatum.responseDatumName/]", [testRoundtrip.testRoundtripName/].path("[responseDatum.responseDatumXPath/]"));
 [/for]
 [/template]
