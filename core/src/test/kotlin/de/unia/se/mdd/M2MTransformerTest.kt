@@ -21,7 +21,7 @@ class M2MTransformerTest : StringSpec({
         printModel(reqRespOutputModel)
 
         reqRespOutputModel.eClass().name shouldBe "Scenario"
-        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip"}.size shouldBe 1
+        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip" }.size shouldBe 1
     }
 
     "Transform the rerouting Puml input to Request Response Pairs".config(enabled = false) {
@@ -35,7 +35,7 @@ class M2MTransformerTest : StringSpec({
         printModel(reqRespOutputModel)
 
         reqRespOutputModel.eClass().name shouldBe "Scenario"
-        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip"}.size shouldBe 3
+        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip" }.size shouldBe 3
     }
 
     "Transform the xcall Puml input to Request Response Pairs".config(enabled = false) {
@@ -49,7 +49,7 @@ class M2MTransformerTest : StringSpec({
         printModel(reqRespOutputModel)
 
         reqRespOutputModel.eClass().name shouldBe "Scenario"
-        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip"}.size shouldBe 6
+        reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip" }.size shouldBe 6
     }
 
     "Transform a simple Request Response Pair input to a Rest Assured EObject" {
