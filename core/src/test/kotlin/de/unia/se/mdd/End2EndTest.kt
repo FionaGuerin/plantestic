@@ -17,6 +17,10 @@ val wireMockServer = WireMockServer(8080)
 
 class End2EndTest : StringSpec({
 
+    "End2End test works for the minimal example".config(enabled = true) {
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
+    }
+
     "End2End test produces valid Java code for the minimal example".config(enabled = true) {
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
@@ -43,18 +47,58 @@ class End2EndTest : StringSpec({
 
     "End2End works for the rerouting example".config(enabled = false) {
         runTransformationPipeline(REROUTE_INPUT_PATH)
+    }
+
+    "End2End test produces valid Java code for the rerouting example".config(enabled = false) {
+        runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
             .create(REROUTE_CONFIG_PATH)
+    }
+
+    "End2End test receives request on mock server for the rerouting example".config(enabled = false) {
+        wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
+
+        runTransformationPipeline(REROUTE_INPUT_PATH)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+            .create(REROUTE_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
     "End2End test works for the xcall example".config(enabled = false) {
         runTransformationPipeline(XCALL_INPUT_PATH)
+    }
+
+    "End2End test produces valid Java code for the xcall example".config(enabled = false) {
+        runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
             .create(XCALL_CONFIG_PATH)
+    }
+
+    "End2End test receives request on mock server for the xcall example".config(enabled = false) {
+        wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
+
+        runTransformationPipeline(XCALL_INPUT_PATH)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+            .create(XCALL_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 }) {
     companion object {

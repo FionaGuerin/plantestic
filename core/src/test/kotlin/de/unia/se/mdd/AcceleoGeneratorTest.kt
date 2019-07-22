@@ -46,7 +46,7 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testA/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testB/test/123")).willReturn(WireMock.aResponse().withBody("test")))
 
         MetaModelSetup.doSetup()
 

@@ -4,15 +4,15 @@
 
 [A]
     username = 'Test'
-    password = '123test'
+    password = 'password'
     path = '/testA'
 
 [B]
     username = 'Test'
-    password = '123test'
+    password = 'password'
     path = '/testB'
 
 [testReceiver]
     username = 'Test'
-    password = '123test'
-    path = '/testTestReceiver'
+    password = 'password'
+    path = 'localhost:8080'
