@@ -1,6 +1,7 @@
 package de.unia.se.mdd
 
 import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -21,7 +22,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
     }
 
-    "End2End test produces valid Java code for the minimal example".config(enabled = true) {
+    "End2End test produces valid Java code for the minimal example".config(enabled = false) {
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
@@ -30,7 +31,9 @@ class End2EndTest : StringSpec({
     }
 
     "End2End test receives request on mock server for the minimal example".config(enabled = false) {
-        wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
+        val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2", "key" : "value" }"""
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123?variableName=%24%7BvariableName%7D&variableName2=%24%7BvariableName2%7D")).willReturn(
+                WireMock.aResponse().withStatus(404).withBody(body)))
 
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
@@ -41,7 +44,7 @@ class End2EndTest : StringSpec({
 
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
-        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents[0].response.status shouldBe 404
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 

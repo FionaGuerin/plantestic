@@ -44,8 +44,8 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2" }"""
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123")).willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
+        val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2", "key" : "value" }"""
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123?variableName=%24%7BvariableName%7D&variableName2=%24%7BvariableName2%7D")).willReturn(WireMock.aResponse().withStatus(404).withBody(body)))
 
         MetaModelSetup.doSetup()
 
@@ -61,7 +61,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
-        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents[0].response.status shouldBe 404
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
