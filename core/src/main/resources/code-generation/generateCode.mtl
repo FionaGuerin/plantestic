@@ -53,11 +53,12 @@ public class Test {
 			if(evaluatedCondition) {
 				[testRoundtrip.generateTestRoundtrip()/]
 			}
-		} catch (ScriptException e) {
+		} catch (ScriptException scriptException) {
 			System.out.println("Error during evaluation the alternative Condition");
-			System.out.println("The error was within: " + e);
-		} catch (AssertionError  e) {
-			System.out.println("An assertion failt: " + e);
+			System.out.println("The error was within: " + scriptException);
+		} catch (AssertionError assertionError) {
+			System.out.println("An assertion failt: " + assertionError);
+			throw assertionError;
 		} catch (Exception e) {
 			System.out.println("An error occured: " + e);
 		}
@@ -94,7 +95,6 @@ try {
 			[testRoundtrip.requestspecification.generateWhenPart()/]
 		.then()
 			[testRoundtrip.responsespecification.generateThenPart()/];
-
 	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
 
 	[testRoundtrip.generateExtractions()/]
@@ -142,6 +142,6 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 
 [template private generateExtractions(testRoundtrip : TestRoundtrip) post(trim())]
 [for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
-paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].jsonPath().getString("/[responseDatum.xPath/]"));
+paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].jsonPath().getString("[responseDatum.xPath/]"));
 [/for]
 [/template]
