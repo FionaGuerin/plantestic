@@ -9,18 +9,39 @@ main() {
     assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-     input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+     input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map transformUmlDiagram();
 }
 
-mapping UmlDiagram::transformUmlDiagram(): Scenario {
-    scenarioName := "scenario";
-    var httpRequestElement := new HttpRequest();
-    httpRequestElement.httpMethod := "GET";
-    httpRequestElement.url := "/test";
-    httpRequestElement.receiver := "testReceiver";
-    var roundtripElement = new Roundtrip();
-    roundtripElement.roundtripName := "roundtrip";
-    roundtripElement.httprequest := httpRequestElement;
-    roundtripElement.httpresponse := new HttpResponse();
-    roundtrip += roundtripElement;
+mapping SequenceUml::transformUmlDiagram(): Scenario {
+    scenarioName := "scenario"; // TODO
+    var roundtripId : Integer := 1;
+    var umlUses := self.umlElements[UmlUse];
+    var umlUsesSize : Integer := umlUses->size();
+    var umlUsesIndex : Integer := 1;
+    var httpRequestElement : HttpRequest;
+    var httpResponseElement : HttpResponse;
+    while (umlUsesIndex <= umlUsesSize) {
+        var message : UmlUse := umlUses->at(umlUsesIndex);
+        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
+            httpRequestElement := message.umlUse2httpRequest();
+            umlUsesIndex := umlUsesIndex + 1;
+        };
+        message := umlUses->at(umlUsesIndex);
+        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
+            httpResponseElement := new HttpResponse(); // TODO
+            umlUsesIndex := umlUsesIndex + 1;
+        };
+        var roundtripElement : Roundtrip = new Roundtrip();
+        roundtripElement.roundtripName := "roundtrip"+roundtripId.toString();
+        roundtripElement.httprequest := httpRequestElement;
+        roundtripElement.httpresponse := httpResponseElement;
+        roundtrip += roundtripElement;
+        roundtripId := roundtripId + 1;
+    }
+}
+
+mapping UmlUse::umlUse2httpRequest(): HttpRequest {
+    httpMethod := "GET"; // TODO
+    url := "/test"; // TODO
+    receiver := "testReceiver"; // TODO
 }
