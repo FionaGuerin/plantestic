@@ -11,6 +11,8 @@ import org.joor.Reflect
 import java.io.File
 import org.apache.commons.text.StringSubstitutor
 import com.moandjiezana.toml.Toml
+import io.kotlintest.Description
+import io.kotlintest.TestResult
 import java.nio.file.Files
 import java.nio.file.Files.readAllBytes
 
@@ -19,7 +21,7 @@ import java.nio.file.Files.readAllBytes
 
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = true) {
+    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
@@ -32,7 +34,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal example".config(enabled = true) {
+    "Acceleo generation produces valid Java code for minimal example".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
@@ -46,7 +48,7 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testB/test/123")).willReturn(WireMock.aResponse().withBody("test")))
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123")).willReturn(WireMock.aResponse().withBody("+")))
 
         MetaModelSetup.doSetup()
 
@@ -180,5 +182,12 @@ class AcceleoGeneratorTest : StringSpec({
                 lines.forEach { line -> println(line) }
             }
         }
+    }
+    override fun beforeTest(description: Description) {
+        wireMockServer.start()
+    }
+
+    override fun afterTest(description: Description, result: TestResult) {
+        wireMockServer.stop()
     }
 }

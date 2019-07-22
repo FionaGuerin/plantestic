@@ -15,4 +15,4 @@
 [testReceiver]
     username = 'Test'
     password = 'password'
-    path = 'localhost:8080'
+    path = '/testReceiver'
