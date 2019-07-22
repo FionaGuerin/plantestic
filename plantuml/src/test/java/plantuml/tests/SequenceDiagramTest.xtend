@@ -392,7 +392,7 @@ class SequenceDiagramTest {
         '''.parse
 
         assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
-        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).codes)
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
     }
 
     @Test def void testResponseOneExtractParam() {
@@ -405,9 +405,9 @@ class SequenceDiagramTest {
         '''.parse
 
         assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
-        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).codes)
-        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(0).name)
-        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(0).value)
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
+        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).name)
+        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).value)
     }
 
     @Test def void testResponseMultipleExtractParams() {
@@ -420,11 +420,11 @@ class SequenceDiagramTest {
         '''.parse
 
         assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
-        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).codes)
-        assertEquals(2, (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.length)
-        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(0).name)
-        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(0).value)
-        assertEquals("far", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(1).name)
-        assertEquals("/cry", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParams.get(1).value)
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
+        assertEquals(2, (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.length)
+        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).name)
+        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).value)
+        assertEquals("far", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(1).name)
+        assertEquals("/cry", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(1).value)
     }
 }
