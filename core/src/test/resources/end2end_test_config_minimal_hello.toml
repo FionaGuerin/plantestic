@@ -1,12 +1,17 @@
-id = "123"
-testCondition = "SomeValue"
+id = '123'
+testCondition = '"SomeValue"'
 
 [A]
-    username = "Test"
-    password = "123test"
-    path = "https://www.A.com"
+    username = 'Test'
+    password = '123test'
+    path = 'https://www.A.com'
 
 [B]
-    username = "Test"
-    password = "123test"
-    path = "https://www.Voicemanager.com"
+    username = 'Test'
+    password = '123test'
+    path = 'https://www.B.com'
+
+[testReceiver]
+    username = 'Test'
+    password = '123test'
+    path = 'https://www.testReceiver.com'

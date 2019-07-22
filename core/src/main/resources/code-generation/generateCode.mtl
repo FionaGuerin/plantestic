@@ -38,7 +38,7 @@ public class Test {
 			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
             ScriptEngineManager factory = new ScriptEngineManager();
-            ScriptEngine engine = factory.getEngineByName("JavaScript");
+            engine = factory.getEngineByName("JavaScript");
 			System.out.println(paramsMap);
             //test();
 		} catch(Exception e) {
@@ -53,15 +53,16 @@ public class Test {
 		[if (testRoundtrip.precondition->notEmpty())]
 		try {
         	String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"')/]");
-			
         	assert engine != null;
-System.out.println(engine);
         	Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
 			if(evaluatedCondition) {
 				[testRoundtrip.generateTestRoundtrip()/]
 			}
 		} catch (ScriptException e) {
 			System.out.println("Error during evaluation the alternative Condition");
+			System.out.println("Stack trace: " + e);
+		} catch (AssertionError  e) {
+			System.out.println("An assertion failt.");
 			System.out.println("Stack trace: " + e);
 		} catch (Exception e) {
 			System.out.println("An error occured. Please evaluate");
@@ -97,14 +98,14 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
-.auth().basic(substitutor.replace("[requestSpecification.receiver/].username"), substitutor.replace("[requestSpecification.receiver/].password"))
+.auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
 [if (requestSpecification.requestdatum->notEmpty())][for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", substitutor.replace("[requestDatum.variableName/]"))
+.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName/]}"))
 [/for][/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-.[requestSpecification.method.toLower()/](substitutor.replace("[requestSpecification.receiver/]") + substitutor.replace("[requestSpecification.url/]"))
+.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
