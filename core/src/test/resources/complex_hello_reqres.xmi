@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
     xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="scenario">
-  <roundtrip roundtripName="roundtrip" precondition="status==A">
+  <roundtrip roundtripName="roundtrip" precondition="${testCondition} == &quot;SomeValue&quot;">
     <httprequest httpMethod="GET" url="/test" receiver="testReceiver" httpRequestDatum="requestDatum"/>
     <httpresponse httpStatus="404">
         <httpresponsedatum  httpResponseDatumName="httpResponseDatumName" httpResponseDatumXPath="httpResponseDatumXPath"/>
