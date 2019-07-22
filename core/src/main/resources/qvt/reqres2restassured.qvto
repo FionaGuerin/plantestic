@@ -36,14 +36,14 @@ mapping HttpRequest::httprequest2requestSpecification(): RequestSpecification {
 
      method := self.httpMethod;
      url := self.url;
-     requestDatum := self.httpRequestDatum;
+     // requestDatum := self.httpRequestDatum;
      receiver := self.receiver;
 }
 
 mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecification {
      log('Transforming HTTPResponse to ResponseSpecification');
 
-     responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
+     // responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
 
      if(self.httpStatus->notEmpty()) {
          statusmatcher := object IsIn {
@@ -51,7 +51,7 @@ mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecificatio
          };
      };
 
-     var bodyMatcherGroup := new BodyMatcherGroup();
+     /*var bodyMatcherGroup := new BodyMatcherGroup();
      self.httpresponsedatum->forEach(httpresponsedatum) {
         var bodyMatcher := new BodyMatcher();
         bodyMatcher.matcher := object HasXPath {
@@ -59,12 +59,12 @@ mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecificatio
                               };
         bodyMatcherGroup.bodymatcher += bodyMatcher;
      };
-     bodymatchergroup := bodyMatcherGroup;
+     bodymatchergroup := bodyMatcherGroup;*/
 }
 
-mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
+/*mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
      log('Transforming HTTPResponseDatum to ResponseDatum');
 
      responseDatumName := self.httpResponseDatumName;
      responseDatumXPath := self.httpResponseDatumXPath;
-}
+}*/
