@@ -10,19 +10,35 @@ import plantuml.puml.SequenceUml
 
 class PumlParserTest : StringSpec({
 
-    "Minimal example can be parsed from URI" {
+    "Parsing works for the minimal example" {
         MetaModelSetup.doSetup()
 
-        val umlDiagram = PumlParser.parse(PUML_INPUT_URI_STRING)
+        val umlDiagram = PumlParser.parse(MINIMAL_EXAMPLE_INPUT_PATH)
 
         printModel(umlDiagram)
 
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
     }
+
+    "Parsing works for the rerouting example".config(enabled = false) {
+        MetaModelSetup.doSetup()
+
+        val umlDiagram = PumlParser.parse(REROUTE_INPUT_PATH)
+        printModel(umlDiagram)
+    }
+
+    "Parsing works for the xcall example".config(enabled = false) {
+        MetaModelSetup.doSetup()
+
+        val umlDiagram = PumlParser.parse(XCALL_INPUT_PATH)
+        printModel(umlDiagram)
+    }
 }) {
     companion object {
-        private val PUML_INPUT_URI_STRING = Resources.getResource("minimal_hello.puml").path
+        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
+        private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
+        private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
 
         fun printModel(model: EObject) {
             val resource = ResourceSetImpl().createResource(URI.createURI("dummy:/test.ecore"))

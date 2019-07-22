@@ -13,52 +13,57 @@ main() {
 }
 
 mapping Scenario::scenario2testScenario(): TestScenario {
-    testScenarioName := "testScenario";
-    var requestSpecificationElement := new RequestSpecification();
-    requestSpecificationElement.method := "GET";
-    requestSpecificationElement.url := "/test";
-    requestSpecificationElement.receiver := "testReceiver";
-    var testRoundtripElement := new TestRoundtrip();
-    testRoundtripElement.testRoundtripName := "testRoundtrip";
-    testRoundtripElement.requestspecification := requestSpecificationElement;
-    testRoundtripElement.responsespecification := new ResponseSpecification();
-    testroundtrip += testRoundtripElement;
-     // name := "$scenarioName";
-     // testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
-     // parameter := object Parameter {
-       // type := "$parameterType";
-      //  name := "$parameterName";
-   //  }
+    log('Transforming Scenario to TestScenario');
+
+    testScenarioName := self.scenarioName;
+    testroundtrip := self.roundtrip -> map roundtrip2testRoundtrip();
 }
 
- /* mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip {
-     log('Transforming Roundtrip to TestRooundtrip');
+ mapping Roundtrip::roundtrip2testRoundtrip(): TestRoundtrip {
+     log('Transforming Roundtrip to TestRoundtrip');
 
-     name := "$testRoundtripName";
-     requestspecification :=  self.request .map request2requestSpecification();
-     assertresponse := self.response .map response2responseSpecification();
-}
+     testRoundtripName := self.roundtripName;
+     log(self.precondition);
 
-mapping Request::request2requestSpecification(): RequestSpecification {
-    log('Transforming Request to RequestSpecification');
-
-    if (self.method.toString() = "POST") then {
-        method := RestAssured::Method::POST;
+     if(self.precondition != null) then {
+             precondition := self.precondition;
      } endif;
-    if (self.method.toString() = "PUT") then {
-        method := RestAssured::Method::PUT;
-     } endif;
-     // method is not set if it is "GET", as get is the default
-
-    path := pathQuery(self.url);
+     requestspecification :=  self.httprequest .map httprequest2requestSpecification();
+     responsespecification := self.httpresponse .map httpresponse2responseSpecification();
 }
 
-mapping Response::response2responseSpecification(): ResponseSpecification {
-     log('Transforming Responne to ResponseSpecification');
+mapping HttpRequest::httprequest2requestSpecification(): RequestSpecification {
+     log('Transforming HTTPRequest to RequestSpecification');
+
+     method := self.httpMethod;
+     url := self.url;
+     requestDatum := self.httpRequestDatum;
+     receiver := self.receiver;
 }
 
-query pathQuery( url: URL) : String {
-    log('Query path of URL');
+mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecification {
+     log('Transforming HTTPResponse to ResponseSpecification');
 
-    return url.path;
-} */
+     responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
+
+     statusmatcher := object IsIn {
+        value := self.httpStatus;
+     };
+
+     var bodyMatcherGroup := new BodyMatcherGroup();
+     self.httpresponsedatum->forEach(httpresponsedatum) {
+        var bodyMatcher := new BodyMatcher();
+        bodyMatcher.matcher := object HasXPath {
+                                xPath := httpresponsedatum.httpResponseDatumXPath;
+                              };
+        bodyMatcherGroup.bodymatcher += bodyMatcher;
+     };
+     bodymatchergroup := bodyMatcherGroup;
+}
+
+mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
+     log('Transforming HTTPResponseDatum to ResponseDatum');
+
+     responseDatumName := self.httpResponseDatumName;
+     responseDatumXPath := self.httpResponseDatumXPath;
+}
