@@ -67,9 +67,3 @@ mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
      responseDatumName := self.httpResponseDatumName;
      responseDatumXPath := self.httpResponseDatumXPath;
 }
-
-query xPathQuery(httpResponseDatum: HttpResponseDatum) : String {
-    log('Query XPath path of HTTPResponseDatum');
-
-    return httpResponseDatum.httpResponseDatumXPath;
-}
