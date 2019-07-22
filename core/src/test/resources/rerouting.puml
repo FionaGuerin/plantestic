@@ -1,4 +1,4 @@
-@startuml
+SEQUENCE @startuml
 
 participant "Voicemanager" as VM
 participant CRS
