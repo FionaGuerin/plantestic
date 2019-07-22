@@ -37,6 +37,7 @@ public class Test {
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
             substitutor = new StringSubstitutor(paramsMap);
+			System.out.println("isEnableUndefinedVariable Allowed: " + substitutor.isEnableUndefinedVariableException());
             ScriptEngineManager factory = new ScriptEngineManager();
             engine = factory.getEngineByName("JavaScript");
 			System.out.println(paramsMap);
@@ -105,7 +106,7 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url/]"))
+.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/]_path}") + substitutor.replace("[requestSpecification.url/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
