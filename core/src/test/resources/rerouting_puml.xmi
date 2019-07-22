@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:puml="http://www.eclipse.plantuml/Puml">
+  <umlDiagrams xsi:type="puml:SequenceUml">
+    <umlElements xsi:type="puml:Participant" name="VM" longname="Voicemanager"/>
+    <umlElements xsi:type="puml:Participant" name="CRS"/>
+    <umlElements xsi:type="puml:Participant" name="CCC"/>
+    <umlElements xsi:type="puml:Divider" name="Rerouting">
+      <value>preparation</value>
+    </umlElements>
+    <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.2"
+        userTwo="#//@umlDiagrams.0/@umlElements.1">
+      <content xsi:type="puml:Request" method="POST" url="/ccc/rerouteOptions">
+        <requestParam name="countryCode" value="${countryCode}"/>
+        <requestParam name="positionCountryCode" value="${positionCountryCode}"/>
+        <requestParam name="sourceEventType" value="${sourceEventType}"/>
+      </content>
+    </umlElements>
+    <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.2">
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+          deactivate="#//@umlDiagrams.0/@umlElements.1">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+            userTwo="#//@umlDiagrams.0/@umlElements.2">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+            <extractParam name="uiswitch" value="/UISWITCH"/>
+            <extractParam name="reroute" value="/REROUTE"/>
+            <extractParam name="warmhandover" value="/WARMHANDOVER"/>
+          </content>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.2"
+          userTwo="#//@umlDiagrams.0/@umlElements.0">
+        <content xsi:type="puml:Request" method="GET" url="/ccc/events/${eventId}/isconnected"/>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.0"
+          deactivate="#//@umlDiagrams.0/@umlElements.0">
+        <umlElements xsi:type="puml:Alternative" text="${voiceEstablished} == true">
+          <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+              userTwo="#//@umlDiagrams.0/@umlElements.2">
+            <content xsi:type="puml:Response">
+              <code>200</code>
+              <extractParam name="eventid1" value="/VoiceStatus/eventId1"/>
+              <extractParam name="agent1" value="/VoiceStatus/agent1/connectionStatus"/>
+              <extractParam name="agent2" value="/VoiceStatus/agent2/connectionStatus"/>
+            </content>
+          </umlElements>
+          <elseBlocks xsi:type="puml:Else" text="${voiceEstablished} == false">
+            <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+                userTwo="#//@umlDiagrams.0/@umlElements.2">
+              <content xsi:type="puml:Response">
+                <code>400</code>
+                <code>404</code>
+                <code>500</code>
+              </content>
+            </umlElements>
+          </elseBlocks>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:Note">
+        <value>CCC</value>
+      </umlElements>
+    </umlElements>
+  </umlDiagrams>
+</puml:UmlDiagram>

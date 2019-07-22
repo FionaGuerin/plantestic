@@ -14,25 +14,32 @@ class PumlParserTest : StringSpec({
         MetaModelSetup.doSetup()
 
         val umlDiagram = PumlParser.parse(MINIMAL_EXAMPLE_INPUT_PATH)
-
         printModel(umlDiagram)
 
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
     }
 
-    "Parsing works for the rerouting example".config(enabled = false) {
+    "Parsing works for the rerouting example" {
         MetaModelSetup.doSetup()
 
         val umlDiagram = PumlParser.parse(REROUTE_INPUT_PATH)
         printModel(umlDiagram)
+
+        (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
+        val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
+        sequenceDiagram.umlElements.filterIsInstance<Participant>().size shouldBe 3
     }
 
-    "Parsing works for the xcall example".config(enabled = false) {
+    "Parsing works for the xcall example" {
         MetaModelSetup.doSetup()
 
         val umlDiagram = PumlParser.parse(XCALL_INPUT_PATH)
         printModel(umlDiagram)
+
+        (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
+        val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
+        sequenceDiagram.umlElements.filterIsInstance<Participant>().size shouldBe 7
     }
 }) {
     companion object {

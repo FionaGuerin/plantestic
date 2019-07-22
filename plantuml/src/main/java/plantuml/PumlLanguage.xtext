@@ -261,14 +261,21 @@ QualifiedName:
 	{QualifiedName}
 	PUMLID;
 
-Request:
+RequestResponse:
+    Request | Response;
+
+Request returns RequestResponse:
     {Request}
-    method=RequestMethod url=STRING;
+    method=RequestMethod url=STRING ('(' requestParam+=RequestParam (',' requestParam+=RequestParam)* ')')?;
+
+RequestParam:
+    {RequestParam}
+    name=PUMLID ':' value=STRING;
 
 terminal RequestMethod:
     'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-Response:
+Response returns RequestResponse:
     {Response}
     code+=INT (',' code+=INT)* ('-' '(' extractParam+=ExtractParam (',' extractParam+=ExtractParam)* ')')?;
 
@@ -322,20 +329,20 @@ Autonumber:
 
 Activate returns UmlElementsContainer:
 	{Activate}
-	'ACTIVATE' activate=Participant
+	'ACTIVATE' activate=[Participant|PUMLID]
 	umlElements+=(SequenceElement)*
-	('DEACTIVATE' | 'DESTROY') deactivate=Participant;
+	('DEACTIVATE' | 'DESTROY') deactivate=[Participant|PUMLID];
 
 Alternative returns UmlElementsContainer:
 	{Alternative}
-	'ALT' text+=(PUMLID)*
+	'ALT' text=STRING
 	umlElements+=(SequenceElement)*
 	elseBlocks+=(Else)*
 	=> 'END';
 
 Else returns UmlElementsContainer:
 	{Else}
-	'ELSE' text+=(PUMLID)*
+	'ELSE' text=STRING
 	umlElements+=(SequenceElement)*;
 
 Group returns UmlElementsContainer:
@@ -364,14 +371,14 @@ UseLeft returns UmlUse:
 	(userOne=[Participant|PUMLID] | '[')
 	associationArrow=ARROW
 	// ('o<-' | '<-o' | 'o<-o' | '<-' | 'o<--' | '<--o' | 'o<--o' | '<--' | 'x<-' | '<-x' | 'x<-x' | 'x<--' | '<--x' | 'x<--x')
-	userTwo=[Participant|PUMLID] (':' (content=(Request | Response) | text+=(PUMLID)*))?;
+	userTwo=[Participant|PUMLID] (':' (content=RequestResponse | text+=(PUMLID)*))?;
 
 UseRight returns UmlUse:
 	{UseRight}
 	(userOne=[Participant|PUMLID])
 	associationArrow=ARROW
 	//('o->' | '->o' | 'o->o' | '->' | 'o-->' | '-->o' | 'o-->o' | '-->' | 'x->' | '->x' | 'x->x' | 'x-->' | '-->x' | 'x-->x')
-	(userTwo=[Participant|PUMLID] | ']') (':' (content=(Request | Response) | text+=(PUMLID)*))?;
+	(userTwo=[Participant|PUMLID] | ']') (':' (content=RequestResponse | text+=(PUMLID)*))?;
 
 UmlElementsContainer:
 	{UmlElementsContainer}
@@ -474,10 +481,10 @@ terminal NEWLINE:
 
 // ID
 terminal PUMLID:
-	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | '*' | '?' | '$')
-	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | ':' | '*' | '?' | '/' | '{' | '}' | '[' | ']' | '$' | '=')*;
-// Single line comment
+	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | '*' | '?')
+	('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '\"\"' | '//' | '\\' | ':' | '*' | '?')*;
 
+// Single line comment
 terminal SL_COMMENT:
 	"'" !('\n' | '\r')* ('\r'? '\n')?;
 
