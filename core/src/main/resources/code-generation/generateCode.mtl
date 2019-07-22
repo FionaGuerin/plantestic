@@ -45,29 +45,28 @@ public class Test {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
-		if([testRoundtrip.precondition/]) {
+		[comment]
+            If we have a alt condition, we can now use the engine to evaluate it. A basic example how to to use it:
+            engine.eval("value = 10");
+            Boolean greaterThan5 = (Boolean) engine.eval("value > 5");
+            Boolean lessThan5 = (Boolean) engine.eval("value < 5");
+
+            System.out.println("10 > 5? " + greaterThan5); // true
+            System.out.println("10 < 5? " + lessThan5); // false
+
+            If altCondition is a String with the condition we need to replace the templating variables first:
+            String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap);
+            Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+
+            Now we can use the boolean in our if-Condition
+            if(evaluatedCondition) ...
+        [/comment]
+        String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.precondition/]");
+        Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+		if(evaluatedCondition) {
 			[testRoundtrip.generateTestRoundtrip()/]
 		}		
 		[/if]		
-
-		[comment]
-		If we have a alt condition, we can now use the engine to evaluate it. A basic example howo to use it:
-        engine.eval("value = 10");
-        Boolean greaterThan5 = (Boolean) engine.eval("value > 5");
-        Boolean lessThan5 = (Boolean) engine.eval("value < 5");
-
-        System.out.println("10 > 5? " + greaterThan5); // true
-        System.out.println("10 < 5? " + lessThan5); // false
-
-        If altCondition is a String with the condition we need to replace the templating variables first:
-        String evaluatableAltConditionString = StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap);
-        Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
-
-        Now we can use the boolean in our if-Condition
-        if(evaluatedCondition) ...
-
-		[/comment]
-
 	[/for]
 	}
 }
