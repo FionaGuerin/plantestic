@@ -45,8 +45,10 @@ mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecificatio
 
      responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
 
-     statusmatcher := object IsIn {
-        value := self.httpStatus;
+     if(self.httpStatus->notEmpty()) {
+         statusmatcher := object IsIn {
+            value := self.httpStatus;
+         };
      };
 
      var bodyMatcherGroup := new BodyMatcherGroup();
