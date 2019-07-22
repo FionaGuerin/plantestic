@@ -1,17 +1,18 @@
-id = '123'
-testCondition = '"SomeValue"'
+[templating]
+    id = '123'
+    testCondition = '"SomeValue"'
 
 [A]
     username = 'Test'
     password = '123test'
-    path = 'https://www.A.com'
+    path = '/testA'
 
 [B]
     username = 'Test'
     password = '123test'
-    path = 'https://www.B.com'
+    path = '/testB'
 
 [testReceiver]
     username = 'Test'
     password = '123test'
-    path = 'https://www.testReceiver.com'
+    path = '/testTestReceiver'

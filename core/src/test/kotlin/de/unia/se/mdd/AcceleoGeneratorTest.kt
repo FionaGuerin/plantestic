@@ -9,6 +9,14 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.joor.Reflect
 import java.io.File
+import org.apache.commons.text.StringSubstitutor
+import com.moandjiezana.toml.Toml
+import java.nio.file.Files
+import java.nio.file.Files.readAllBytes
+
+
+
+
 
 class AcceleoGeneratorTest : StringSpec({
     "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = true) {
@@ -34,11 +42,11 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testA/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
 
         MetaModelSetup.doSetup()
 
@@ -49,7 +57,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -81,7 +89,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for rerouting".config(enabled = false) {
@@ -96,7 +104,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -128,7 +136,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
@@ -143,7 +151,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request

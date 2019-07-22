@@ -36,7 +36,7 @@ public class Test {
 			System.out.println(osAppropriatePath);
 			String paramsFileContent = new String(Files.readAllBytes(path));
 			paramsMap = new Toml().read(paramsFileContent).toMap();
-            substitutor = new StringSubstitutor(paramsMap);
+            substitutor = new StringSubstitutor(unnestTomlMap(paramsMap));
             ScriptEngineManager factory = new ScriptEngineManager();
             engine = factory.getEngineByName("JavaScript");
 			System.out.println(paramsMap);
@@ -71,6 +71,21 @@ public class Test {
 		[/if]		
 	[/for]
 	}
+
+	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
+            if(entry.getValue() instanceof HashMap){
+                Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
+                for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
+                    resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
+                }
+            } else {
+                resultMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return resultMap;
+    }
 }
 [/file]
 [/template]
