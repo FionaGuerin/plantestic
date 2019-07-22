@@ -21,17 +21,17 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the minimal example".config(enabled = false) {
+    "End2End test receives request on mock server for the minimal example".config(enabled = true) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -41,7 +41,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End works for the rerouting example".config(enabled = true) {
+    "End2End works for the rerouting example".config(enabled = false) {
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
@@ -49,7 +49,7 @@ class End2EndTest : StringSpec({
             .create(REROUTE_CONFIG_PATH)
     }
 
-    "End2End test works for the xcall example".config(enabled = true) {
+    "End2End test works for the xcall example".config(enabled = false) {
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code

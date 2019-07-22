@@ -9,7 +9,7 @@ import org.joor.Reflect
 import java.io.File
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code".config(enabled = false) {
+    "Transform a Rest Assured EObject input to Java Code".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_PATH)
@@ -22,7 +22,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code".config(enabled = false) {
+    "Acceleo generation produces valid Java code".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(RESTASSURED_INPUT_PATH)
@@ -32,7 +32,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/TestName.java").readText()).create("")
+        Reflect.compile("com.mdd.test.Test", File(OUTPUT_PATH + "/scenario.java").readText()).create("")
     }
 }) {
     companion object {
