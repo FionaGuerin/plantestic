@@ -1,0 +1,45 @@
+id = "123"
+eventId = "645"
+vin = "987"
+
+
+[returnValues]
+    homeCountry = ""
+    positionCountryCode = ""
+    brand = ""
+    serviceType = ""
+    voiceTargets = ""
+
+
+[Voicemanager]
+    username = "Test"
+    password = "123test"
+
+
+[CRS]
+    username = "Test"
+    password = "123test"
+
+
+[CCC]
+    username = "Test"
+    password = "123test"
+
+
+[XCS]
+    username = "Test"
+    password = "123test"
+
+
+[DataService]
+    username = "Test"
+    password = "123test"
+
+[EventNotifier]
+    username = "Test"
+    password = "123test"
+
+
+[ELOS]
+    username = "Test"
+    password = "123test"

@@ -9,7 +9,7 @@ object Main {
         // runTransformationPipeline()
     }
 
-    fun runTransformationPipeline(inputUriString: String, outputPath: String) {
+    fun runTransformationPipeline(inputUriString: String) {
         MetaModelSetup.doSetup()
 
         val pumlDiagramModel = PumlParser.parse(inputUriString)

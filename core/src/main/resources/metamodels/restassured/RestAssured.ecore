@@ -14,10 +14,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="requestDatum" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="receiver" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestdatum" upperBound="-1"
+        eType="#//RequestDatum" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResponseSpecification" instanceTypeName="ResponseSpecification">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bodymatchergroup" eType="#//BodyMatcherGroup"
@@ -50,9 +50,13 @@
         eType="#//Matcher" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResponseDatum" instanceTypeName="ResponseDatum">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="responseDatumName" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="responseDatumXPath" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xPath" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestDatum" instanceTypeName="RequestDatum">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
