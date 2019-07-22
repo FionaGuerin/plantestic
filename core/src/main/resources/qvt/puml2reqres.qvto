@@ -28,7 +28,7 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
         };
         message := umlUses->at(umlUsesIndex);
         if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
-            httpResponseElement := new HttpResponse(); // TODO
+            httpResponseElement := message.umlUse2httpResponse();
             umlUsesIndex := umlUsesIndex + 1;
         };
         var roundtripElement : Roundtrip = new Roundtrip();
@@ -43,5 +43,11 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
 mapping UmlUse::umlUse2httpRequest(): HttpRequest {
     httpMethod := "GET"; // TODO
     url := "/test"; // TODO
+    httpRequestDatum += "testDatum1"; // TODO
+    httpRequestDatum += "testDatum2"; // TODO
     receiver := "testReceiver"; // TODO
+}
+
+mapping UmlUse::umlUse2httpResponse(): HttpResponse {
+    // TODO
 }
