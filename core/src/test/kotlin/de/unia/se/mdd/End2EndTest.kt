@@ -17,7 +17,7 @@ val wireMockServer = WireMockServer(8080)
 
 class End2EndTest : StringSpec({
 
-    "End2End test produces valid Java code for the minimal example".config(enabled = true) {
+    "End2End test produces valid Java code for the minimal example".config(enabled = false) {
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
@@ -41,7 +41,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End works for the rerouting example".config(enabled = true) {
+    "End2End works for the rerouting example".config(enabled = false) {
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
@@ -49,7 +49,7 @@ class End2EndTest : StringSpec({
             .create(REROUTE_CONFIG_PATH)
     }
 
-    "End2End test works for the xcall example".config(enabled = true) {
+    "End2End test works for the xcall example".config(enabled = false) {
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code
