@@ -25,7 +25,7 @@ class End2EndTest : StringSpec({
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the minimal example".config(enabled = true) {
+    "End2End test receives request on mock server for the minimal example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
