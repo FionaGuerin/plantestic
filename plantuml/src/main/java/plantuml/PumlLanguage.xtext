@@ -262,7 +262,7 @@ QualifiedName:
 	PUMLID;
 
 RequestResponse:
-    {RequestResponse};
+    Request | Response;
 
 Request returns RequestResponse:
     {Request}
@@ -367,14 +367,14 @@ UseLeft returns UmlUse:
 	(userOne=[Participant|PUMLID] | '[')
 	associationArrow=ARROW
 	// ('o<-' | '<-o' | 'o<-o' | '<-' | 'o<--' | '<--o' | 'o<--o' | '<--' | 'x<-' | '<-x' | 'x<-x' | 'x<--' | '<--x' | 'x<--x')
-	userTwo=[Participant|PUMLID] (':' (content=(Request | Response) | text+=(PUMLID)*))?;
+	userTwo=[Participant|PUMLID] (':' (content=RequestResponse | text+=(PUMLID)*))?;
 
 UseRight returns UmlUse:
 	{UseRight}
 	(userOne=[Participant|PUMLID])
 	associationArrow=ARROW
 	//('o->' | '->o' | 'o->o' | '->' | 'o-->' | '-->o' | 'o-->o' | '-->' | 'x->' | '->x' | 'x->x' | 'x-->' | '-->x' | 'x-->x')
-	(userTwo=[Participant|PUMLID] | ']') (':' (content=(Request | Response) | text+=(PUMLID)*))?;
+	(userTwo=[Participant|PUMLID] | ']') (':' (content=RequestResponse | text+=(PUMLID)*))?;
 
 UmlElementsContainer:
 	{UmlElementsContainer}
