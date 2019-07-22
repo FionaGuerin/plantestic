@@ -9,19 +9,15 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.joor.Reflect
 import java.io.File
-import org.apache.commons.text.StringSubstitutor
-import com.moandjiezana.toml.Toml
+// import org.apache.commons.text.StringSubstitutor
+// import com.moandjiezana.toml.Toml
 import io.kotlintest.Description
 import io.kotlintest.TestResult
-import java.nio.file.Files
-import java.nio.file.Files.readAllBytes
-
-
-
-
+// import java.nio.file.Files
+// import java.nio.file.Files.readAllBytes
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = false) {
+    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
@@ -34,7 +30,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal example".config(enabled = false) {
+    "Acceleo generation produces valid Java code for minimal example".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
@@ -47,7 +43,7 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the minimal example".config(enabled = true) {
+    "Acceleo generation test receives request on mock server for the minimal example".config(enabled = false) {
         wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123")).willReturn(WireMock.aResponse().withBody("+")))
 
         MetaModelSetup.doSetup()
@@ -166,11 +162,11 @@ class AcceleoGeneratorTest : StringSpec({
         private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello_restassured.xmi").path
         private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("end2end_test_config_minimal_hello.toml").path
 
-        //TODO: set correct path to xmi file
+        // TODO: set correct path to xmi file
         private val REROUTING_INPUT_PATH = Resources.getResource("minimal_hello_restassured.xmi").path
         private val REROUTING_CONFIG_PATH = Resources.getResource("end2end_test_config_rerouting.toml").path
 
-        //TODO: set correct path to xmi-file
+        // TODO: set correct path to xmi-file
         private val XCALL_INPUT_PATH = Resources.getResource("minimal_hello_restassured.xmi").path
         private val XCALL_CONFIG_PATH = Resources.getResource("end2end_test_config_xcall.toml").path
 
