@@ -36,14 +36,21 @@ mapping HttpRequest::httprequest2requestSpecification(): RequestSpecification {
 
      method := self.httpMethod;
      url := self.url;
-     // requestDatum := self.httpRequestDatum;
+     requestdatum := self.httprequestdatum -> map httpRequestDatum2requestdatum();
      receiver := self.receiver;
+}
+
+mapping HttpRequestDatum::httpRequestDatum2requestdatum(): RequestDatum {
+    log('Transforming HttpRequestDatum to RequestDatum');
+
+    variableName := self.variableName;
+    value := self.value;
 }
 
 mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecification {
      log('Transforming HTTPResponse to ResponseSpecification');
 
-     // responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
+     responsedatum := self.httpresponsedatum -> map httpresponsedatum2responsedatum();
 
      if(self.httpStatus->notEmpty()) {
          statusmatcher := object IsIn {
@@ -51,20 +58,20 @@ mapping HttpResponse::httpresponse2responseSpecification(): ResponseSpecificatio
          };
      };
 
-     /*var bodyMatcherGroup := new BodyMatcherGroup();
+     var bodyMatcherGroup := new BodyMatcherGroup();
      self.httpresponsedatum->forEach(httpresponsedatum) {
         var bodyMatcher := new BodyMatcher();
         bodyMatcher.matcher := object HasXPath {
-                                xPath := httpresponsedatum.httpResponseDatumXPath;
+                                xPath := httpresponsedatum.xPath;
                               };
         bodyMatcherGroup.bodymatcher += bodyMatcher;
      };
-     bodymatchergroup := bodyMatcherGroup;*/
+     bodymatchergroup := bodyMatcherGroup;
 }
 
-/*mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
+mapping HttpResponseDatum::httpresponsedatum2responsedatum(): ResponseDatum {
      log('Transforming HTTPResponseDatum to ResponseDatum');
 
-     responseDatumName := self.httpResponseDatumName;
-     responseDatumXPath := self.httpResponseDatumXPath;
-}*/
+     variableName := self.variableName;
+     xPath := self.xPath;
+}
