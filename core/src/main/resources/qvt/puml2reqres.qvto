@@ -17,41 +17,60 @@ main() {
 
 mapping SequenceUml::transformUmlDiagram(): Scenario {
     scenarioName := diagramName;
+
     var roundtripId : Integer := 1;
-    var umlUses := self.umlElements[UmlUse];
-    var umlUsesSize : Integer := umlUses->size();
-    var umlUsesIndex : Integer := 1;
-    var httpRequestElement : HttpRequest;
-    var httpResponseElement : HttpResponse;
-    while (umlUsesIndex <= umlUsesSize) {
-        var message : UmlUse := umlUses->at(umlUsesIndex);
-        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
-            httpRequestElement := message.umlUse2httpRequest();
-            umlUsesIndex := umlUsesIndex + 1;
+
+    var umlElements := self.umlElements;
+    var umlElementsSize : Integer := umlElements->size();
+    log ("", umlElementsSize);
+    var umlElementsIndex : Integer := 1;
+
+    while (umlElementsIndex <= umlElementsSize) {
+        var sequenceElement : SequenceElement := umlElements->at(umlElementsIndex);
+        if (sequenceElement.oclIsTypeOf(UseLeft)) {
+            log("Found request");
+            var useLeft : UseLeft := sequenceElement.oclAsType(UseLeft);
+            assert fatal ( useLeft.content != null )
+                with log ( 'UseLeft needs to contain content');
+            var requestresponse : RequestResponse := useLeft.content;
+            assert fatal ( requestresponse.oclIsTypeOf(Request) )
+                with log ( 'Requestresponse needs to be a request');
+            var request : Request := requestresponse.oclAsType(Request);
+            var roundtripElement : Roundtrip := new Roundtrip();
+            roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+            roundtripElement.httprequest := request.request2httpRequest();
+
+            var foundResponse : Boolean := false;
+            while (not foundResponse) {
+                umlElementsIndex := umlElementsIndex + 1;
+                sequenceElement := umlElements->at(umlElementsIndex);
+                if (sequenceElement.oclIsTypeOf(Activate)) {
+                    log("HELLO");
+                    var activate : Activate := sequenceElement.oclAsType(Activate);
+                    useLeft := activate.umlElements[UseLeft]->at(1);
+                    assert fatal ( useLeft.content != null )
+                        with log ( 'UseLeft needs to contain content');
+                    requestresponse := useLeft.content;
+                    assert fatal ( requestresponse.oclIsTypeOf(Response) )
+                        with log ( 'Requestresponse needs to be a response');
+                    var response : Response := requestresponse.oclAsType(Response);
+                    roundtripElement.httpresponse := response.response2httpResponse();
+                    foundResponse := true;
+                }
+            };
+            roundtrip := roundtripElement;
+        }
+        elif (sequenceElement.oclIsTypeOf(Alternative)) {
         };
-        message := umlUses->at(umlUsesIndex);
-        if (message.associationArrow = AssociationType::DIRECTIONALRIGHT) {
-            httpResponseElement := message.umlUse2httpResponse();
-            umlUsesIndex := umlUsesIndex + 1;
-        };
-        var roundtripElement : Roundtrip = new Roundtrip();
-        roundtripElement.roundtripName := "roundtrip"+roundtripId.toString();
-        roundtripElement.httprequest := httpRequestElement;
-        roundtripElement.httpresponse := httpResponseElement;
-        roundtrip += roundtripElement;
-        roundtripId := roundtripId + 1;
-        umlUsesIndex := umlUsesIndex + 1;
-    }
+        log("Found nothing");
+        umlElementsIndex := umlElementsIndex + 1;
+    };
+
+
 }
 
-mapping UmlUse::umlUse2httpRequest(): HttpRequest {
-    httpMethod := "GET"; // TODO
-    url := "/test"; // TODO
-    // httpRequestDatum += "testDatum1"; // TODO
-    // httpRequestDatum += "testDatum2"; // TODO
-    receiver := "testReceiver"; // TODO
+mapping Request::request2httpRequest(): HttpRequest {
 }
 
-mapping UmlUse::umlUse2httpResponse(): HttpResponse {
-    // TODO
+mapping Response::response2httpResponse(): HttpResponse {
 }
