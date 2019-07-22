@@ -6,6 +6,7 @@ import io.kotlintest.specs.StringSpec
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import plantuml.puml.Participant
 import plantuml.puml.SequenceUml
 
 class PumlParserTest : StringSpec({

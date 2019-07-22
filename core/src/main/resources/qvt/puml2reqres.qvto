@@ -40,6 +40,7 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
         roundtripElement.httpresponse := httpResponseElement;
         roundtrip += roundtripElement;
         roundtripId := roundtripId + 1;
+        umlUsesIndex := umlUsesIndex + 1;
     }
 }
 
