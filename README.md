@@ -85,6 +85,11 @@ This gradle task is also automatically executed when you build the project.
 
 ## How to use
 ### Input
+The input is a PlantUML sequence diagram. 
+This sequence diagram contains several participants and interactions between the participants. 
+One participiant is the client who calls the test cases. The other participants are services of the implementation. 
+In the example diagram, the client is `CCC` and the services are `CRS` and `Voicemanager`.
+
 ![](./core/src/test/resources/rerouting.png)
 
 
