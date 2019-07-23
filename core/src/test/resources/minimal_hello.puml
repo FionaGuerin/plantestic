@@ -5,7 +5,7 @@ PARTICIPANT B
 
 A -> B : GET "/hello"
 activate B
-B -> A
+B -> A : 200
 deactivate B
 
 @enduml

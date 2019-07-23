@@ -1,6 +1,8 @@
 modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
 
+configuration property diagramName : String;
+
 transformation puml2reqres(in input: puml, out output: reqres);
 
 main() {
@@ -9,18 +11,158 @@ main() {
     assert fatal ( input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml]->size() = 1 )
         with log('Input does not contain exactly one SequenceDiagram');
 
-     input.objectsOfType(UmlDiagram).map transformUmlDiagram();
+     input.objectsOfType(UmlDiagram).umlDiagrams[SequenceUml].map transformUmlDiagram();
 }
 
-mapping UmlDiagram::transformUmlDiagram(): Scenario {
-    scenarioName := "scenario";
-    var httpRequestElement := new HttpRequest();
-    httpRequestElement.httpMethod := "GET";
-    httpRequestElement.url := "/test";
-    httpRequestElement.receiver := "testReceiver";
-    var roundtripElement = new Roundtrip();
-    roundtripElement.roundtripName := "roundtrip";
-    roundtripElement.httprequest := httpRequestElement;
-    roundtripElement.httpresponse := new HttpResponse();
-    roundtrip += roundtripElement;
+mapping SequenceUml::transformUmlDiagram(): Scenario {
+    scenarioName := diagramName;
+    var roundtripId : Integer := 1;
+
+    var umlElements : OrderedSet(SequenceElement) := self.umlElements->flattenSequenceElements();
+    var umlElementsSize : Integer := umlElements->size();
+    var umlElementsIndex : Integer := 1;
+
+    while (umlElementsIndex <= umlElementsSize) {
+        var sequenceElement : SequenceElement := umlElements->at(umlElementsIndex);
+        if (sequenceElement.oclIsTypeOf(UseLeft)) {
+            var useLeft : UseLeft := sequenceElement.oclAsType(UseLeft);
+            var request : Request := useLeft.useLeft2request();
+            var httpRequestElement : HttpRequest := request.request2httpRequest();
+            httpRequestElement.receiver := useLeft.userTwo.name;
+
+            umlElementsIndex := umlElementsIndex + 1;
+            sequenceElement := umlElements->at(umlElementsIndex);
+
+            if (sequenceElement.oclIsTypeOf(UseLeft)) {
+                useLeft := sequenceElement.oclAsType(UseLeft);
+                var response : Response := useLeft.useLeft2response();
+                var httpResponseElement : HttpResponse := response.response2httpResponse();
+
+                var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+            }
+            elif (sequenceElement.oclIsTypeOf(Alternative)) {
+                var httpRequestElementCopy : HttpRequest := new HttpRequest();
+                httpRequestElementCopy.httpMethod := httpRequestElement.httpMethod;
+                httpRequestElementCopy.url := httpRequestElement.url;
+                httpRequestElementCopy.httprequestdatum := httpRequestElement.httprequestdatum;
+                httpRequestElementCopy.receiver := httpRequestElement.receiver;
+
+                var alternative : Alternative := sequenceElement.oclAsType(Alternative);
+                useLeft := alternative.umlElements->at(1).oclAsType(UseLeft);
+                var response : Response := useLeft.useLeft2response();
+                var httpResponseElement : HttpResponse := response.response2httpResponse();
+
+                var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElementCopy, httpResponseElement);
+                roundtripElement.precondition := alternative.text;
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+
+                var elseElement : Else := alternative.elseBlocks->at(1).oclAsType(Else);
+                useLeft := elseElement.umlElements->at(1).oclAsType(UseLeft);
+                response := useLeft.useLeft2response();
+                httpResponseElement := response.response2httpResponse();
+
+                roundtripElement := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
+                roundtripElement.precondition := elseElement.text;
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+
+            };
+        }
+        elif (sequenceElement.oclIsTypeOf(Alternative)) {
+            var alternative : Alternative := sequenceElement.oclAsType(Alternative);
+            var useLeft : UseLeft := alternative.umlElements->at(1).oclAsType(UseLeft);
+            var request : Request := useLeft.useLeft2request();
+            var httpRequestElement : HttpRequest := request.request2httpRequest();
+
+            useLeft := alternative.umlElements->at(2).oclAsType(UseLeft);
+            var response : Response := useLeft.useLeft2response();
+            var httpResponseElement : HttpResponse := response.response2httpResponse();
+
+            var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
+            roundtripElement.precondition := alternative.text;
+            roundtrip += roundtripElement;
+            roundtripId := roundtripId + 1;
+        };
+        umlElementsIndex := umlElementsIndex + 1;
+    };
+}
+
+helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(SequenceElement) {
+    var sequenceElements : OrderedSet(SequenceElement);
+    self->forEach(umlElement) {
+        if (umlElement.oclIsTypeOf(UseLeft)) {
+            var useLeft : UseLeft := umlElement.oclAsType(UseLeft);
+            sequenceElements += useLeft;
+        }
+        elif (umlElement.oclIsTypeOf(Alternative)) {
+            var alternative : Alternative := umlElement.oclAsType(Alternative);
+            sequenceElements += alternative.map flattenAlternative();
+        }
+        elif (umlElement.oclIsTypeOf(Activate)) {
+            var activate : Activate := umlElement.oclAsType(Activate);
+            sequenceElements += activate.umlElements->flattenSequenceElements();
+        };
+    };
+    return sequenceElements;
+}
+
+mapping Alternative::flattenAlternative():Alternative {
+    umlElements += self.umlElements->flattenSequenceElements();
+    elseBlocks += self.elseBlocks->at(1).oclAsType(Else).map flattenElse();
+    text := self.text;
+}
+
+mapping Else::flattenElse():Else {
+    umlElements += self.umlElements->flattenSequenceElements();
+    text := self.text;
+}
+
+helper UseLeft::useLeft2response():Response {
+    assert fatal ( self.content != null )
+        with log ( 'UseLeft needs to contain content');
+    var requestresponse : RequestResponse := self.content;
+    assert fatal ( requestresponse.oclIsTypeOf(Response) )
+        with log ( 'Requestresponse needs to be a response');
+    return requestresponse.oclAsType(Response);
+}
+
+helper UseLeft::useLeft2request():Request {
+    assert fatal ( self.content != null )
+        with log ( 'UseLeft needs to contain content');
+    var requestresponse : RequestResponse := self.content;
+    assert fatal ( requestresponse.oclIsTypeOf(Request) )
+        with log ( 'Requestresponse needs to be a request');
+    return requestresponse.oclAsType(Request);
+}
+
+helper generateRoundtrip(roundtripId : Integer, httpRequest : HttpRequest, httpResponse : HttpResponse):Roundtrip {
+    var roundtripElement : Roundtrip := new Roundtrip();
+    roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+    roundtripElement.httprequest := httpRequest;
+    roundtripElement.httpresponse := httpResponse;
+    return roundtripElement;
+}
+
+mapping Request::request2httpRequest():HttpRequest {
+    httpMethod := self.method;
+    url := self.url;
+    httprequestdatum += self.requestParam->map requestParam2httpRequestDatum();
+}
+
+mapping Response::response2httpResponse(): HttpResponse {
+    httpStatus := self.code->toString();
+    httpresponsedatum += self.extractParam->map extractParam2httpResponseDatum();
+}
+
+mapping RequestParam::requestParam2httpRequestDatum():HttpRequestDatum {
+    variableName := self.name;
+    value := self.value;
+}
+
+mapping ExtractParam::extractParam2httpResponseDatum():HttpResponseDatum {
+    variableName := self.name;
+    xPath := self.value;
 }
