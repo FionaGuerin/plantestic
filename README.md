@@ -84,6 +84,9 @@ The language and the parser are located in `plantuml/src/main/xtext-gen` and `pl
 This gradle task is also automatically executed when you build the project.
 
 ## How to use
+### Input
+![](./core/src/test/resources/rerouting.png)
+
 
 
 ## Conventions
