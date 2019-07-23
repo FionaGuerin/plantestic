@@ -64,6 +64,30 @@ class M2MTransformerTest : StringSpec({
         printModel(restAssuredOutputModel)
     }
 
+    "Transform the rerouting Request Response Pair input to a Rest Assured EObject" {
+        MetaModelSetup.doSetup()
+
+        val reqresInputModel =
+            ResourceSetImpl().getResource(URI.createFileURI(REROUTING_REQRES_INPUT_PATH), true).contents[0]
+
+        val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
+        restAssuredOutputModel shouldNotBe null
+
+        printModel(restAssuredOutputModel)
+    }
+
+    "Transform the xcall Request Response Pair input to a Rest Assured EObject" {
+        MetaModelSetup.doSetup()
+
+        val reqresInputModel =
+            ResourceSetImpl().getResource(URI.createFileURI(XCALL_REQRES_INPUT_PATH), true).contents[0]
+
+        val restAssuredOutputModel = M2MTransformer.transformReqRes2RestAssured(reqresInputModel)
+        restAssuredOutputModel shouldNotBe null
+
+        printModel(restAssuredOutputModel)
+    }
+
     "Transform complex Request Response Pair input to a Rest Assured EObject" {
         MetaModelSetup.doSetup()
 
@@ -81,7 +105,9 @@ class M2MTransformerTest : StringSpec({
         private val REROUTING_PUML_INPUT_PATH = Resources.getResource("rerouting_puml.xmi").path
         private val XCALL_PUML_INPUT_PATH = Resources.getResource("xcall_puml.xmi").path
 
-        private val MINIMAL_HELLO_REQRES_INPUT_PATH = Resources.getResource("minimal_hello_reqres.xmi").path // TODO
+        private val MINIMAL_HELLO_REQRES_INPUT_PATH = Resources.getResource("minimal_hello_reqres.xmi").path
+        private val REROUTING_REQRES_INPUT_PATH = Resources.getResource("rerouting_reqres.xmi").path
+        private val XCALL_REQRES_INPUT_PATH = Resources.getResource("xcall_reqres.xmi").path
         private val COMPLEX_REQRES_INPUT_PATH = Resources.getResource("complex_hello_reqres.xmi").path
 
         fun printModel(model: EObject) {
