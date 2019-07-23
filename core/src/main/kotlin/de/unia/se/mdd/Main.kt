@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import java.io.File
 import java.nio.file.Paths

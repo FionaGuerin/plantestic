@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import com.google.common.io.Resources
 import io.kotlintest.shouldBe
