@@ -38,11 +38,7 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
                 var response : Response := useLeft.useLeft2response();
                 var httpResponseElement : HttpResponse := response.response2httpResponse();
 
-                var roundtripElement : Roundtrip := new Roundtrip();
-                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
-                roundtripElement.httprequest := httpRequestElement;
-                roundtripElement.httpresponse := httpResponseElement;
-
+                var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
                 roundtrip += roundtripElement;
                 roundtripId := roundtripId + 1;
             }
@@ -58,28 +54,18 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
                 var response : Response := useLeft.useLeft2response();
                 var httpResponseElement : HttpResponse := response.response2httpResponse();
 
-                var roundtripElement : Roundtrip := new Roundtrip();
-                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElementCopy, httpResponseElement);
                 roundtripElement.precondition := alternative.text;
-                roundtripElement.httprequest := httpRequestElement;
-                roundtripElement.httpresponse := httpResponseElement;
-
                 roundtrip += roundtripElement;
                 roundtripId := roundtripId + 1;
-
 
                 var elseElement : Else := alternative.elseBlocks->at(1).oclAsType(Else);
                 useLeft := elseElement.umlElements->at(1).oclAsType(UseLeft);
                 response := useLeft.useLeft2response();
                 httpResponseElement := response.response2httpResponse();
 
-                roundtripElement := new Roundtrip();
-                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                roundtripElement := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
                 roundtripElement.precondition := elseElement.text;
-
-                roundtripElement.httprequest := httpRequestElementCopy;
-                roundtripElement.httpresponse := httpResponseElement;
-
                 roundtrip += roundtripElement;
                 roundtripId := roundtripId + 1;
 
@@ -95,20 +81,13 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
             var response : Response := useLeft.useLeft2response();
             var httpResponseElement : HttpResponse := response.response2httpResponse();
 
-            var roundtripElement : Roundtrip := new Roundtrip();
-            roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+            var roundtripElement : Roundtrip := generateRoundtrip(roundtripId, httpRequestElement, httpResponseElement);
             roundtripElement.precondition := alternative.text;
-
-            roundtripElement.httprequest := httpRequestElement;
-            roundtripElement.httpresponse := httpResponseElement;
-
             roundtrip += roundtripElement;
             roundtripId := roundtripId + 1;
         };
         umlElementsIndex := umlElementsIndex + 1;
     };
-
-
 }
 
 helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(SequenceElement) {
@@ -157,6 +136,14 @@ helper UseLeft::useLeft2request():Request {
     assert fatal ( requestresponse.oclIsTypeOf(Request) )
         with log ( 'Requestresponse needs to be a request');
     return requestresponse.oclAsType(Request);
+}
+
+helper generateRoundtrip(roundtripId : Integer, httpRequest : HttpRequest, httpResponse : HttpResponse):Roundtrip {
+    var roundtripElement : Roundtrip := new Roundtrip();
+    roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+    roundtripElement.httprequest := httpRequest;
+    roundtripElement.httpresponse := httpResponse;
+    return roundtripElement;
 }
 
 mapping Request::request2httpRequest():HttpRequest {
