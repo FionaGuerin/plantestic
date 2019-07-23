@@ -29,10 +29,10 @@ deactivate EventNotifier
 end
 
 alt "${xcsServiceType} == 'BCall'"
-XCS->ELOS : PUT "xcs/notify/${eventId}" (homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
+XCS -> ELOS : PUT "xcs/notify/${eventId}" (homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
 activate ELOS
 ELOS --> XCS : 200
-deactivate 
+deactivate ELOS
 end
 
 XCS -> CCC : POST "xcs/eventReceived" (eventId : "${eventId}", serviceType : "${serviceType}", homeCountry : "${homeCountry}", positionCountry : "${positionCountry}", brand : "${brand}")
