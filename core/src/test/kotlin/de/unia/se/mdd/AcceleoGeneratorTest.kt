@@ -13,6 +13,53 @@ import io.kotlintest.Description
 import io.kotlintest.TestResult
 
 class AcceleoGeneratorTest : StringSpec({
+    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = false) {
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+
+        printCode(outputFolder)
+    }
+
+    "Acceleo generation produces valid Java code for minimal hello".config(enabled = false) {
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+
+        // Now compile the resulting code
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+    }
+
+    "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withStatus(200)))
+
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
+    }
+
     "Transform a Rest Assured EObject input to Java Code for complex hello" {
         MetaModelSetup.doSetup()
 
@@ -26,7 +73,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for complex example" {
+    "Acceleo generation produces valid Java code for complex hello" {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
@@ -39,7 +86,7 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the complex example" {
+    "Acceleo generation test receives request on mock server for the complex hello" {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -98,8 +145,141 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for rerouting".config(enabled = false) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
+    "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = false) {
+        val body_CCC_CRS = """{
+            |"uiswitch" : "UISWITCH",
+            |"reroute" : "REROUTE",
+            |"warmhandover" : "WARMHANDOVER",
+            |}""".trimMargin()
+        val body_CCC_Voicemanager_voiceenabled = """{
+            |"eventid1" : "/VoiceStatus/eventId1",
+            |"agent1" : "/VoiceStatus/agent1/connectionstatus",
+            |"agent2" : "/VoiceStatus/agent2/connectionstatus",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/CRS/ccc/rerouteOptions"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_CRS)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/Voicemanager/ccc/events/123/isconnected"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_Voicemanager_voiceenabled)))
+
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
+    }
+
+    "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == false, return 400".config(enabled = false) {
+        val body_CCC_CRS = """{
+            |"uiswitch" : "UISWITCH",
+            |"reroute" : "REROUTE",
+            |"warmhandover" : "WARMHANDOVER",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/CRS/ccc/rerouteOptions"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_CRS)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/Voicemanager/ccc/events/123/isconnected"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(400)))
+
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
+    }
+
+    "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == false, return 404".config(enabled = false) {
+        val body_CCC_CRS = """{
+            |"uiswitch" : "UISWITCH",
+            |"reroute" : "REROUTE",
+            |"warmhandover" : "WARMHANDOVER",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/CRS/ccc/rerouteOptions"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_CRS)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/Voicemanager/ccc/events/123/isconnected"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(404)))
+
+        MetaModelSetup.doSetup()
+
+        val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
+        val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
+        val outputFolder = File(OUTPUT_PATH)
+
+        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+
+        // Now compile the resulting code and execute it
+        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        compiledTest.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
+    }
+
+    "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == false, return 500".config(enabled = false) {
+        val body_CCC_CRS = """{
+            |"uiswitch" : "UISWITCH",
+            |"reroute" : "REROUTE",
+            |"warmhandover" : "WARMHANDOVER",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/CRS/ccc/rerouteOptions"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_CRS)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/Voicemanager/ccc/events/123/isconnected"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(500)))
 
         MetaModelSetup.doSetup()
 
@@ -146,7 +326,15 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withBody("test")))
+        val body = """{
+            |"itemA" : "value1",
+            |"itemB" : "value2",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/testReceiver/test/123"))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
         MetaModelSetup.doSetup()
 
@@ -167,16 +355,17 @@ class AcceleoGeneratorTest : StringSpec({
     }
 }) {
     companion object {
+        private val MINIMAL_HELLO_INPUT_PATH = Resources.getResource("minimal_hello_restassured.xmi").path
+        private val MINIMAL_HELLO_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
+
         private val COMPLEX_HELLO_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("config_minimal_hello.toml").path
+        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("complex_hello_config.toml").path
 
-        // TODO: set correct path to xmi file
-        private val REROUTING_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val REROUTING_CONFIG_PATH = Resources.getResource("config_rerouting.toml").path
+        private val REROUTING_INPUT_PATH = Resources.getResource("rerouting_restassured.xmi").path
+        private val REROUTING_CONFIG_PATH = Resources.getResource("rerouting_config.toml").path
 
-        // TODO: set correct path to xmi-file
-        private val XCALL_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val XCALL_CONFIG_PATH = Resources.getResource("config_xcall.toml").path
+        private val XCALL_INPUT_PATH = Resources.getResource("xcall_restassured.xmi").path
+        private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
 
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
 
