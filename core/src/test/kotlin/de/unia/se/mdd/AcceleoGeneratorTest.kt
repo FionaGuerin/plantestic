@@ -26,7 +26,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal hello" {
+    "Acceleo generation produces valid Java code for minimal hello".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)

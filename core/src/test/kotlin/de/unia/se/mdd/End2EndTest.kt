@@ -18,19 +18,19 @@ val wireMockServer = WireMockServer(8080)
 
 class End2EndTest : StringSpec({
 
-    "End2End test works for the minimal example".config(enabled = true) {
+    "End2End test works for the minimal hello".config(enabled = true) {
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
     }
 
-    "End2End test produces valid Java code for the minimal example".config(enabled = false) {
+    "End2End test produces valid Java code for the minimal hello".config(enabled = false) {
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the minimal example".config(enabled = false) {
+    "End2End test receives request on mock server for the minimal hello".config(enabled = false) {
         val body = """{ "httpResponseDatumXPath" : "value1", "httpResponseDatumXPath2" : "value2", "key" : "value" }"""
         wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123?variableName=%24%7BvariableName%7D&variableName2=%24%7BvariableName2%7D")).willReturn(
                 WireMock.aResponse().withStatus(404).withBody(body)))
@@ -45,6 +45,42 @@ class End2EndTest : StringSpec({
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
         wireMockServer.allServeEvents[0].response.status shouldBe 404
+        wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
+    }
+
+    "End2End test works for complex hello".config(enabled = true) {
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+    }
+
+    "End2End test produces valid Java code for complex hello".config(enabled = false) {
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+
+        // Now compile the resulting code
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+            .create(COMPLEX_HELLO_CONFIG_PATH)
+    }
+
+    "End2End test receives request on mock server for complex hello".config(enabled = false) {
+        val body = """{
+            |"itemA" : "value1",
+            |"itemB" : "value2",
+            |}""".trimMargin()
+
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/testReceiver/test/123"))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
+
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+
+        val generatedCodeText = File("$OUTPUT_PATH/scenario.java").readText()
+        val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
+        val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
+        compiledTestClassObject.call("test")
+
+        // Check if we received a correct request
+        wireMockServer.allServeEvents.size shouldBe 1
+        wireMockServer.allServeEvents[0].response.status shouldBe 200
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
@@ -108,11 +144,14 @@ class End2EndTest : StringSpec({
         private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
         private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
 
+        private val COMPLEX_HELLO_INPUT_PATH = Resources.getResource("complex_hello.puml").path
+        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("complex_hello_config.toml").path
+
         private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
-        private val REROUTE_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
+        private val REROUTE_CONFIG_PATH = Resources.getResource("rerouting_config.toml").path
 
         private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
-        private val XCALL_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
+        private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
 
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
     }
