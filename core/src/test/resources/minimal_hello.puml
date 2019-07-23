@@ -3,11 +3,9 @@ SEQUENCE @startuml
 PARTICIPANT A
 PARTICIPANT B
 
-alt "${testCondition} == 'SomeValue'"
-A -> B : POST "/hello/{id}" (variableName : 'value', variableName2 : 'value2')
+A -> B : GET "/hello"
 activate B
-B -> A : 200 - (variableName : 'itemA', variableName2 : 'itemB')
+B -> A : 200
 deactivate B
-end
 
 @enduml

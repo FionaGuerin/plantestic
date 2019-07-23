@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:puml="http://www.eclipse.plantuml/Puml">
+  <umlDiagrams xsi:type="puml:SequenceUml">
+    <umlElements xsi:type="puml:Participant" name="A"/>
+    <umlElements xsi:type="puml:Participant" name="B"/>
+    <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+        userTwo="#//@umlDiagrams.0/@umlElements.1">
+      <content xsi:type="puml:Request" method="GET" url="/hello"/>
+    </umlElements>
+    <umlElements xsi:type="puml:Activate">
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.0"/>
+      <activate/>
+      <deactivate/>
+    </umlElements>
+  </umlDiagrams>
+</puml:UmlDiagram>

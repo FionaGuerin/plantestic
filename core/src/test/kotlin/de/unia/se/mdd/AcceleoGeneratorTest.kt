@@ -13,7 +13,7 @@ import io.kotlintest.Description
 import io.kotlintest.TestResult
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = false) {
+    "Transform a Rest Assured EObject input to Java Code for minimal hello" {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
@@ -26,7 +26,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal hello".config(enabled = false) {
+    "Acceleo generation produces valid Java code for minimal hello" {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
@@ -40,7 +40,7 @@ class AcceleoGeneratorTest : StringSpec({
     }
 
     "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello/123")).willReturn(WireMock.aResponse().withStatus(200)))
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/hello")).willReturn(WireMock.aResponse().withStatus(200)))
 
         MetaModelSetup.doSetup()
 
@@ -51,8 +51,10 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
-        compiledTest.call("test")
+        val generatedCodeText = File("$OUTPUT_PATH/testScenario.java").readText()
+        val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
+        val compiledTestClassObject = compiledTestClass.create(MINIMAL_HELLO_CONFIG_PATH)
+        compiledTestClassObject.call("test")
 
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
