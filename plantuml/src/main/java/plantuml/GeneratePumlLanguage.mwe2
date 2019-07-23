@@ -41,6 +41,7 @@ Workflow {
 			parserGenerator = {
 				antlrParam = "-Xconversiontimeout"
 				antlrParam = "40000"
+				debugGrammar = true
 				options = {
 					ignoreCase = true
 					backtrack=true

@@ -19,8 +19,8 @@
     <genClasses ecoreClass="RestAssured.ecore#//RequestSpecification">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/method"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/url"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/requestDatum"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestSpecification/receiver"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//RequestSpecification/requestdatum"/>
     </genClasses>
     <genClasses ecoreClass="RestAssured.ecore#//ResponseSpecification">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//ResponseSpecification/bodymatchergroup"/>
@@ -45,8 +45,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RestAssured.ecore#//BodyMatcher/matcher"/>
     </genClasses>
     <genClasses ecoreClass="RestAssured.ecore#//ResponseDatum">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseDatum/responseDatumName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseDatum/responseDatumXPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseDatum/variableName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//ResponseDatum/xPath"/>
+    </genClasses>
+    <genClasses ecoreClass="RestAssured.ecore#//RequestDatum">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestDatum/variableName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RestAssured.ecore#//RequestDatum/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

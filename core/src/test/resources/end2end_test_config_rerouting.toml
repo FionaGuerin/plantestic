@@ -1,0 +1,17 @@
+id = "123"
+countrycode = "Ger"
+positionCountryCode = "Muc"
+sourceEventType = "Hallo"
+
+[Voicemanager]
+    username = "Test"
+    password = "123test"
+
+[CRS]
+    username = "Test"
+    password = "123test"
+
+
+[CCC]
+    username = "Test"
+    password = "123test"
