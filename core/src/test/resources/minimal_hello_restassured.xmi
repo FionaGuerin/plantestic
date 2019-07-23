@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="scenario">
-  <testroundtrip testRoundtripName="roundtrip" precondition="${testCondition} == &quot;SomeValue&quot;">
+  <testroundtrip testRoundtripName="roundtrip" precondition="${testCondition} == 'SomeValue'">
     <requestspecification method="GET" url="/test/${id}" receiver="TestReceiver">
       <requestdatum variableName="variableName" value="value"/>
       <requestdatum variableName="variableName2" value="value2"/>
