@@ -3,8 +3,12 @@ SEQUENCE @startuml
 PARTICIPANT A
 PARTICIPANT B
 
-alt "${testCondition} == 'SomeValue'"
+<<<<<<< HEAD
+alt ${testCondition} == "SomeValue"
 A -> B : /hello/{id}
+=======
+A -> B : GET "/hello"
+>>>>>>> master
 activate B
 B -> A : 200
 deactivate B
