@@ -70,7 +70,7 @@ class PumlParserTest : StringSpec({
     }
 }) {
     companion object {
-        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
+        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("complex_hello.puml").path
         private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
         private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
 
