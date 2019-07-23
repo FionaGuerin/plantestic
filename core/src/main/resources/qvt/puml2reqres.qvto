@@ -24,7 +24,7 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
     var umlElements : OrderedSet(SequenceElement) := self.umlElements->flattenSequenceElements();
     var umlElementsSize : Integer := umlElements->size();
     var umlElementsIndex : Integer := 1;
-
+    log ("", umlElementsSize);
     while (umlElementsIndex <= umlElementsSize) {
         var sequenceElement : SequenceElement:= umlElements->at(umlElementsIndex);
         if (sequenceElement.oclIsTypeOf(UseLeft)) {
@@ -35,26 +35,79 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
             assert fatal ( requestresponse.oclIsTypeOf(Request) )
                 with log ( 'Requestresponse needs to be a request');
             var request : Request := requestresponse.oclAsType(Request);
+            var httpRequestElement : HttpRequest := request.request2httpRequest();
+            httpRequestElement.receiver := useLeft.userTwo.name;
+            var httpRequestElementCopy : HttpRequest := new HttpRequest();
+            httpRequestElementCopy.httpMethod := httpRequestElement.httpMethod;
+            httpRequestElementCopy.url := httpRequestElement.url;
+            httpRequestElementCopy.httprequestdatum := httpRequestElement.httprequestdatum;
+            httpRequestElementCopy.receiver := httpRequestElement.receiver;
 
             umlElementsIndex := umlElementsIndex + 1;
             sequenceElement := umlElements->at(umlElementsIndex);
-            useLeft := sequenceElement.oclAsType(UseLeft);
-            assert fatal ( useLeft.content != null )
-                with log ( 'UseLeft needs to contain content');
-            requestresponse := useLeft.content;
-            assert fatal ( requestresponse.oclIsTypeOf(Response) )
-                with log ( 'Requestresponse needs to be a response');
-            var response : Response := requestresponse.oclAsType(Response);
+            log("Was here");
+            if (sequenceElement.oclIsTypeOf(UseLeft)) {
+                log("Was useLeft");
+                useLeft := sequenceElement.oclAsType(UseLeft);
+                assert fatal ( useLeft.content != null )
+                    with log ( 'UseLeft needs to contain content');
+                requestresponse := useLeft.content;
+                assert fatal ( requestresponse.oclIsTypeOf(Response) )
+                    with log ( 'Requestresponse needs to be a response');
+                var response : Response := requestresponse.oclAsType(Response);
+                var httpResponseElement : HttpResponse := response.response2httpResponse();
 
-            var roundtripElement : Roundtrip := new Roundtrip();
-            roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                var roundtripElement : Roundtrip := new Roundtrip();
+                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                roundtripElement.httprequest := httpRequestElement;
+                roundtripElement.httpresponse := httpResponseElement;
 
-            var httpRequestElement : HttpRequest := request.request2httpRequest();
-            httpRequestElement.receiver := useLeft.userOne.name;
-            roundtripElement.httprequest := httpRequestElement;
-            roundtripElement.httpresponse := response.response2httpResponse();
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+            }
+            elif (sequenceElement.oclIsTypeOf(Alternative)) {
+                log("HEELLOO");
+                var alternative : Alternative := sequenceElement.oclAsType(Alternative);
+                useLeft := alternative.umlElements->at(1).oclAsType(UseLeft);
+                assert fatal ( useLeft.content != null )
+                    with log ( 'UseLeft needs to contain content');
+                requestresponse := useLeft.content;
+                assert fatal ( requestresponse.oclIsTypeOf(Response) )
+                    with log ( 'Requestresponse needs to be a response');
+                var response : Response := requestresponse.oclAsType(Response);
+                var httpResponseElement : HttpResponse := response.response2httpResponse();
 
-            roundtrip := roundtripElement;
+                var roundtripElement : Roundtrip := new Roundtrip();
+                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                roundtripElement.precondition := alternative.text;
+                roundtripElement.httprequest := httpRequestElement;
+                roundtripElement.httpresponse := httpResponseElement;
+
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+
+
+                var elseElement : Else := alternative.elseBlocks->at(1).oclAsType(Else);
+                useLeft := elseElement.umlElements->at(1).oclAsType(UseLeft);
+                assert fatal ( useLeft.content != null )
+                    with log ( 'UseLeft needs to contain content');
+                requestresponse := useLeft.content;
+                assert fatal ( requestresponse.oclIsTypeOf(Response) )
+                    with log ( 'Requestresponse needs to be a response');
+                response := requestresponse.oclAsType(Response);
+                httpResponseElement := response.response2httpResponse();
+
+                roundtripElement := new Roundtrip();
+                roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+                roundtripElement.precondition := elseElement.text;
+
+                roundtripElement.httprequest := httpRequestElementCopy;
+                roundtripElement.httpresponse := httpResponseElement;
+
+                roundtrip += roundtripElement;
+                roundtripId := roundtripId + 1;
+
+            }
         }
         elif (sequenceElement.oclIsTypeOf(Alternative)) {
         };
@@ -66,19 +119,35 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
 
 helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(SequenceElement) {
     var sequenceElements : OrderedSet(SequenceElement);
+    log("START", self->size());
     self->forEach(umlElement) {
         if (umlElement.oclIsTypeOf(UseLeft)) {
             var useLeft : UseLeft := umlElement.oclAsType(UseLeft);
+            log("Before", sequenceElements->size());
             sequenceElements += useLeft;
+            log("Added useLeft", sequenceElements->size());
         }
         elif (umlElement.oclIsTypeOf(Alternative)) {
+            log("WAS ALTERNATIVE");
             var alternative : Alternative := umlElement.oclAsType(Alternative);
+            alternative.umlElements := alternative.umlElements->flattenSequenceElements();
+            log("Before", sequenceElements->size());
             sequenceElements += alternative;
+            log("Added alternative", sequenceElements->size());
         }
         elif (umlElement.oclIsTypeOf(Activate)) {
             var activate : Activate := umlElement.oclAsType(Activate);
-            sequenceElements += activate.umlElements->flattenSequenceElements()->at(1); // TODO assertion
-        };
+            activate.umlElements->flattenSequenceElements()->forEach(sequenceElement) {
+                sequenceElements += sequenceElement;
+            }
+        }
+        elif (umlElement.oclIsTypeOf(Else)) {
+            var elseElement : Else := umlElement.oclAsType(Else);
+            sequenceElements += elseElement.umlElements->flattenSequenceElements()->at(1); // TODO assertion
+        }
+        else {
+            log("discarded");
+        }
     };
     return sequenceElements;
 }
