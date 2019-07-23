@@ -113,18 +113,14 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
 
 helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(SequenceElement) {
     var sequenceElements : OrderedSet(SequenceElement);
-    log("START", self->size());
     self->forEach(umlElement) {
         if (umlElement.oclIsTypeOf(UseLeft)) {
             var useLeft : UseLeft := umlElement.oclAsType(UseLeft);
-            log("Before", sequenceElements->size());
             sequenceElements += useLeft;
-            log("Added useLeft", sequenceElements->size());
         }
         elif (umlElement.oclIsTypeOf(Alternative)) {
             var alternative : Alternative := umlElement.oclAsType(Alternative);
             sequenceElements += alternative.map flattenAlternative();
-            log("Added alternative", sequenceElements->size());
         }
         elif (umlElement.oclIsTypeOf(Activate)) {
             var activate : Activate := umlElement.oclAsType(Activate);
