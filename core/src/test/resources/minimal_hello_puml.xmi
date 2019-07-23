@@ -6,7 +6,7 @@
     <umlElements xsi:type="puml:Participant" name="B"/>
     <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
         userTwo="#//@umlDiagrams.0/@umlElements.1">
-      <text>hello</text>
+      <content xsi:type="puml:Request" method="GET" url="/hello"/>
     </umlElements>
     <umlElements xsi:type="puml:Activate">
       <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"

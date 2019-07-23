@@ -3,7 +3,7 @@ SEQUENCE @startuml
 PARTICIPANT A
 PARTICIPANT B
 
-A -> B : /hello
+A -> B : GET "/hello"
 activate B
 B -> A
 deactivate B
