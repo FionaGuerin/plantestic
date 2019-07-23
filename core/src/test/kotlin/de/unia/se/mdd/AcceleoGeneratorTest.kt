@@ -13,10 +13,10 @@ import io.kotlintest.Description
 import io.kotlintest.TestResult
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code for minimal hello" {
+    "Transform a Rest Assured EObject input to Java Code for complex hello" {
         MetaModelSetup.doSetup()
 
-        val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
+        val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
         val outputFolder = File(OUTPUT_PATH)
 
@@ -26,20 +26,20 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal example" {
+    "Acceleo generation produces valid Java code for complex example" {
         MetaModelSetup.doSetup()
 
-        val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
+        val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
         val outputFolder = File(OUTPUT_PATH)
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the minimal example" {
+    "Acceleo generation test receives request on mock server for the complex example" {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -52,7 +52,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         MetaModelSetup.doSetup()
 
-        val pumlInputModelURI = URI.createFileURI(MINIMAL_EXAMPLE_INPUT_PATH)
+        val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
         val outputFolder = File(OUTPUT_PATH)
 
@@ -63,7 +63,7 @@ class AcceleoGeneratorTest : StringSpec({
             "com.mdd.test.Test",
             File("$OUTPUT_PATH/scenario.java")
             .readText()
-        ).create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        ).create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -167,8 +167,8 @@ class AcceleoGeneratorTest : StringSpec({
     }
 }) {
     companion object {
-        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("end2end_test_config_minimal_hello.toml").path
+        private val COMPLEX_HELLO_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
+        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("end2end_test_config_minimal_hello.toml").path
 
         // TODO: set correct path to xmi file
         private val REROUTING_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
