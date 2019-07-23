@@ -1,5 +1,6 @@
 modeltype puml "strict" uses puml('http://www.eclipse.plantuml/Puml');
 modeltype reqres "strict" uses RequestResponsePairs('http://www.example.org/RequestResponsePairs');
+modeltype Ecore "strict" uses 'http://www.eclipse.org/emf/2002/Ecore';
 
 configuration property diagramName : String;
 
@@ -38,7 +39,9 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
             var request : Request := requestresponse.oclAsType(Request);
             var roundtripElement : Roundtrip := new Roundtrip();
             roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
-            roundtripElement.httprequest := request.request2httpRequest();
+            var httpRequestElement : HttpRequest := request.request2httpRequest();
+            httpRequestElement.receiver := useLeft.userTwo.name;
+            roundtripElement.httprequest := httpRequestElement;
 
             var foundResponse : Boolean := false;
             while (not foundResponse) {
@@ -70,7 +73,22 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
 }
 
 mapping Request::request2httpRequest(): HttpRequest {
+    httpMethod := self.method;
+    url := self.url;
+    httprequestdatum += self.requestParam->map requestParam2httpRequestDatum();
 }
 
 mapping Response::response2httpResponse(): HttpResponse {
+    httpStatus := self.code->toString();
+    httpresponsedatum += self.extractParam->map extractParam2httpResponseDatum();
+}
+
+mapping RequestParam::requestParam2httpRequestDatum():HttpRequestDatum {
+    variableName := self.name;
+    value := self.value;
+}
+
+mapping ExtractParam::extractParam2httpResponseDatum():HttpResponseDatum {
+    variableName := self.name;
+    xPath := self.value;
 }
