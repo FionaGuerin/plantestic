@@ -6,8 +6,11 @@ import io.kotlintest.specs.StringSpec
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import plantuml.puml.Activate
+import plantuml.puml.Alternative
 import plantuml.puml.Participant
 import plantuml.puml.SequenceUml
+import plantuml.puml.UseLeft
 
 class PumlParserTest : StringSpec({
 
@@ -19,6 +22,15 @@ class PumlParserTest : StringSpec({
 
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
+        sequenceDiagram.umlElements.size shouldBe 4
+        (sequenceDiagram.umlElements[0] as Participant).name shouldBe "A"
+        (sequenceDiagram.umlElements[1] as Participant).name shouldBe "B"
+        (sequenceDiagram.umlElements[2] as UseLeft).userOne shouldBe sequenceDiagram.umlElements[0]
+        (sequenceDiagram.umlElements[2] as UseLeft).userTwo shouldBe sequenceDiagram.umlElements[1]
+        ((sequenceDiagram.umlElements[3] as Activate).umlElements[0] as UseLeft).userOne shouldBe
+                sequenceDiagram.umlElements[1]
+        ((sequenceDiagram.umlElements[3] as Activate).umlElements[0] as UseLeft).userTwo shouldBe
+                sequenceDiagram.umlElements[0]
     }
 
     "Parsing works for the rerouting example" {
@@ -30,6 +42,11 @@ class PumlParserTest : StringSpec({
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
         sequenceDiagram.umlElements.filterIsInstance<Participant>().size shouldBe 3
+        val alternative = ((sequenceDiagram.umlElements[5] as Activate)
+            .umlElements[2] as Activate).umlElements[0] as Alternative
+
+        alternative.text shouldBe "\${voiceEstablished} == true"
+        (alternative.umlElements[0] as UseLeft).userOne.name shouldBe "VM"
     }
 
     "Parsing works for the xcall example" {
@@ -41,6 +58,11 @@ class PumlParserTest : StringSpec({
         (umlDiagram.umlDiagrams[0] is SequenceUml) shouldBe true
         val sequenceDiagram = umlDiagram.umlDiagrams[0] as SequenceUml
         sequenceDiagram.umlElements.filterIsInstance<Participant>().size shouldBe 7
+        val alternative = (sequenceDiagram.umlElements[7] as Activate).umlElements[4] as Alternative
+
+        alternative.text shouldBe "\${xcsServiceType} == 'ACall'"
+        (alternative.umlElements[0] as UseLeft).userOne.name shouldBe "XCS"
+        ((alternative.umlElements[1] as Activate).umlElements[0] as UseLeft).userOne.name shouldBe "EventNotifier"
     }
 }) {
     companion object {
