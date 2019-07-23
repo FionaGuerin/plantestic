@@ -24,7 +24,7 @@ class M2MTransformerTest : StringSpec({
         reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip" }.size shouldBe 1
     }
 
-    "Transform the rerouting Puml input to Request Response Pairs".config(enabled = false) {
+    "Transform the rerouting Puml input to Request Response Pairs" {
         MetaModelSetup.doSetup()
 
         val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(REROUTING_PUML_INPUT_PATH), true).contents[0]
@@ -38,7 +38,7 @@ class M2MTransformerTest : StringSpec({
         reqRespOutputModel.eClass().eAllStructuralFeatures.filter { f -> f.name == "roundtrip" }.size shouldBe 3
     }
 
-    "Transform the xcall Puml input to Request Response Pairs".config(enabled = false) {
+    "Transform the xcall Puml input to Request Response Pairs" {
         MetaModelSetup.doSetup()
 
         val pumlInputModel = ResourceSetImpl().getResource(URI.createFileURI(XCALL_PUML_INPUT_PATH), true).contents[0]
