@@ -26,8 +26,9 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
     var umlElementsIndex : Integer := 1;
     log ("", umlElementsSize);
     while (umlElementsIndex <= umlElementsSize) {
-        var sequenceElement : SequenceElement:= umlElements->at(umlElementsIndex);
+        var sequenceElement : SequenceElement := umlElements->at(umlElementsIndex);
         if (sequenceElement.oclIsTypeOf(UseLeft)) {
+
             var useLeft : UseLeft := sequenceElement.oclAsType(UseLeft);
             assert fatal ( useLeft.content != null )
                 with log ( 'UseLeft needs to contain content');
@@ -110,6 +111,34 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
             }
         }
         elif (sequenceElement.oclIsTypeOf(Alternative)) {
+            var alternative : Alternative := sequenceElement.oclAsType(Alternative);
+            var useLeft : UseLeft := alternative.umlElements->at(1).oclAsType(UseLeft);
+            assert fatal ( useLeft.content != null )
+                with log ( 'UseLeft needs to contain content');
+            var requestresponse : RequestResponse := useLeft.content;
+            assert fatal ( requestresponse.oclIsTypeOf(Request) )
+                with log ( 'Requestresponse needs to be a request');
+            var request : Request := requestresponse.oclAsType(Request);
+            var httpRequestElement : HttpRequest := request.request2httpRequest();
+
+            useLeft := alternative.umlElements->at(2).oclAsType(UseLeft);
+            assert fatal ( useLeft.content != null )
+                with log ( 'UseLeft needs to contain content');
+            requestresponse := useLeft.content;
+            assert fatal ( requestresponse.oclIsTypeOf(Response) )
+                with log ( 'Requestresponse needs to be a response');
+            var response : Response := requestresponse.oclAsType(Response);
+            var httpResponseElement : HttpResponse := response.response2httpResponse();
+
+            var roundtripElement : Roundtrip := new Roundtrip();
+            roundtripElement.roundtripName := "roundtrip" + roundtripId.toString();
+            roundtripElement.precondition := alternative.text;
+
+            roundtripElement.httprequest := httpRequestElement;
+            roundtripElement.httpresponse := httpResponseElement;
+
+            roundtrip += roundtripElement;
+            roundtripId := roundtripId + 1;
         };
         umlElementsIndex := umlElementsIndex + 1;
     };
@@ -130,26 +159,41 @@ helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(Sequenc
         elif (umlElement.oclIsTypeOf(Alternative)) {
             log("WAS ALTERNATIVE");
             var alternative : Alternative := umlElement.oclAsType(Alternative);
-            alternative.umlElements := alternative.umlElements->flattenSequenceElements();
-            log("Before", sequenceElements->size());
-            sequenceElements += alternative;
+            // alternative.umlElements += alternative.umlElements->flattenSequenceElements();
+            // sequenceElements += alternative.umlElements->flattenSequenceElements();
+            sequenceElements += alternative.map flattenAlternative();
             log("Added alternative", sequenceElements->size());
         }
         elif (umlElement.oclIsTypeOf(Activate)) {
+        log("Was activate");
             var activate : Activate := umlElement.oclAsType(Activate);
-            activate.umlElements->flattenSequenceElements()->forEach(sequenceElement) {
+            /*(activate.umlElements->flattenSequenceElements())->forEach(sequenceElement) {
                 sequenceElements += sequenceElement;
-            }
-        }
-        elif (umlElement.oclIsTypeOf(Else)) {
-            var elseElement : Else := umlElement.oclAsType(Else);
-            sequenceElements += elseElement.umlElements->flattenSequenceElements()->at(1); // TODO assertion
+            }*/
+            sequenceElements += activate.umlElements->flattenSequenceElements(); // TODO assertion
         }
         else {
             log("discarded");
         }
     };
     return sequenceElements;
+}
+
+mapping Alternative::flattenAlternative():Alternative {
+    self.umlElements->flattenSequenceElements()->forEach(sequenceElement) {
+        result.umlElements += sequenceElement;
+        log("Added element here");
+        var useLeft : UseLeft := sequenceElement.oclAsType(UseLeft);
+    };
+    if (self.elseBlocks->size() > 0) {
+        result.elseBlocks += self.elseBlocks->at(1).oclAsType(Else).map flattenElse();
+    };
+    result.text := self.text;
+}
+
+mapping Else::flattenElse():Else {
+    result.umlElements += self.umlElements->flattenSequenceElements();
+    result.text := self.text;
 }
 
 mapping Request::request2httpRequest(): HttpRequest {

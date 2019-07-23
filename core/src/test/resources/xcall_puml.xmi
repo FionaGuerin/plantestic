@@ -86,15 +86,7 @@
           </umlElements>
         </umlElements>
       </umlElements>
-      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.6"
-          deactivate="#//@umlDiagrams.0/@umlElements.6">
-        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.6"
-            userTwo="#//@umlDiagrams.0/@umlElements.1">
-          <content xsi:type="puml:Response">
-            <code>200</code>
-          </content>
-        </umlElements>
-      </umlElements>
+
       <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
           userTwo="#//@umlDiagrams.0/@umlElements.0">
         <content xsi:type="puml:Request" method="POST" url="/setupCall">
