@@ -1,45 +1,45 @@
-id = "123"
-eventId = "645"
-vin = "987"
-
-
-[returnValues]
-    homeCountry = ""
-    positionCountryCode = ""
-    brand = ""
-    serviceType = ""
-    voiceTargets = ""
+[Templating]
+    id = "123"
+    eventId = "645"
+    vin = "987"
 
 
 [Voicemanager]
     username = "Test"
     password = "123test"
+    path = "/Voicemanager"
 
 
 [CRS]
     username = "Test"
     password = "123test"
+    path = "/CRS"
 
 
 [CCC]
     username = "Test"
     password = "123test"
+    path = "/CCC"
 
 
 [XCS]
     username = "Test"
     password = "123test"
+    path = "/XCS"
 
 
 [DataService]
     username = "Test"
     password = "123test"
+    path = "/DataService"
 
 [EventNotifier]
     username = "Test"
     password = "123test"
+    path = "/EventNotifier"
 
 
 [ELOS]
     username = "Test"
     password = "123test"
+    path = "/ELOS"

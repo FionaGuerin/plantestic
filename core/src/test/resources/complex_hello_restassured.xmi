@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="scenario">
+  <testroundtrip testRoundtripName="roundtrip" precondition="${testCondition} == 'SomeValue'">
+    <requestspecification method="GET" url="/test/${id}" receiver="TestReceiver">
+      <requestdatum variableName="variableName" value="value"/>
+      <requestdatum variableName="variableName2" value="value2"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="itemA"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="itemB"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+      <responsedatum variableName="variableName" xPath="itemA"/>
+      <responsedatum variableName="variableName2" xPath="itemB"/>
+    </responsespecification>
+  </testroundtrip>
+</RestAssured:TestScenario>

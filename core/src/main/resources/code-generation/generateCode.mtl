@@ -1,77 +1,168 @@
 [comment encoding = UTF-8 /]
 [module generateCode('http://www.example.org/RestAssured')]
 
-[template public generateTestScenario(testScenario : TestScenario)]
-	[comment @main /]
-	[file (testScenario.name.concat('.java'), false, 'UTF-8')]
+[template public generateTestScenario(testScenario : TestScenario) post(trim())]
+[comment @main /]
+[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
 package com.mdd.test;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.hamcrest.collection.IsIn;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.text.StringSubstitutor;
 import com.moandjiezana.toml.Toml;
-import io.restassured.RestAssured;
-import io.restassured.response.ValidatableResponse;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class Test {
 
-    Map<String, Object> paramsMap = new HashMap();
+	Map<String, Object> paramsMap = new HashMap();
+	ScriptEngine engine;
+	StringSubstitutor substitutor;
+	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
-    public Test(String configFile) {
-        try {
-            String paramsFileContent = new String(Files.readAllBytes(Paths.get(configFile)));
-            paramsMap = new Toml().read(paramsFileContent).toMap();
-        } catch (Exception e) {
-            System.out.println("Could not read TOML config file");
-        }
-    }
+	public Test(String configFile) throws Exception {
+		try {
+			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
+			Path path = Paths.get(osAppropriatePath);
+			String paramsFileContent = new String(Files.readAllBytes(path));
+			paramsMap = unnestTomlMap(new Toml().read(paramsFileContent).toMap());
+			substitutor = new StringSubstitutor(paramsMap);
+			ScriptEngineManager factory = new ScriptEngineManager();
+			engine = factory.getEngineByName("JavaScript");
+		} catch(Exception exception) {
+			System.out.println("An Error occured, possible during reading the TOML config file: " + exception);
+			throw exception;
+		}
+	}
 
-	public void test() {
-		[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
-		ValidatableResponse [testRoundtrip.name/] = RestAssured.given()
-            [comment]
-                .mtl content that did not work (square brackets are disallowed in comments, so I changed them)
-                (if (testRoundtrip.requestspecification.authenticationScheme.oclIsTypeOf(BasicAuthScheme)))
-                    (let basicAuthScheme : BasicAuthScheme = testRoundtrip.requestspecification.authenticationScheme.oclAsType(BasicAuthScheme))
-                        .auth().basic((basicAuthScheme.user/), (basicAuthScheme.password/))
-                    (/let)
-                (/if)
-            [/comment]
-			[for (requestParam : RequestParameter | testRoundtrip.requestspecification.requestParameters)]
-				.param([requestParam.key/], [requestParam.value/])
-			[/for]
-			.when()
-				.request("[testRoundtrip.requestspecification.method/]", StringSubstitutor.replace("[testRoundtrip.requestspecification.path/]", paramsMap))
-			.then()
-				[let responseSpecification : ResponseSpecification = testRoundtrip.assertresponse]
-					.assertThat();
-					[if (responseSpecification.expectedStatusCode->notEmpty())]
-						[if (responseSpecification.expectedStatusCode.oclIsTypeOf(IsIn))]
-							[let statusCode : IsIn = responseSpecification.expectedStatusCode.oclAsType(IsIn)]
-								.statusCode(in([statusCode.allowedValues/])
-							[/let]
-						[/if]
-					[/if]
-					[if (responseSpecification.bodyMatchers->notEmpty())]
-						[for (matcher : BodyMatcher | responseSpecification.bodyMatchers)]
-						    [if (matcher.oclIsTypeOf(HasXPath))]
-								[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)]
-									.body([bodyXPath/]) //Todo: needs correction after dealing with the inheritance
-								[/let]
-							[/if]
-							[if (matcher.oclIsTypeOf(IsIn))]
-								[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)]
-									//Todo: is this needed?
-								[/let]
-							[/if]
-						[/for]
-					[/if]
-				[/let]
-		// Todo implementation for Variables that come from response (not part of this small example)
-		[/for]
+	public void test() throws Exception {
+	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
+		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
+		[if (testRoundtrip.precondition->notEmpty())]
+		try {
+			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{Templating.')/]");
+			assert engine != null;
+			Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
+			if(evaluatedCondition) {
+				[testRoundtrip.generateTestRoundtrip()/]
+			}
+		} catch (ScriptException scriptException) {
+			System.out.println("Error during evaluation the alternative Condition");
+			System.out.println("The error was within: " + scriptException);
+			throw scriptException;
+		} catch (AssertionError assertionError) {
+			System.out.println("An assertion failt: " + assertionError);
+			throw assertionError;
+		} catch (Exception exception) {
+			System.out.println("An error occured: " + exception);
+			throw exception;
+		}
+		[/if]
+	[/for]
+	}
+
+	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
+		Map<String, Object> resultMap = new HashMap<>();
+		for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
+			if(entry.getValue() instanceof Map){
+				Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
+				for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
+					resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
+				}
+			} else {
+				resultMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return resultMap;
 	}
 }
-	[/file]
+[/file]
+[/template]
+
+[template private generateTestRoundtrip(testRoundtrip : TestRoundtrip) post(trim())]
+	[if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
+[testRoundtrip.requestspecification.generadeAddRequestParams()/]
+	[/if]
+try {
+	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
+			[testRoundtrip.requestspecification.generateGivenPart()/]
+		.when()
+			[testRoundtrip.requestspecification.generateWhenPart()/]
+		.then()
+			[testRoundtrip.responsespecification.generateThenPart()/];
+	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+    [testRoundtrip.generateExtractions()/]
+
+	[/if]
+} catch (Exception exception) {
+	System.out.println("An error occured during evaluating the communication with testReceiver: ");
+	exception.printStackTrace();
+	throw exception;
+}
+[/template]
+
+[template private generadeAddRequestParams(requestSpecification : RequestSpecification)]
+	[if (requestSpecification.requestdatum->notEmpty())]
+		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
+paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
+		[/for]
+	[/if]
+[/template]
+
+[template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
+.auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
+	[if (requestSpecification.requestdatum->notEmpty())]
+		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
+.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
+		[/for]
+	[/if]
+[/template]
+
+[template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
+	.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
+[/template]
+
+[template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
+	.assertThat()
+    [responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())]
+        [responseSpecification.generateExpectations()/]
+    [/if]
+	[if (responseSpecification.responsedatum->notEmpty())]
+	.and().extract().response()
+	[/if]
+[/template]
+
+[template private generateExpectStatusCode(responseSpecification : ResponseSpecification) post(trim())]
+	[if (responseSpecification.statusmatcher->notEmpty())]
+		[if (responseSpecification.statusmatcher.oclIsTypeOf(IsIn))]
+			[let statusCode : IsIn = responseSpecification.statusmatcher.oclAsType(IsIn)]
+.statusCode(IsIn.isIn(Arrays.asList([for (val : String | statusCode.value) separator (', ')][val/][/for])))
+			[/let]
+		[/if]
+	[/if]
+[/template]
+
+[template private generateExpectations(responseSpecification : ResponseSpecification) post(trim())]
+	[for (matcher : BodyMatcher | responseSpecification.bodymatchergroup)]
+		[if (matcher.oclIsTypeOf(HasXPath))]
+			[let bodyXPath : HasXPath = matcher.oclAsType(HasXPath)].body(hasXPath([bodyXPath.xPath/]))[/let]
+		[/if]
+		[if (matcher.oclIsTypeOf(IsIn))]
+			[let bodyIsIn : IsIn = matcher.oclAsType(IsIn)][/let]
+		[/if]
+	[/for]
+[/template]
+
+[template private generateExtractions(testRoundtrip : TestRoundtrip) post(trim())]
+	[for (responseDatum : ResponseDatum | testRoundtrip.responsespecification.responsedatum)]
+paramsMap.put("[responseDatum.variableName/]", [testRoundtrip.testRoundtripName/].jsonPath().getString("[responseDatum.xPath/]"));
+	[/for]
 [/template]

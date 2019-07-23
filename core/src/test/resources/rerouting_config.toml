@@ -1,0 +1,20 @@
+[Templating]
+    id = "123"
+    countrycode = "Ger"
+    positionCountryCode = "Muc"
+    sourceEventType = "Hallo"
+
+[Voicemanager]
+    username = "Test"
+    password = "123test"
+    path = "/Voicemanager"
+
+[CRS]
+    username = "Test"
+    password = "123test"
+    path = "/CRS"
+
+[CCC]
+    username = "Test"
+    password = "123test"
+    path = "/CCC"

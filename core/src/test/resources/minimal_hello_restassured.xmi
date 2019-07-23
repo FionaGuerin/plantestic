@@ -3,6 +3,10 @@
     testScenarioName="testScenario">
   <testroundtrip testRoundtripName="testRoundtrip">
     <requestspecification method="GET" url="/test/${id}" receiver="testReceiver"/>
-    <responsespecification/>
+    <responsespecification>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+    </responsespecification>
   </testroundtrip>
 </RestAssured:TestScenario>
