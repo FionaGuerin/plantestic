@@ -22,7 +22,7 @@ If the implementation does not fulfill these test cases, the implementation devi
 With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
 
 ## Build status
-[![Build Status](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/mdd.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
+[![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
 
 ## Demo
 
