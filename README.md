@@ -1,8 +1,6 @@
 # Plantestic
-
-This project was part of our Model-driven Software Engineering lecture at the University of Augsburg.
-
-This test case generator produces test cases from a sequence diagram. 
+## Description
+The test case generator Plantestic produces test cases from a sequence diagram. 
 A sequence diagram models a sequence of interactions between objects. 
 A test case then checks for such an interaction whether it is implemented as the sequence diagram defines it. 
 In an example sequence diagram called `Hello`, let there be two actors Alice and Bob. 
@@ -28,11 +26,7 @@ With our test case generator, developers can quickly uncover inconsistencies, fi
 
 ## Demo
 
-**_add text..._**
-
 ## Features
-
-**_add text..._**
 
 ## Technologies
 ### Eclipse Modelling Framework (EMF)
@@ -70,21 +64,15 @@ The imperative language Query-View-Transformation-Operational serves unidirectio
 Website: 
 
 ### Acceleo
-
 Acceleo is for a template-based source code generation.
 It is a model-to-text transformation tool.  
 It is a Markup language with open and closing tags, which are in square brackets.
 Not enclosed text is directly added to the generated file.  
 Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
-## Abstract Syntaxes
-
-**_add text..._**  
-**_add images..._**
+## Abstract syntaxes
 
 ## Installation
-
-**_add text..._**
 
 ## API reference
 To generate the language, you can run
@@ -97,7 +85,6 @@ This gradle task is also automatically executed when you build the project.
 
 ## How to use
 
-**_add text..._**
 
 ## Conventions
 ### Repository language
