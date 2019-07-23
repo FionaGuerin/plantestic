@@ -168,15 +168,15 @@ class AcceleoGeneratorTest : StringSpec({
 }) {
     companion object {
         private val COMPLEX_HELLO_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("end2end_test_config_minimal_hello.toml").path
+        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("config_minimal_hello.toml").path
 
         // TODO: set correct path to xmi file
         private val REROUTING_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val REROUTING_CONFIG_PATH = Resources.getResource("end2end_test_config_rerouting.toml").path
+        private val REROUTING_CONFIG_PATH = Resources.getResource("config_rerouting.toml").path
 
         // TODO: set correct path to xmi-file
         private val XCALL_INPUT_PATH = Resources.getResource("complex_hello_restassured.xmi").path
-        private val XCALL_CONFIG_PATH = Resources.getResource("end2end_test_config_xcall.toml").path
+        private val XCALL_CONFIG_PATH = Resources.getResource("config_xcall.toml").path
 
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
 
