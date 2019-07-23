@@ -1,4 +1,3 @@
-
 SEQUENCE @startuml
 
 participant "Voicemanager" as VM
