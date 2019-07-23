@@ -7,7 +7,7 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        // runTransformationPipeline()
+        runTransformationPipeline(args[0])
     }
 
     fun runTransformationPipeline(inputUriString: String) {

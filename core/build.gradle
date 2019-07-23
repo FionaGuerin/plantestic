@@ -129,6 +129,16 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     main = "com.github.shyiko.ktlint.Main"
 }
 
+task createStartScripts(type: CreateStartScripts) {
+    outputDir = file('build/startScript')
+    mainClassName = 'de.unia.se.mdd.Main'
+    applicationName = 'plantastic'
+}
+
+distZip {
+    archiveName "$baseName-$version-bin.zip"
+}
+
 jacocoTestCoverageVerification {
     violationRules {
         rule {
