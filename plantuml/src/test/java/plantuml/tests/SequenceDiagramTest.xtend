@@ -136,18 +136,18 @@ class SequenceDiagramTest {
 			SEQUENCE @startuml
 			PARTICIPANT test
 			PARTICIPANT test2
-			ALT Successful ABC lookup
+			ALT "Successful ABC lookup"
 				test ->] : Forward something via ABC
-			ELSE Failed ABS lookup
+			ELSE "Failed ABS lookup"
 				test2 -> test : Reject ABC\nvia DEV 
 			END
 			@enduml
 		'''.parse
 		assertEquals(3, ((heros.umlDiagrams.head as SequenceUml).umlElements.size))
-		assertEquals("[Successful, ABC, lookup]",
+		assertEquals("Successful ABC lookup",
 			((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).text.toString())
 		assertEquals(1, ((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.size)
-		assertEquals("[Failed, ABS, lookup]",
+		assertEquals("Failed ABS lookup",
 			(((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.get(0) as Else).text.toString())
 		assertEquals("[Reject, ABC\\nvia, DEV]",
 			((((heros.umlDiagrams.head as SequenceUml).umlElements.get(2) as Alternative).elseBlocks.get(0) as Else).umlElements.
@@ -343,7 +343,8 @@ class SequenceDiagramTest {
 		assertEquals("foo", ((heros.umlDiagrams.head as SequenceUml).umlElements.get(7) as UmlUse).userOne.name)
 		assertEquals("lol", ((heros.umlDiagrams.head as SequenceUml).umlElements.get(7) as UmlUse).userTwo.name)
 	}
-		@Test def void testComponent() {
+
+	@Test def void testComponent() {
 		val heros = '''
 			COMPONENT @startuml
 			[ABC] AS A
@@ -365,7 +366,102 @@ class SequenceDiagramTest {
 		assertEquals("C", ((heros.umlDiagrams.head as ComponentUml).umlElements.get(5) as Link).linkOne.name);
 		assertEquals("A", ((heros.umlDiagrams.head as ComponentUml).umlElements.get(5) as Link).linkTwo.name);
 		assertEquals(1, ((heros.umlDiagrams.head as ComponentUml).umlElements.get(5) as Link).text.length);
-		
-
 	}
+
+	@Test def void testRequest() {
+	    val request = '''
+	        SEQUENCE @startuml
+	            PARTICIPANT A
+	            PARTICIPANT B
+	            A -> B : GET "/hello/${id}/foo"
+	        @enduml
+	    '''.parse
+
+        assertNotNull((((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request))
+	    assertEquals("GET", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).method)
+	    assertEquals("/hello/${id}/foo", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).url)
+	}
+
+	@Test def void testRequestOneRequestParam() {
+	    val request = '''
+	        SEQUENCE @startuml
+	            PARTICIPANT A
+	            PARTICIPANT B
+	            A -> B : GET "/hello/${id}/foo" (foo : "/bar")
+	        @enduml
+	    '''.parse
+
+        assertNotNull((((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request))
+	    assertEquals("GET", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).method)
+	    assertEquals("/hello/${id}/foo", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).url)
+	    assertEquals(1, (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.length)
+	    assertEquals("foo", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(0).name)
+	    assertEquals("/bar", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(0).value)
+	}
+
+	@Test def void testRequestMultipleRequestParam() {
+	    val request = '''
+	        SEQUENCE @startuml
+	            PARTICIPANT A
+	            PARTICIPANT B
+	            A -> B : GET "/hello/${id}/foo" (foo : "/bar", far : "/cry")
+	        @enduml
+	    '''.parse
+
+        assertNotNull((((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request))
+	    assertEquals("GET", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).method)
+	    assertEquals("/hello/${id}/foo", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).url)
+	    assertEquals(2, (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.length)
+	    assertEquals("foo", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(0).name)
+	    assertEquals("/bar", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(0).value)
+	    assertEquals("far", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(1).name)
+        assertEquals("/cry", (((request.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Request).requestParam.get(1).value)
+	}
+
+	@Test def void testResponseOnlyResponseCodes() {
+        val response = '''
+            SEQUENCE @startuml
+                PARTICIPANT A
+                PARTICIPANT B
+                A -> B : 200,300
+            @enduml
+        '''.parse
+
+        assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
+    }
+
+    @Test def void testResponseOneExtractParam() {
+        val response = '''
+            SEQUENCE @startuml
+                PARTICIPANT A
+                PARTICIPANT B
+                A -> B : 200,300 - (foo : "/bar")
+            @enduml
+        '''.parse
+
+        assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
+        assertEquals(1, (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.length)
+        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).name)
+        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).value)
+    }
+
+    @Test def void testResponseMultipleExtractParams() {
+        val response = '''
+            SEQUENCE @startuml
+                PARTICIPANT A
+                PARTICIPANT B
+                A -> B : 200,300 - (foo : "/bar", far : "/cry")
+            @enduml
+        '''.parse
+
+        assertNotNull((((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response))
+        assertArrayEquals(#[200, 300], (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).code)
+        assertEquals(2, (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.length)
+        assertEquals("foo", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).name)
+        assertEquals("/bar", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(0).value)
+        assertEquals("far", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(1).name)
+        assertEquals("/cry", (((response.umlDiagrams.head as SequenceUml).umlElements.get(2) as UmlUse).content as Response).extractParam.get(1).value)
+    }
 }

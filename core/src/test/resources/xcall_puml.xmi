@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:puml="http://www.eclipse.plantuml/Puml">
+  <umlDiagrams xsi:type="puml:SequenceUml">
+    <umlElements xsi:type="puml:Participant" name="VM" longname="Voicemanager"/>
+    <umlElements xsi:type="puml:Participant" name="XCS"/>
+    <umlElements xsi:type="puml:Participant" name="DataService"/>
+    <umlElements xsi:type="puml:Participant" name="CRS"/>
+    <umlElements xsi:type="puml:Participant" name="EventNotifier"/>
+    <umlElements xsi:type="puml:Participant" name="ELOS"/>
+    <umlElements xsi:type="puml:Participant" name="CCC"/>
+    <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+        deactivate="#//@umlDiagrams.0/@umlElements.0">
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.2">
+        <content xsi:type="puml:Request" method="GET" url="/vehicle/internal/${vin}"/>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.2"
+          deactivate="#//@umlDiagrams.0/@umlElements.2">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.2"
+            userTwo="#//@umlDiagrams.0/@umlElements.1">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+            <extractParam name="homeCountry" value="/homeCountry"/>
+            <extractParam name="positionCountry" value="/positionCountry"/>
+            <extractParam name="brand" value="/brand"/>
+          </content>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.3">
+        <content xsi:type="puml:Request" method="POST" url="routingTargets/find">
+          <requestParam name="eventId" value="${eventId}"/>
+          <requestParam name="serviceType" value="${serviceType}"/>
+          <requestParam name="vin" value="${vin}"/>
+          <requestParam name="homeCountry" value="${homeCountry}"/>
+          <requestParam name="positionCountry" value="${positionCountry}"/>
+          <requestParam name="brand" value="${brand}"/>
+        </content>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.3"
+          deactivate="#//@umlDiagrams.0/@umlElements.3">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.3"
+            userTwo="#//@umlDiagrams.0/@umlElements.1">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+            <extractParam name="voiceTargets" value="/voiceTargets"/>
+          </content>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:Alternative" text="${xcsServiceType} == 'ACall'">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+            userTwo="#//@umlDiagrams.0/@umlElements.4">
+          <content xsi:type="puml:Request" method="PUT" url="xcs/notify/${eventId}">
+            <requestParam name="homeCountry" value="${homeCountry}"/>
+            <requestParam name="positionCountry" value="${positionCountry}"/>
+            <requestParam name="brand" value="${brand}"/>
+          </content>
+        </umlElements>
+        <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.4"
+            deactivate="#//@umlDiagrams.0/@umlElements.4">
+          <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.4"
+              userTwo="#//@umlDiagrams.0/@umlElements.1">
+            <content xsi:type="puml:Response">
+              <code>200</code>
+            </content>
+          </umlElements>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:Alternative" text="${xcsServiceType} == 'BCall'">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+            userTwo="#//@umlDiagrams.0/@umlElements.5">
+          <content xsi:type="puml:Request" method="PUT" url="xcs/notify/${eventId}">
+            <requestParam name="homeCountry" value="${homeCountry}"/>
+            <requestParam name="positionCountry" value="${positionCountry}"/>
+            <requestParam name="brand" value="${brand}"/>
+          </content>
+        </umlElements>
+        <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.5"
+            deactivate="#//@umlDiagrams.0/@umlElements.5">
+          <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.5"
+              userTwo="#//@umlDiagrams.0/@umlElements.1">
+            <content xsi:type="puml:Response">
+              <code>200</code>
+            </content>
+          </umlElements>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.6">
+        <content xsi:type="puml:Request" method="POST" url="xcs/eventReceived">
+          <requestParam name="eventId" value="${eventId}"/>
+          <requestParam name="serviceType" value="${serviceType}"/>
+          <requestParam name="homeCountry" value="${homeCountry}"/>
+          <requestParam name="positionCountry" value="${positionCountry}"/>
+          <requestParam name="brand" value="${brand}"/>
+        </content>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.6"
+          deactivate="#//@umlDiagrams.0/@umlElements.6">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.6"
+            userTwo="#//@umlDiagrams.0/@umlElements.1">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+          </content>
+        </umlElements>
+      </umlElements>
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.0">
+        <content xsi:type="puml:Request" method="POST" url="/setupCall">
+          <requestParam name="eventId" value="${eventId}"/>
+          <requestParam name="vin" value="${vin}"/>
+          <requestParam name="voiceTargets" value="${voiceTargets}"/>
+        </content>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.0"
+          deactivate="#//@umlDiagrams.0/@umlElements.1">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+            userTwo="#//@umlDiagrams.0/@umlElements.1">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+          </content>
+        </umlElements>
+      </umlElements>
+    </umlElements>
+  </umlDiagrams>
+</puml:UmlDiagram>
