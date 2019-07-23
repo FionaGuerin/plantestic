@@ -1,0 +1,8 @@
+[Templating]
+    id = '123'
+    testCondition = '"SomeValue"'
+
+[TestReceiver]
+    username = 'Test'
+    password = 'password'
+    path = '/testReceiver'

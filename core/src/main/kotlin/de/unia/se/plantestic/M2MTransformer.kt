@@ -1,9 +1,10 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import com.google.common.io.Resources
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.m2m.qvt.oml.BasicModelExtent
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl
 import org.eclipse.m2m.qvt.oml.TransformationExecutor
@@ -14,10 +15,10 @@ import java.io.OutputStreamWriter
 object M2MTransformer {
 
     private val QVT_PUML2REQRES_TRANSFORMATION_URI =
-        URI.createFileURI(Resources.getResource("qvt/puml2reqres.qvto").path)
+        URI.createURI(Resources.getResource("qvt/puml2reqres.qvto").toExternalForm())
 
     private val QVT_REQRES2RESTASSURED_TRANSFORMATION_URI =
-        URI.createFileURI(Resources.getResource("qvt/reqres2restassured.qvto").path)
+        URI.createURI(Resources.getResource("qvt/reqres2restassured.qvto").toExternalForm())
 
     /**
      * Transforms a UmlDiagram EObject to a Request Response Pair EObject.
@@ -54,6 +55,7 @@ object M2MTransformer {
 
         val context = ExecutionContextImpl()
         context.setConfigProperty("keepModeling", true)
+        context.setConfigProperty("diagramName", EcoreUtil.getURI(inputModel).trimFileExtension().lastSegment())
 
         require(System.out != null) { "System.out was null!" }
         val outStream = OutputStreamWriter(System.out!!)

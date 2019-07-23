@@ -1,0 +1,13 @@
+[Templating]
+    id = '123'
+    testCondition = '"SomeValue"'
+
+[A]
+    username = 'Test'
+    password = 'password'
+    path = '/testA'
+
+[B]
+    username = 'Test'
+    password = 'password'
+    path = '/testB'

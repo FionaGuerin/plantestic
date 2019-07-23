@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.ecore.EObject

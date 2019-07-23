@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import io.kotlintest.shouldNotBe
 import io.kotlintest.shouldThrow
