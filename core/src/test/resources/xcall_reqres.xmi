@@ -11,7 +11,14 @@
     </httpresponse>
   </roundtrip>
   <roundtrip roundtripName="roundtrip2">
-    <httprequest httpMethod="POST" url="routingTargets/find" receiver="CRS"/>
+    <httprequest httpMethod="POST" url="routingTargets/find" receiver="CRS">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="serviceType" value="${serviceType}"/>
+      <httprequestdatum variableName="vin" value="${vin}"/>
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
     <httpresponse>
       <httpresponsedatum variableName="voiceTargets" xPath="/voiceTargets"/>
       <httpStatus>200</httpStatus>
@@ -38,13 +45,23 @@
     </httpresponse>
   </roundtrip>
   <roundtrip roundtripName="roundtrip5">
-    <httprequest httpMethod="POST" url="xcs/eventReceived" receiver="CCC"/>
+    <httprequest httpMethod="POST" url="xcs/eventReceived" receiver="CCC">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="serviceType" value="${serviceType}"/>
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
     <httpresponse>
       <httpStatus>200</httpStatus>
     </httpresponse>
   </roundtrip>
   <roundtrip roundtripName="roundtrip6">
-    <httprequest httpMethod="POST" url="/setupCall" receiver="VM"/>
+    <httprequest httpMethod="POST" url="/setupCall" receiver="VM">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="vin" value="${vin}"/>
+      <httprequestdatum variableName="voiceTargets" value="${voiceTargets}"/>
+    </httprequest>
     <httpresponse>
       <httpStatus>200</httpStatus>
     </httpresponse>

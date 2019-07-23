@@ -2,7 +2,11 @@
 <RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
     xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="rerouting_puml">
   <roundtrip roundtripName="roundtrip1">
-    <httprequest httpMethod="POST" url="/ccc/rerouteOptions" receiver="CRS"/>
+    <httprequest httpMethod="POST" url="/ccc/rerouteOptions" receiver="CRS">
+      <httprequestdatum variableName="countryCode" value="${countryCode}"/>
+      <httprequestdatum variableName="positionCountryCode" value="${positionCountryCode}"/>
+      <httprequestdatum variableName="sourceEventType" value="${sourceEventType}"/>
+    </httprequest>
     <httpresponse>
       <httpresponsedatum variableName="uiswitch" xPath="/UISWITCH"/>
       <httpresponsedatum variableName="reroute" xPath="/REROUTE"/>
