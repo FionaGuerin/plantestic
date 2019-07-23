@@ -21,7 +21,7 @@ class AcceleoGeneratorTest : StringSpec({
         val outputFolder = File(OUTPUT_PATH)
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+        outputFolder.listFiles().filter { f -> f.name == "minimal_hello_puml.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -36,7 +36,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
@@ -51,7 +51,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/testScenario.java").readText()
+        val generatedCodeText = File("$OUTPUT_PATH/minimal_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(MINIMAL_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -75,7 +75,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for complex hello".config(enabled = false) {
+    "Acceleo generation produces valid Java code for complex hello" {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
@@ -85,7 +85,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
+        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/complex_hello_puml.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the complex hello".config(enabled = false) {
@@ -108,7 +108,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/scenario.java").readText()
+        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
