@@ -88,12 +88,7 @@ mapping SequenceUml::transformUmlDiagram(): Scenario {
         elif (sequenceElement.oclIsTypeOf(Alternative)) {
             var alternative : Alternative := sequenceElement.oclAsType(Alternative);
             var useLeft : UseLeft := alternative.umlElements->at(1).oclAsType(UseLeft);
-            assert fatal ( useLeft.content != null )
-                with log ( 'UseLeft needs to contain content');
-            var requestresponse : RequestResponse := useLeft.content;
-            assert fatal ( requestresponse.oclIsTypeOf(Request) )
-                with log ( 'Requestresponse needs to be a request');
-            var request : Request := requestresponse.oclAsType(Request);
+            var request : Request := useLeft.useLeft2request();
             var httpRequestElement : HttpRequest := request.request2httpRequest();
 
             useLeft := alternative.umlElements->at(2).oclAsType(UseLeft);
@@ -134,28 +129,20 @@ helper OrderedSet(SequenceElement)::flattenSequenceElements():OrderedSet(Sequenc
         elif (umlElement.oclIsTypeOf(Activate)) {
             var activate : Activate := umlElement.oclAsType(Activate);
             sequenceElements += activate.umlElements->flattenSequenceElements();
-        }
-        else {
-            log("discarded");
-        }
+        };
     };
     return sequenceElements;
 }
 
 mapping Alternative::flattenAlternative():Alternative {
-    self.umlElements->flattenSequenceElements()->forEach(sequenceElement) {
-        result.umlElements += sequenceElement;
-        var useLeft : UseLeft := sequenceElement.oclAsType(UseLeft);
-    };
-    if (self.elseBlocks->size() > 0) {
-        result.elseBlocks += self.elseBlocks->at(1).oclAsType(Else).map flattenElse();
-    };
-    result.text := self.text;
+    umlElements += self.umlElements->flattenSequenceElements();
+    elseBlocks += self.elseBlocks->at(1).oclAsType(Else).map flattenElse();
+    text := self.text;
 }
 
 mapping Else::flattenElse():Else {
-    result.umlElements += self.umlElements->flattenSequenceElements();
-    result.text := self.text;
+    umlElements += self.umlElements->flattenSequenceElements();
+    text := self.text;
 }
 
 helper UseLeft::useLeft2response():Response {
