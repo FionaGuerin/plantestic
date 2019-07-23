@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:RestAssured="http://www.example.org/RestAssured"
-    testScenarioName="testScenario">
-  <testroundtrip testRoundtripName="testRoundtrip">
-    <requestspecification method="GET" url="/test/${id}" receiver="testReceiver"/>
+<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="minimal_hello_puml">
+  <testroundtrip testRoundtripName="roundtrip1">
+    <requestspecification method="GET" url="/hello" receiver="B"/>
     <responsespecification>
+      <bodymatchergroup/>
       <statusmatcher xsi:type="RestAssured:IsIn">
         <value>200</value>
       </statusmatcher>
