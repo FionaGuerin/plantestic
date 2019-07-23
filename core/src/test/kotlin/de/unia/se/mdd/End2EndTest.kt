@@ -106,13 +106,13 @@ class End2EndTest : StringSpec({
 }) {
     companion object {
         private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
-        private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("config_minimal_hello.toml").path
+        private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
 
         private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
-        private val REROUTE_CONFIG_PATH = Resources.getResource("config_minimal_hello.toml").path
+        private val REROUTE_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
 
         private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
-        private val XCALL_CONFIG_PATH = Resources.getResource("config_minimal_hello.toml").path
+        private val XCALL_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
 
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
     }
