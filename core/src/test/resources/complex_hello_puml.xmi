@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:puml="http://www.eclipse.plantuml/Puml">
+  <umlDiagrams xsi:type="puml:SequenceUml">
+    <umlElements xsi:type="puml:Participant" name="A"/>
+    <umlElements xsi:type="puml:Participant" name="B"/>
+    <umlElements xsi:type="puml:Alternative" text="${testCondition} == 'SomeValue'">
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+          userTwo="#//@umlDiagrams.0/@umlElements.1">
+        <content xsi:type="puml:Request" method="POST" url="/hello/${id}">
+          <requestParam name="variableName" value="value"/>
+          <requestParam name="variableName2" value="value2"/>
+        </content>
+      </umlElements>
+      <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+          deactivate="#//@umlDiagrams.0/@umlElements.1">
+        <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+            userTwo="#//@umlDiagrams.0/@umlElements.0">
+          <content xsi:type="puml:Response">
+            <code>200</code>
+            <extractParam name="variableName" value="itemA"/>
+            <extractParam name="variableName2" value="itemB"/>
+          </content>
+        </umlElements>
+      </umlElements>
+    </umlElements>
+  </umlDiagrams>
+</puml:UmlDiagram>
