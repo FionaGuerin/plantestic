@@ -77,7 +77,7 @@
           </content>
         </umlElements>
         <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.5"
-            deactivate="#//@umlDiagrams.0/@umlElements.5">
+            deactivate="#//@umlDiagrams.0/@umlElements.1">
           <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.5"
               userTwo="#//@umlDiagrams.0/@umlElements.1">
             <content xsi:type="puml:Response">
@@ -87,15 +87,13 @@
         </umlElements>
       </umlElements>
       <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
-          userTwo="#//@umlDiagrams.0/@umlElements.6">
-        <content xsi:type="puml:Request" method="POST" url="xcs/eventReceived">
-          <requestParam name="eventId" value="${eventId}"/>
-          <requestParam name="serviceType" value="${serviceType}"/>
-          <requestParam name="homeCountry" value="${homeCountry}"/>
-          <requestParam name="positionCountry" value="${positionCountry}"/>
-          <requestParam name="brand" value="${brand}"/>
-        </content>
-      </umlElements>
+                userTwo="#//@umlDiagrams.0/@umlElements.6">
+              <content xsi:type="puml:Request" method="POST" url="xcs/eventReceived">
+                <requestParam name="eventId" value="${eventId}"/>
+                <requestParam name="vin" value="${vin}"/>
+                <requestParam name="voiceTargets" value="${voiceTargets}"/>
+              </content>
+            </umlElements>
       <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.6"
           deactivate="#//@umlDiagrams.0/@umlElements.6">
         <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.6"
@@ -109,8 +107,10 @@
           userTwo="#//@umlDiagrams.0/@umlElements.0">
         <content xsi:type="puml:Request" method="POST" url="/setupCall">
           <requestParam name="eventId" value="${eventId}"/>
-          <requestParam name="vin" value="${vin}"/>
-          <requestParam name="voiceTargets" value="${voiceTargets}"/>
+          <requestParam name="serviceType" value="${serviceType}"/>
+          <requestParam name="homeCountry" value="${homeCountry}"/>
+          <requestParam name="positionCountry" value="${positionCountry}"/>
+          <requestParam name="brand" value="${brand}"/>
         </content>
       </umlElements>
       <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.0"

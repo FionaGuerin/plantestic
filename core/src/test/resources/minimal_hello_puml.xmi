@@ -8,11 +8,14 @@
         userTwo="#//@umlDiagrams.0/@umlElements.1">
       <content xsi:type="puml:Request" method="GET" url="/hello"/>
     </umlElements>
-    <umlElements xsi:type="puml:Activate">
+    <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+        deactivate="#//@umlDiagrams.0/@umlElements.1">
       <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
-          userTwo="#//@umlDiagrams.0/@umlElements.0"/>
-      <activate/>
-      <deactivate/>
+          userTwo="#//@umlDiagrams.0/@umlElements.0">
+        <content xsi:type="puml:Response">
+          <code>200</code>
+        </content>
+      </umlElements>
     </umlElements>
   </umlDiagrams>
 </puml:UmlDiagram>
