@@ -39,16 +39,15 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for minimal hello" {
+    "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
             |}""".trimMargin()
 
         wireMockServer.stubFor(
-            WireMock
-                .get(WireMock.urlPathMatching("/testB/test/123"))
-                .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
+            WireMock.get(WireMock.urlEqualTo("/testB/hello"))
+                .willReturn(WireMock.aResponse().withStatus(200)))
 
         MetaModelSetup.doSetup()
 
@@ -82,7 +81,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for complex hello" {
+    "Acceleo generation produces valid Java code for complex hello".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
@@ -95,7 +94,7 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the complex hello" {
+    "Acceleo generation test receives request on mock server for the complex hello".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",

@@ -32,7 +32,7 @@ class End2EndTest : StringSpec({
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the minimal hello"{
+    "End2End test receives request on mock server for the minimal hello".config(enabled = false) {
         wireMockServer.stubFor(
             get(WireMock.urlEqualTo("/testB/hello"))
                 .willReturn(WireMock.aResponse().withStatus(200)))
@@ -50,7 +50,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test works for complex hello"{
+    "End2End test works for complex hello" {
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
     }
 
@@ -62,7 +62,7 @@ class End2EndTest : StringSpec({
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for complex hello" {
+    "End2End test receives request on mock server for complex hello".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -228,7 +228,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test works for the xcall example"{
+    "End2End test works for the xcall example" {
         runTransformationPipeline(XCALL_INPUT_PATH)
     }
 
