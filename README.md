@@ -83,7 +83,7 @@ In the example diagram, the client is `CCC` and the services are `CRS` and `Voic
 
 An interaction contains a request from the client and a response from a service. 
 A request contains an HTTP method, a URL, and possibly parameters. 
-A response contains an HTTP status code and, if applicable, data. 
+A response contains an HTTP status code and, if applicable, data. A hyphen separates the HTTP status codes and the data. 
 
 The HTTP method is `GET`, `POST`, or `PUT`. 
 
@@ -95,10 +95,19 @@ We specify the request parameters in a tuple:
 An opening bracket is followed by the first request parameter. 
 This request parameter is followed - comma-separated - by the second request parameter, and so on. 
 The last request parameter is followed by a closing bracket.
-We specify the request parameter as a `Key: Value` pair: 
-The name of the request parameter is followed by a colon, a space, and the value of the request parameter as a string. 
+We specify the request parameter as a `Name: Value` pair: 
+The name of the request parameter is followed by a space, a colon, a space, and the value of the request parameter as a string. 
 We define the value of the request parameter in curly brackets, preceded by a dollar symbol. 
-Example: ```(name1: "${value1}", name2: "${value2}")```
+Example: ```(name1 : "${value1}", name2 : "${value2}")```
+
+We specify the response data in a tuple: 
+An opening bracket is followed by the first response datum. 
+This response datum is followed - comma-separated - by the second response datum, and so on. 
+The last response datum is followed by a closing bracket.
+We specify the response datum as a `Name: XPath` pair: 
+The name of the response datum is followed by a space, a colon, a space, and the xpath of the response datum as a string. 
+In the xpath, slashes separate the path components. . 
+Example: ```(name1 : "/value/value1", name2 : "/value2")```
 
 ![](./core/src/test/resources/rerouting.png)
 
