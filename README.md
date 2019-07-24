@@ -67,6 +67,12 @@ It is a Markup language with open and closing tags, which are in square brackets
 Not enclosed text is directly added to the generated file.  
 Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
+### WireMock
+The WireMock tool simulates an HTTP API.
+WireMock mocks an HTTP server whose services are used by a client. 
+The HTTP server may therefore be missing or incomplete.
+Website: [http://wiremock.org](http://wiremock.org)
+
 ## Abstract syntaxes
 
 ## Input requirements
