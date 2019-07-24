@@ -4,7 +4,7 @@
 [template public generateTestScenario(testScenario : TestScenario) post(trim())]
 [comment @main /]
 [file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
-package com.mdd.test;
+package com.plantestic.test;
 
 import java.util.Arrays;
 import java.util.Map;

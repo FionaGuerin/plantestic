@@ -20,7 +20,7 @@ apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
 
-mainClassName = "de.unia.se.mdd.Main"
+mainClassName = "de.unia.se.plantestic.Main"
 sourceCompatibility = 1.8
 
 compileKotlin {
@@ -31,10 +31,10 @@ compileTestKotlin {
 }
 
 jar {
-    baseName = "se13-mdd-team"
+    baseName = "se13-plantestic-team"
     version = "0.1.0"
     manifest {
-        attributes "Main-Class": "de.unia.se.mdd.MainKt"
+        attributes "Main-Class": "de.unia.se.plantestic.MainKt"
     }
 }
 

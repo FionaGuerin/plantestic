@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="rerouting_puml">
+  <testroundtrip testRoundtripName="roundtrip1">
+    <requestspecification method="POST" url="/ccc/rerouteOptions" receiver="CRS">
+      <requestdatum variableName="countryCode" value="${countryCode}"/>
+      <requestdatum variableName="positionCountryCode" value="${positionCountryCode}"/>
+      <requestdatum variableName="sourceEventType" value="${sourceEventType}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/UISWITCH"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/REROUTE"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/WARMHANDOVER"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+      <responsedatum variableName="uiswitch" xPath="/UISWITCH"/>
+      <responsedatum variableName="reroute" xPath="/REROUTE"/>
+      <responsedatum variableName="warmhandover" xPath="/WARMHANDOVER"/>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip2" precondition="${voiceEstablished} == true">
+    <requestspecification method="GET" url="/ccc/events/${eventId}/isconnected" receiver="VM"/>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/VoiceStatus/eventId1"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/VoiceStatus/agent1/connectionStatus"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/VoiceStatus/agent2/connectionStatus"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+      <responsedatum variableName="eventid1" xPath="/VoiceStatus/eventId1"/>
+      <responsedatum variableName="agent1" xPath="/VoiceStatus/agent1/connectionStatus"/>
+      <responsedatum variableName="agent2" xPath="/VoiceStatus/agent2/connectionStatus"/>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip3" precondition="${voiceEstablished} == false">
+    <requestspecification method="GET" url="/ccc/events/${eventId}/isconnected" receiver="VM"/>
+    <responsespecification>
+      <bodymatchergroup/>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>400</value>
+        <value>404</value>
+        <value>500</value>
+      </statusmatcher>
+    </responsespecification>
+  </testroundtrip>
+</RestAssured:TestScenario>
