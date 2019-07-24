@@ -22,11 +22,7 @@ Our test case generator detects deviations at an early stage:
 The test case generator derives test cases directly from the specification. 
 If the implementation fulfills these test cases, then the implementation fulfills the specification. 
 If the implementation does not fulfill these test cases, the implementation deviates from the specification. 
-With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
-
-[![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
-
-## Demo
+With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.## Demo
 
 ## Features
 
