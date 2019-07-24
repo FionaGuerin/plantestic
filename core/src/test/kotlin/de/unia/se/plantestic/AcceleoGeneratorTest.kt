@@ -1,3 +1,4 @@
+
 package de.unia.se.plantestic
 
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -21,7 +22,7 @@ class AcceleoGeneratorTest : StringSpec({
         val outputFolder = File(OUTPUT_PATH)
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().filter { f -> f.name == "minimal_hello_puml.java" }.size shouldBe 1
+        outputFolder.listFiles().filter { f -> f.name == "minimal_hello.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -36,7 +37,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
@@ -58,9 +59,9 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/minimal_hello_puml.java").readText()
+        val generatedCodeText = File("$OUTPUT_PATH/minimal_hello.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
-        compiledTest.call("test")
+        compiledTestClass.call("test")
 
         // Check if we received a correct request
         wireMockServer.allServeEvents.size shouldBe 1
@@ -81,7 +82,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for complex hello".config(enabled = false) {
+    "Acceleo generation produces valid Java code for complex hello".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
@@ -91,8 +92,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello_puml.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
-    }*/
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the complex hello".config(enabled = false) {
@@ -115,7 +115,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
+        val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -126,7 +126,7 @@ class AcceleoGeneratorTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "Transform a Rest Assured EObject input to Java Code for rerouting".config(enabled = false) {
+    "Transform a Rest Assured EObject input to Java Code for rerouting".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
@@ -139,7 +139,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for rerouting".config(enabled = false) {
+    "Acceleo generation produces valid Java code for rerouting".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
@@ -306,7 +306,7 @@ class AcceleoGeneratorTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "Transform a Rest Assured EObject input to Java Code for xcall".config(enabled = false) {
+    "Transform a Rest Assured EObject input to Java Code for xcall".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)
@@ -319,7 +319,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for xcall".config(enabled = false) {
+    "Acceleo generation produces valid Java code for xcall".config(enabled = true) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)

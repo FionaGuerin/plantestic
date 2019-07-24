@@ -28,7 +28,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
@@ -40,7 +40,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -52,13 +52,17 @@ class End2EndTest : StringSpec({
 
     "End2End test works for complex hello" {
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+        val outputFolder = File(OUTPUT_PATH)
+        outputFolder.listFiles().filter { f -> f.name == "complex_hello_puml.java" }.size shouldBe 1
+
+        printCode(outputFolder)
     }
 
     "End2End test produces valid Java code for complex hello" {
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello_puml.java").readText())
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
@@ -75,7 +79,7 @@ class End2EndTest : StringSpec({
 
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
+        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -88,13 +92,18 @@ class End2EndTest : StringSpec({
 
     "End2End works for the rerouting example" {
         runTransformationPipeline(REROUTE_INPUT_PATH)
+
+        val outputFolder = File(OUTPUT_PATH)
+        outputFolder.listFiles().filter { f -> f.name == "rerouting_puml.java" }.size shouldBe 1
+
+        printCode(outputFolder)
     }
 
     "End2End test produces valid Java code for the rerouting example" {
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting_puml.java").readText())
             .create(REROUTE_CONFIG_PATH)
     }
 
@@ -271,6 +280,13 @@ class End2EndTest : StringSpec({
         private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
 
         private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
+
+        fun printCode(folder: File) {
+            folder.listFiles().forEach { file ->
+                val lines = file.readLines()
+                lines.forEach { line -> println(line) }
+            }
+        }
     }
 
     override fun beforeTest(description: Description) {
