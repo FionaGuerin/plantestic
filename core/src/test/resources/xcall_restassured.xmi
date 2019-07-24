@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="xcall_puml">
+  <testroundtrip testRoundtripName="roundtrip1">
+    <requestspecification method="GET" url="/vehicle/internal/${vin}" receiver="DataService"/>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/homeCountry"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/positionCountry"/>
+        </bodymatcher>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/brand"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+      <responsedatum variableName="homeCountry" xPath="/homeCountry"/>
+      <responsedatum variableName="positionCountry" xPath="/positionCountry"/>
+      <responsedatum variableName="brand" xPath="/brand"/>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip2">
+    <requestspecification method="POST" url="routingTargets/find" receiver="CRS">
+      <requestdatum variableName="eventId" value="${eventId}"/>
+      <requestdatum variableName="serviceType" value="${serviceType}"/>
+      <requestdatum variableName="vin" value="${vin}"/>
+      <requestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <requestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <requestdatum variableName="brand" value="${brand}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup>
+        <bodymatcher>
+          <matcher xsi:type="RestAssured:HasXPath" xPath="/voiceTargets"/>
+        </bodymatcher>
+      </bodymatchergroup>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+      <responsedatum variableName="voiceTargets" xPath="/voiceTargets"/>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip3" precondition="${xcsServiceType} == 'ACall'">
+    <requestspecification method="PUT" url="xcs/notify/${eventId}">
+      <requestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <requestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <requestdatum variableName="brand" value="${brand}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup/>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip4" precondition="${xcsServiceType} == 'BCall'">
+    <requestspecification method="PUT" url="xcs/notify/${eventId}">
+      <requestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <requestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <requestdatum variableName="brand" value="${brand}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup/>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip5">
+    <requestspecification method="POST" url="xcs/eventReceived" receiver="CCC">
+      <requestdatum variableName="eventId" value="${eventId}"/>
+      <requestdatum variableName="serviceType" value="${serviceType}"/>
+      <requestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <requestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <requestdatum variableName="brand" value="${brand}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup/>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+    </responsespecification>
+  </testroundtrip>
+  <testroundtrip testRoundtripName="roundtrip6">
+    <requestspecification method="POST" url="/setupCall" receiver="VM">
+      <requestdatum variableName="eventId" value="${eventId}"/>
+      <requestdatum variableName="vin" value="${vin}"/>
+      <requestdatum variableName="voiceTargets" value="${voiceTargets}"/>
+    </requestspecification>
+    <responsespecification>
+      <bodymatchergroup/>
+      <statusmatcher xsi:type="RestAssured:IsIn">
+        <value>200</value>
+      </statusmatcher>
+    </responsespecification>
+  </testroundtrip>
+</RestAssured:TestScenario>

@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.google.common.io.Resources
@@ -21,7 +21,7 @@ class AcceleoGeneratorTest : StringSpec({
         val outputFolder = File(OUTPUT_PATH)
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+        outputFolder.listFiles().filter { f -> f.name == "minimal_hello_puml.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -36,7 +36,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
@@ -58,8 +58,8 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
-            .create(MINIMAL_HELLO_CONFIG_PATH)
+        val generatedCodeText = File("$OUTPUT_PATH/minimal_hello_puml.java").readText()
+        val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -91,7 +91,8 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello_puml.java").readText()).create(COMPLEX_HELLO_CONFIG_PATH)
+    }*/
     }
 
     "Acceleo generation test receives request on mock server for the complex hello".config(enabled = false) {
@@ -114,8 +115,8 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
-        val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
+        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
+        val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
 
@@ -148,7 +149,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = false) {
@@ -185,7 +186,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -222,7 +223,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -259,7 +260,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -296,7 +297,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -328,7 +329,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
@@ -351,7 +352,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request

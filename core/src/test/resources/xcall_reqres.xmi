@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="xcall_puml">
+  <roundtrip roundtripName="roundtrip1">
+    <httprequest httpMethod="GET" url="/vehicle/internal/${vin}" receiver="DataService"/>
+    <httpresponse>
+      <httpresponsedatum variableName="homeCountry" xPath="/homeCountry"/>
+      <httpresponsedatum variableName="positionCountry" xPath="/positionCountry"/>
+      <httpresponsedatum variableName="brand" xPath="/brand"/>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+  <roundtrip roundtripName="roundtrip2">
+    <httprequest httpMethod="POST" url="routingTargets/find" receiver="CRS">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="serviceType" value="${serviceType}"/>
+      <httprequestdatum variableName="vin" value="${vin}"/>
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
+    <httpresponse>
+      <httpresponsedatum variableName="voiceTargets" xPath="/voiceTargets"/>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+  <roundtrip roundtripName="roundtrip3" precondition="${xcsServiceType} == 'ACall'">
+    <httprequest httpMethod="PUT" url="xcs/notify/${eventId}">
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
+    <httpresponse>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+  <roundtrip roundtripName="roundtrip4" precondition="${xcsServiceType} == 'BCall'">
+    <httprequest httpMethod="PUT" url="xcs/notify/${eventId}">
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
+    <httpresponse>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+  <roundtrip roundtripName="roundtrip5">
+    <httprequest httpMethod="POST" url="xcs/eventReceived" receiver="CCC">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="serviceType" value="${serviceType}"/>
+      <httprequestdatum variableName="homeCountry" value="${homeCountry}"/>
+      <httprequestdatum variableName="positionCountry" value="${positionCountry}"/>
+      <httprequestdatum variableName="brand" value="${brand}"/>
+    </httprequest>
+    <httpresponse>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+  <roundtrip roundtripName="roundtrip6">
+    <httprequest httpMethod="POST" url="/setupCall" receiver="VM">
+      <httprequestdatum variableName="eventId" value="${eventId}"/>
+      <httprequestdatum variableName="vin" value="${vin}"/>
+      <httprequestdatum variableName="voiceTargets" value="${voiceTargets}"/>
+    </httprequest>
+    <httpresponse>
+      <httpStatus>200</httpStatus>
+    </httpresponse>
+  </roundtrip>
+</RequestResponsePairs:Scenario>

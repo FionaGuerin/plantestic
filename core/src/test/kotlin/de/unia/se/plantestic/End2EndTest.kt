@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.google.common.io.Resources
-import de.unia.se.mdd.Main.runTransformationPipeline
+import de.unia.se.plantestic.Main.runTransformationPipeline
 import io.kotlintest.Description
 import io.kotlintest.TestResult
 import io.kotlintest.shouldBe
@@ -28,7 +28,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
@@ -40,7 +40,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -58,7 +58,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello.java").readText())
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
@@ -76,7 +76,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
         val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
-        val compiledTestClass = Reflect.compile("com.mdd.test.Test", generatedCodeText)
+        val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
 
@@ -94,7 +94,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText())
             .create(REROUTE_CONFIG_PATH)
     }
 
@@ -126,7 +126,8 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText())
+            .create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -236,7 +237,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/xcall.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText())
             .create(XCALL_CONFIG_PATH)
     }
 
@@ -246,7 +247,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
             .create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 

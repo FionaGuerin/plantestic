@@ -1,4 +1,4 @@
-package de.unia.se.mdd
+package de.unia.se.plantestic
 
 import com.google.common.io.Resources
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator
@@ -16,7 +16,7 @@ class RestAssuredAcceleoGenerator : AbstractAcceleoGenerator() {
     private val templateNames = arrayOf("generateTestScenario")
     private val acceleoTransformationsInputFolder = Resources.getResource("code-generation").path
     private val compiledAcceleoTransformationsOutputFolder = Paths.get(System.getProperty("user.dir"),
-        "build", "classes", "kotlin", "main", "de", "unia", "se", "mdd").toString()
+        "build", "classes", "kotlin", "main", "de", "unia", "se", "plantestic").toString()
 
     override fun initialize(model: EObject, targetFolder: File, arguments: List<Any>) {
         println("Compiling .mtl file for generating code from Rest assured Model")
