@@ -48,7 +48,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         wireMockServer.stubFor(
             WireMock.get(WireMock.urlEqualTo("/testB/hello"))
-                .willReturn(WireMock.aResponse().withStatus(200)))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
         MetaModelSetup.doSetup()
 
@@ -115,6 +115,7 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
+        val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -331,7 +332,6 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
-    "Acceleo generation test receives request on mock server for the xcall" {
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",

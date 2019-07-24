@@ -220,6 +220,23 @@ class End2EndTest : StringSpec({
             |"warmhandover" : "WARMHANDOVER",
             |}""".trimMargin()
 
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/CRS/ccc/rerouteOptions"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(200)
+                    .withBody(body_CCC_CRS)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.urlPathMatching("/Voicemanager/ccc/events/123/isconnected"))
+                .willReturn(WireMock.aResponse()
+                    .withStatus(500)))
+        wireMockServer.stubFor(
+            WireMock
+                .get(WireMock.anyUrl())
+                .willReturn(WireMock.aResponse()
+                    .withStatus(500)))
+
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         val pumlInputModelURI = URI.createFileURI(REROUTE_INPUT_PATH)
@@ -240,13 +257,17 @@ class End2EndTest : StringSpec({
 
     "End2End test works for the xcall example" {
         runTransformationPipeline(XCALL_INPUT_PATH)
+        val outputFolder = File(OUTPUT_PATH)
+        outputFolder.listFiles().filter { f -> f.name == "xcall_puml.java" }.size shouldBe 1
+
+        printCode(outputFolder)
     }
 
     "End2End test produces valid Java code for the xcall example" {
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall_puml.java").readText())
             .create(XCALL_CONFIG_PATH)
     }
 
