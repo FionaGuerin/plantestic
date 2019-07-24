@@ -14,7 +14,7 @@ import io.kotlintest.Description
 import io.kotlintest.TestResult
 
 class AcceleoGeneratorTest : StringSpec({
-    "Transform a Rest Assured EObject input to Java Code for minimal hello" {
+    "Transform a Rest Assured EObject input to Java Code for minimal hello".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
@@ -27,7 +27,7 @@ class AcceleoGeneratorTest : StringSpec({
         printCode(outputFolder)
     }
 
-    "Acceleo generation produces valid Java code for minimal hello" {
+    "Acceleo generation produces valid Java code for minimal hello".config(enabled = false) {
         MetaModelSetup.doSetup()
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
@@ -115,7 +115,6 @@ class AcceleoGeneratorTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -332,6 +331,7 @@ class AcceleoGeneratorTest : StringSpec({
         Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
+    "Acceleo generation test receives request on mock server for the xcall" {
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",
