@@ -75,14 +75,25 @@ Website: [http://wiremock.org](http://wiremock.org)
 
 ## Abstract syntaxes
 ### PlantUML
+A sequence diagram contains a sequence of interactions. 
+An interaction is either a pair of a request and a response or it is an alternative. 
+The alternative, in turn, contains more interactions. 
 
 ![](./plantuml/model/Puml.png)
 
 ### Request/response pairs
+A scenario contains several roundtrips, each consisting of one request and one response. 
+Each request has an HTTP method, a URL, a receiver, and, if applicable, several parameters. 
+A response can consist of several HTTP status codes and several data elements.
 
 ![](./core/src/main/resources/metamodels/reqrespairs/RequestResponsePairs.png)
 
 ### REST Assured
+The abstract syntax of REST Assured is very similar to the actual REST Assured syntax. 
+In REST Assured, a client calls an HTTP method on a URL and sends parameters if necessary. 
+The client checks whether it receives an answer and whether the received answer meets its expectations: 
+The IsIn-Matcher checks whether the received status code is an expected status code. 
+The HasXPath-Matcher checks whether a received data element is an expected data element. 
 
 ![](./core/src/main/resources/metamodels/restassured/RestAssured.png)
 
