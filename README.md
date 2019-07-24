@@ -74,15 +74,6 @@ Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
 ## Installation
 
-## API reference
-To generate the language, you can run
-```
-./gradlew generateXtext
-```
-The generated meta-model files are located in `plantuml/model/generated/Puml.ecore` and `plantuml/model/generated/Puml.genmodel`.
-The language and the parser are located in `plantuml/src/main/xtext-gen` and `plantuml/src/main/xtend-gen`.
-This gradle task is also automatically executed when you build the project.
-
 ## How to use
 ### Input
 The input is a PlantUML sequence diagram. 
