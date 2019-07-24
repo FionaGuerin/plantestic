@@ -18,7 +18,9 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        val outputFolder = Paths.get(inputUriString).toAbsolutePath().parent.toString() + "/generatedCode"
+        val IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
+        val osAppropriatePath = if (IS_WINDOWS) inputUriString.substring(1) else inputUriString
+        val outputFolder = Paths.get(osAppropriatePath).toAbsolutePath().parent.toString() + "/generatedCode"
         println("Generating code into $outputFolder")
 
         AcceleoCodeGenerator.generateCode(restAssuredModel, File(outputFolder))
