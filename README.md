@@ -103,6 +103,21 @@ The HasXPath-Matcher checks whether a received data element is an expected data 
 3. QVTO transforms the XMI sequence diagram into request/response pairs.
 4. QVTO transforms the request/response pairs into the abstract syntax of REST Assured.
 5. Acceleo generates Java test cases from the abstract syntax of REST Assured.
+`public void test() throws Exception {
+    try {
+ 		Response roundtrip1 = RestAssured.given()
+ 				.auth().basic(substitutor.replace("${B.username}"), substitutor.replace("${B.password}"))
+ 			.when()
+ 				.get(substitutor.replace("${B.path}") + substitutor.replace("/hello"))
+ 			.then()
+ 				.assertThat()
+ 					   .statusCode(IsIn.isIn(Arrays.asList(200)));
+ 	} catch (Exception exception) {
+ 		System.out.println("An error occured during evaluating the communication with testReceiver: ");
+ 		exception.printStackTrace();
+ 		throw exception;
+ 	}
+}`
 
 ## Installation
 1. Install Java SE Development Kit 8 or higher. 
