@@ -3,7 +3,7 @@
 
 [template public generateTestScenario(testScenario : TestScenario) post(trim())]
 [comment @main /]
-[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
+[file ('Test'.concat(testScenario.testScenarioName.concat('.java')), false, 'UTF-8')]
 package com.plantestic.test;
 
 import java.util.Arrays;
@@ -21,14 +21,14 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-public class Test {
+public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 
 	Map<String, Object> paramsMap = new HashMap();
 	ScriptEngine engine;
 	StringSubstitutor substitutor;
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
-	public Test(String configFile) throws Exception {
+	public [ 'Test'.concat(testScenario.testScenarioName) /](String configFile) throws Exception {
 		try {
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);

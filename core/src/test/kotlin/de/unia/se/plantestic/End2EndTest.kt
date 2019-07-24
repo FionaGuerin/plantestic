@@ -29,11 +29,11 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText())
+        Reflect.compile("com.plantestic.test.Testminimal_hello_puml", File("$OUTPUT_PATH/Testminimal_hello_puml.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the minimal hello".config(enabled = false) {
+    "End2End test receives request on mock server for the minimal hello" {
         wireMockServer.stubFor(
             get(WireMock.urlEqualTo("/testB/hello"))
                 .willReturn(WireMock.aResponse().withStatus(200)))
@@ -41,7 +41,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Testminimal_hello_puml", File("$OUTPUT_PATH/Testminimal_hello_puml.java").readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -108,7 +108,7 @@ class End2EndTest : StringSpec({
             .create(REROUTE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = false) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = true) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -136,7 +136,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting_puml.java").readText())
             .create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
