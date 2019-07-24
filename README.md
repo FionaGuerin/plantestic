@@ -55,16 +55,16 @@ On the other hand, Xtext provides a parser, a linker, a compiler, and a typechec
 Website: [https://www.eclipse.org/Xtext/](https://www.eclipse.org/Xtext/) 
 
 ### Query View Transformation (QVT)
-The programming language set Query View Transformation, which the Object Management Group specifies, describes model-to-model transformations. 
+The programming language set Query View Transformation describes model-to-model transformations. 
+Query View Transformations implement the MOF (Meta Object Facility) query-view-transformation standard of the Object Management Group. 
 Query View Transformation contains the languages Query View Transformation Operational, Query View Transformation Relations, and Query View Transformation Core. 
 The imperative language Query-View-Transformation-Operational serves unidirectional model transformations.  
 Website: [https://wiki.eclipse.org/QVTo](https://wiki.eclipse.org/QVTo)
 
 ### Acceleo
-Acceleo is for a template-based source code generation.
-It is a model-to-text transformation tool.  
-It is a Markup language with open and closing tags, which are in square brackets.
-Not enclosed text is directly added to the generated file.  
+The model-to-text generator Acceleo produces source code from an EMF model. 
+Acceleo is easy to use and it can be customized by adding text to the generated code. 
+Acceleo implements the MOF (Meta Object Facility) model-to-text standard of the Object Management Group. 
 Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
 ### WireMock
