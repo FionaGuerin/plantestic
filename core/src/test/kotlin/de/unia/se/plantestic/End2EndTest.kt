@@ -63,11 +63,11 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText())
+        Reflect.compile("com.plantestic.test.Testcomplex_hello_puml", File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText())
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for complex hello" {
+    "End2End test receives request on mock server for complex hello".config(enabled = false) {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -108,7 +108,7 @@ class End2EndTest : StringSpec({
             .create(REROUTE_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = true) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = false) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -146,7 +146,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 400".config(enabled = true) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 400".config(enabled = false) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -183,7 +183,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 404".config(enabled = true) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 404".config(enabled = false) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -272,7 +272,7 @@ class End2EndTest : StringSpec({
             .create(XCALL_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the xcall example".config(enabled = true) {
+    "End2End test receives request on mock server for the xcall example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(XCALL_INPUT_PATH)
