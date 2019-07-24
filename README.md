@@ -1,4 +1,7 @@
 # Plantestic
+[![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
+
+
 ## Description
 The test case generator Plantestic produces test cases from a sequence diagram. 
 A sequence diagram models a sequence of interactions between objects. 
@@ -21,7 +24,6 @@ If the implementation fulfills these test cases, then the implementation fulfill
 If the implementation does not fulfill these test cases, the implementation deviates from the specification. 
 With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.
 
-## Build status
 [![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
 
 ## Demo
