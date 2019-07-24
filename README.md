@@ -75,7 +75,13 @@ Website: [http://wiremock.org](http://wiremock.org)
 
 ## Abstract syntaxes
 
-## Input requirements
+## Installation
+1. Install Java SE Development Kit 8 or higher. 
+You can find Java SE Development Kit 8 under the website [https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+2. Clone the Plantestic repository.
+
+## How to use
+### Input requirements
 The input is a PlantUML sequence diagram. 
 This sequence diagram contains several participants and interactions between the participants. 
 One participiant is the client who calls the test cases. The other participants are services of the implementation. 
