@@ -1,4 +1,3 @@
-
 package de.unia.se.plantestic
 
 import com.github.tomakehurst.wiremock.client.WireMock
