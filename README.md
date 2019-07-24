@@ -97,6 +97,13 @@ The HasXPath-Matcher checks whether a received data element is an expected data 
 
 ![](./core/src/main/resources/metamodels/restassured/RestAssured.png)
 
+## Demo
+1. Given is a PlantUML sequence diagram.
+2. The parser that Xtext generates for PlantUML parses the sequence diagram into its XMI representation.
+3. QVTO transforms the XMI sequence diagram into request/response pairs.
+4. QVTO transforms the request/response pairs into the abstract syntax of REST Assured.
+5. Acceleo generates Java test cases from the abstract syntax of REST Assured.
+
 ## Installation
 1. Install Java SE Development Kit 8 or higher. 
 You can find Java SE Development Kit 8 under the website [https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
