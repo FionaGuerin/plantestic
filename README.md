@@ -168,14 +168,15 @@ We pass this grammar to Xtext.
 #### qvto-cli
 The repository [qvto-cli](https://github.com/mrcalvin/qvto-cli)demonstrates how QVT operations can be performed without Eclipse.
    
-### Articles
+### Literature
 #### Standalone Parsing with Xtext
-[http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
-   wrote a very useful article on how to use an Xtext parser in standalone mode.
+From the article [Standalone Parsing with Xtext](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/) we learned how to use Xtext without Eclipse.
     
 #### QVTOML/Examples/InvokeInJava
-[https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
-   shows how to invoke `qvt` programmatically.
+From the Wiki article [QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava) we learned how to call QVT from our pipeline.
+
+#### Grammar-based Program Generation Based on Model Finding
+From the paper [Grammar-based Program Generation Based on Model Finding](http://www.informatik.uni-bremen.de/agra/doc/konf/13_idt_program_generation.pdf) we learned about the Eclipse Modeling Framework.
    
 ## License
 Copyright [2019] [Stefan Grafberger, Fiona Guerin, Michelle Martin, Daniela Neupert, Andreas Zimmerer]
