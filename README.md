@@ -74,6 +74,17 @@ The HTTP server may therefore be missing or incomplete.
 Website: [http://wiremock.org](http://wiremock.org)
 
 ## Abstract syntaxes
+### PlantUML
+
+![](./plantuml/model/Puml.png)
+
+### Request/response pairs
+
+![](./core/src/main/resources/metamodels/reqrespairs/RequestResponsePairs.png)
+
+### REST Assured
+
+![](./core/src/main/resources/metamodels/restassured/RestAssured.png)
 
 ## Installation
 1. Install Java SE Development Kit 8 or higher. 
