@@ -99,9 +99,66 @@ The HasXPath-Matcher checks whether a received data element is an expected data 
 
 ## Demo
 1. Given is a PlantUML sequence diagram.
+`SEQUENCE @startuml
+ PARTICIPANT A
+ PARTICIPANT B
+ A -> B : GET "/hello"
+ activate B
+ B -> A : 200
+ deactivate B
+ @enduml`
+ 
 2. The parser that Xtext generates for PlantUML parses the sequence diagram into its XMI representation.
+`<?xml version="1.0" encoding="UTF-8"?>
+<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:puml="http://www.eclipse.plantuml/Puml">
+  <umlDiagrams xsi:type="puml:SequenceUml">
+    <umlElements xsi:type="puml:Participant" name="A"/>
+    <umlElements xsi:type="puml:Participant" name="B"/>
+    <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+        userTwo="#//@umlDiagrams.0/@umlElements.1">
+      <content xsi:type="puml:Request" method="GET" url="/hello"/>
+    </umlElements>
+    <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+        deactivate="#//@umlDiagrams.0/@umlElements.1">
+      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+          userTwo="#//@umlDiagrams.0/@umlElements.0">
+        <content xsi:type="puml:Response">
+         <code>200</code>
+        </content>
+      </umlElements>
+    </umlElements>
+  </umlDiagrams>
+</puml:UmlDiagram>`
+
 3. QVTO transforms the XMI sequence diagram into request/response pairs.
+`<?xml version="1.0" encoding="UTF-8"?>
+ <RequestResponsePairs:Scenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+     xmlns:RequestResponsePairs="http://www.example.org/RequestResponsePairs" scenarioName="minimal_hello_puml">
+   <roundtrip roundtripName="roundtrip1">
+     <httprequest httpMethod="GET" url="/hello" receiver="B"/>
+     <httpresponse>
+       <httpStatus>200</httpStatus>
+     </httpresponse>
+   </roundtrip>
+ </RequestResponsePairs:Scenario>
+`
 4. QVTO transforms the request/response pairs into the abstract syntax of REST Assured.
+`<?xml version="1.0" encoding="UTF-8"?>
+ <RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="minimal_hello_puml">
+   <testroundtrip testRoundtripName="roundtrip1">
+     <requestspecification method="GET" url="/hello" receiver="B"/>
+     <responsespecification>
+       <bodymatchergroup/>
+       <statusmatcher xsi:type="RestAssured:IsIn">
+         <value>200</value>
+       </statusmatcher>
+     </responsespecification>
+   </testroundtrip>
+ </RestAssured:TestScenario>
+`
+
 5. Acceleo generates Java test cases from the abstract syntax of REST Assured.
 `public void test() throws Exception {
     try {
