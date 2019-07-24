@@ -72,20 +72,34 @@ Website: [https://www.eclipse.org/acceleo/](https://www.eclipse.org/acceleo/)
 
 ## Abstract syntaxes
 
-## Installation
-
-## How to use
-### Input
+## Input requirements
 The input is a PlantUML sequence diagram. 
 This sequence diagram contains several participants and interactions between the participants. 
 One participiant is the client who calls the test cases. The other participants are services of the implementation. 
 In the example diagram, the client is `CCC` and the services are `CRS` and `Voicemanager`.
 
+An interaction contains a request from the client and a response from a service. 
+A request contains an HTTP method, a URL, and possibly parameters. 
+A response contains an HTTP status code and, if applicable, data. 
+
+The HTTP method is `GET`, `POST`, or `PUT`. 
+
+The URL path is a String. In it, slashes separate the path components. 
+A parameter name in curly braces, preceded by a dollar symbol, thereby specifies parameterized path components. 
+Example: ```/path/${param}```
+
+We specify the request parameters in a tuple: 
+An opening bracket is followed by the first request parameter. 
+This request parameter is followed - comma-separated - by the second request parameter, and so on. 
+The last request parameter is followed by a closing bracket.
+We specify the request parameter as a `Key: Value` pair: 
+The name of the request parameter is followed by a colon, a space, and the value of the request parameter as a string. 
+We define the value of the request parameter in curly brackets, preceded by a dollar symbol. 
+Example: ```(name1: "${value1}", name2: "${value2}")```
+
 ![](./core/src/test/resources/rerouting.png)
 
-
-
-## Conventions
+## Repository conventions
 ### Repository language
 English
 
