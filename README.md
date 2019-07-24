@@ -161,16 +161,13 @@ Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3
 \* contributed equally
 
 ### Repositories
-#### PlantUML-Eclipse-Xtext
-[https://github.com/Cooperate-Project/plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext)
-    developed a grammar file for PlantUML.
-    We built upon their work from their repository and marked their contributions in the repository.
+#### plantuml-eclipse-xtext
+The repository [plantuml-eclipse-xtext](https://github.com/Cooperate-Project/plantuml-eclipse-xtext) defines the grammar of PlantUML. 
+We pass this grammar to Xtext.
    
-#### QVTO-CLI
-[https://github.com/mrcalvin/qvto-cli](https://github.com/mrcalvin/qvto-cli)
-    gave us a lot of insights in how to run `qvt` without Eclipse.  
+#### qvto-cli
+The repository [qvto-cli](https://github.com/mrcalvin/qvto-cli)demonstrates how QVT operations can be performed without Eclipse.
    
-
 ### Articles
 #### Standalone Parsing with Xtext
 [http://www.davehofmann.de/different-ways-of-parsing-with-xtext/](http://www.davehofmann.de/different-ways-of-parsing-with-xtext/)
@@ -180,7 +177,6 @@ Example squashed merge commit: ```Initial Setup (Closes #1, Closes #2, Closes #3
 [https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava](https://wiki.eclipse.org/QVTOML/Examples/InvokeInJava)
    shows how to invoke `qvt` programmatically.
    
-
 ## License
 Copyright [2019] [Stefan Grafberger, Fiona Guerin, Michelle Martin, Daniela Neupert, Andreas Zimmerer]
 
