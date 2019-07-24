@@ -117,6 +117,11 @@ Example: ```(name1 : "/value/value1", name2 : "/value2")```
 
 ![](./core/src/test/resources/rerouting.png)
 
+### Execution
+1. Create a PlantUML sequence diagram. Note the input requirements above. 
+2. Save the sequence diagram. 
+3. Call the command `./gradlew run --args="<path/to/sequence/diagram/diagram_name.puml>"`.
+
 ## Repository conventions
 ### Repository language
 English
