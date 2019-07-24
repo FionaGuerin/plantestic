@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="xcall_puml">
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="xcall">
   <testroundtrip testRoundtripName="roundtrip1">
     <requestspecification method="GET" url="/vehicle/internal/${vin}" receiver="DataService"/>
     <responsespecification>
