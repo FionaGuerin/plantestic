@@ -54,7 +54,7 @@ class End2EndTest : StringSpec({
     "End2End test works for complex hello" {
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
         val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "complex_hello_puml.java" }.size shouldBe 1
+        outputFolder.listFiles().filter { f -> f.name == "Testcomplex_hello_puml.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -63,11 +63,11 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/complex_hello_puml.java").readText())
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText())
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for complex hello".config(enabled = false) {
+    "End2End test receives request on mock server for complex hello" {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -80,8 +80,8 @@ class End2EndTest : StringSpec({
 
         runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
 
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
-        val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
+        val generatedCodeText = File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText()
+        val compiledTestClass = Reflect.compile("com.plantestic.test.Testcomplex_hello_puml", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
 
@@ -95,7 +95,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "rerouting_puml.java" }.size shouldBe 1
+        outputFolder.listFiles().filter { f -> f.name == "Testrerouting_puml.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -104,7 +104,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting_puml.java").readText())
+        Reflect.compile("com.plantestic.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText())
             .create(REROUTE_CONFIG_PATH)
     }
 
@@ -136,7 +136,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/rerouting_puml.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText())
             .create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -146,7 +146,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 400".config(enabled = false) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 400".config(enabled = true) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -174,7 +174,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText()).create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -183,7 +183,7 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 404".config(enabled = false) {
+    "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 404".config(enabled = true) {
         val body_CCC_CRS = """{
             |"uiswitch" : "UISWITCH",
             |"reroute" : "REROUTE",
@@ -205,7 +205,7 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(REROUTE_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText()).create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -247,7 +247,7 @@ class End2EndTest : StringSpec({
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.mdd.test.Test", File("$OUTPUT_PATH/rerouting.java").readText()).create(REROUTE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.mdd.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText()).create(REROUTE_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -259,7 +259,7 @@ class End2EndTest : StringSpec({
     "End2End test works for the xcall example" {
         runTransformationPipeline(XCALL_INPUT_PATH)
         val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "xcall_puml.java" }.size shouldBe 1
+        outputFolder.listFiles().filter { f -> f.name == "Testxcall_puml.java" }.size shouldBe 1
 
         printCode(outputFolder)
     }
@@ -268,17 +268,17 @@ class End2EndTest : StringSpec({
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/xcall_puml.java").readText())
+        Reflect.compile("com.plantestic.test.Testxcall_puml", File("$OUTPUT_PATH/Testxcall_puml.java").readText())
             .create(XCALL_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for the xcall example".config(enabled = false) {
+    "End2End test receives request on mock server for the xcall example".config(enabled = true) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
         runTransformationPipeline(XCALL_INPUT_PATH)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
+        val compiledTest = Reflect.compile("com.plantestic.test.Testxcall_puml", File("$OUTPUT_PATH/Testxcall_puml.java").readText())
             .create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 
