@@ -110,26 +110,26 @@ The HasXPath-Matcher checks whether a received data element is an expected data 
  
 2. The parser that Xtext generates for PlantUML parses the sequence diagram into its XMI representation.
 `<?xml version="1.0" encoding="UTF-8"?>
-<puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:puml="http://www.eclipse.plantuml/Puml">
-  <umlDiagrams xsi:type="puml:SequenceUml">
-    <umlElements xsi:type="puml:Participant" name="A"/>
-    <umlElements xsi:type="puml:Participant" name="B"/>
-    <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
-        userTwo="#//@umlDiagrams.0/@umlElements.1">
-      <content xsi:type="puml:Request" method="GET" url="/hello"/>
-    </umlElements>
-    <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
-        deactivate="#//@umlDiagrams.0/@umlElements.1">
-      <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
-          userTwo="#//@umlDiagrams.0/@umlElements.0">
-        <content xsi:type="puml:Response">
-         <code>200</code>
-        </content>
-      </umlElements>
-    </umlElements>
-  </umlDiagrams>
-</puml:UmlDiagram>`
+ <puml:UmlDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:puml="http://www.eclipse.plantuml/Puml">
+   <umlDiagrams xsi:type="puml:SequenceUml">
+     <umlElements xsi:type="puml:Participant" name="A"/>
+     <umlElements xsi:type="puml:Participant" name="B"/>
+     <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.0"
+         userTwo="#//@umlDiagrams.0/@umlElements.1">
+       <content xsi:type="puml:Request" method="GET" url="/hello"/>
+     </umlElements>
+     <umlElements xsi:type="puml:Activate" activate="#//@umlDiagrams.0/@umlElements.1"
+         deactivate="#//@umlDiagrams.0/@umlElements.1">
+       <umlElements xsi:type="puml:UseLeft" userOne="#//@umlDiagrams.0/@umlElements.1"
+           userTwo="#//@umlDiagrams.0/@umlElements.0">
+         <content xsi:type="puml:Response">
+          <code>200</code>
+         </content>
+       </umlElements>
+     </umlElements>
+   </umlDiagrams>
+ </puml:UmlDiagram>`
 
 3. QVTO transforms the XMI sequence diagram into request/response pairs.
 `<?xml version="1.0" encoding="UTF-8"?>
