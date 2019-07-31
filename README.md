@@ -46,6 +46,12 @@ The Eclipse Modeling Framework serves modeling and code generation.
 From a model specification in XMI, it produces an equivalent set of classes in Kotlin.  
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
 
+### Gradle
+The build management system Gradle splits a project into tasks and executes these tasks in a build. 
+An example of a task is code compilation. 
+Gradle downloads and configures dependencies and libraries automatically.
+Website: [https://gradle.org](https://gradle.org)
+
 ### XML Metadata Interchange (XMI)
 XML Metadata Interchange is an exchange format among software development tools. 
 For example, XML Metadata Interchange represents UML diagrams textually within the Eclipse Modeling Framework.  
