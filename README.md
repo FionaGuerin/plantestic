@@ -246,6 +246,9 @@ Example: ```(name1 : "/value/value1", name2 : "/value2")```
 2. Save the sequence diagram. 
 3. Call the command `./gradlew run --args="<path/to/sequence/diagram/diagram_name.puml>"`.
 
+### Output expectation
+The generated test cases are in `<path/to/plantestic_folder/core/build/resources/main/code-generation/generatedCode/<diagramName>.java>`.
+
 ## Repository conventions
 ### Repository language
 English
