@@ -1,5 +1,6 @@
 # Plantestic
-[![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)  ![plantestic](https://img.shields.io/badge/🌱-plantestic-green.svg)
+![plantestic](https://img.shields.io/badge/🌱-plantestic-green.svg)
+[![Build Status](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)](https://travis-ci.com/FionaGuerin/plantestic.svg?token=qCz9ynu1x7xYBT4zA1MS&branch=master)
 
 ## Description
 The test case generator Plantestic produces test cases from a sequence diagram. 
