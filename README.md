@@ -118,7 +118,7 @@ The IsIn-Matcher checks whether the received status code is an expected status c
 The HasXPath-Matcher checks whether a received data element is an expected data element. 
 
 ![](./core/src/main/resources/metamodels/restassured/RestAssured.png)
-
+ 
 ## Demo
 1. Given is a PlantUML sequence diagram.
 ```
@@ -264,11 +264,11 @@ English
 Kotlin
 
 ### Review process
-A pull request addresses a single issue. 
+1. A pull request addresses a single issue. 
 
-A pull request must be approved by two reviewers.
+2. A pull request must be approved by two reviewers.
 
-A pull request is squashed before the merge.
+3. A pull request is squashed before the merge.
 
 ### Naming Conventions: Issues, branches, pull requests, squashed merge commits
 Issues describe project work such as tasks, bugs, and feature requests. 
@@ -305,7 +305,7 @@ The repository [plantuml-eclipse-xtext](https://github.com/Cooperate-Project/pla
 We pass this grammar to Xtext.
    
 #### qvto-cli
-The repository [qvto-cli](https://github.com/mrcalvin/qvto-cli)demonstrates how QVT operations can be performed without Eclipse.
+The repository [qvto-cli](https://github.com/mrcalvin/qvto-cli) demonstrates how QVT operations can be performed without Eclipse.
    
 ### Literature
 #### Standalone Parsing with Xtext
