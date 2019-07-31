@@ -24,6 +24,21 @@ If the implementation does not fulfill these test cases, the implementation devi
 With our test case generator, developers can quickly uncover inconsistencies, fix them, and save costs.## Demo
 
 ## Features
+Plantestic is universal in that it can run in any development environment. 
+For this, Plantestic uses Gradle.
+
+Plantestic is easy to use. 
+On the one hand, you set it up by simply installing Java and downloading Plantestic. 
+On the other hand, you generate a test case by simply filing a sequence diagram and entering one instruction. 
+
+Plantestic has a powerful condition evaluation: 
+A sequence diagram can contain alternative or optional interactions that it invokes under a certain condition. 
+Plantestic will evaluate any condition that conforms to JavaScript. 
+For this, it uses a JavaScript engine.  
+
+You can pass parameters to your sequence diagram if you wish to custom configure its flows.
+For example, you no longer need to reveal security-critical information such as passwords in your sequence diagram. 
+Plantestic evaluates the parameters using templating.
 
 ## Technologies
 ### Eclipse Modelling Framework (EMF)
