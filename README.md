@@ -11,7 +11,7 @@ Alice sends Bob the request `GET /hello ` and Bob answers with `Hello World`.
 The corresponding test case now sends an HTTP request `GET /hello` to the backend. 
 The test case then expects a response with status `200 OK` and date `Hello World`.
 
-![](./core/src/test/resources/minimal_hello.png)
+![./core/src/test/resources/minimal_hello.png](./core/src/test/resources/minimal_hello.png)
 
 ```
 public void test() throws Exception {
@@ -64,7 +64,7 @@ Plantestic evaluates the parameters using templating.
 ## Technologies
 ### Eclipse Modelling Framework (EMF)
 The Eclipse Modeling Framework serves modeling and code generation. 
-From a model specification in XMI, it produces an equivalent set of classes in Kotlin.  
+From a model specification in XMI, it produces an equivalent set of classes in Java.  
 Website: [https://www.eclipse.org/modeling/emf/](https://www.eclipse.org/modeling/emf/)
 
 ### Gradle
@@ -121,14 +121,14 @@ A sequence diagram contains a sequence of interactions.
 An interaction is either a pair of a request and a response or it is an alternative. 
 The alternative, in turn, contains more interactions. 
 
-![](./plantuml/model/Puml.png)
+![./plantuml/model/Puml.png](./plantuml/model/Puml.png)
 
 ### Request/response pairs
 A scenario contains several roundtrips, each consisting of one request and one response. 
 Each request has an HTTP method, a URL, a receiver, and, if applicable, several parameters. 
 A response can consist of several HTTP status codes and several data elements.
 
-![](./core/src/main/resources/metamodels/reqrespairs/RequestResponsePairs.png)
+![./core/src/main/resources/metamodels/reqrespairs/RequestResponsePairs.png](./core/src/main/resources/metamodels/reqrespairs/RequestResponsePairs.png)
 
 ### REST Assured
 The abstract syntax of REST Assured is very similar to the actual REST Assured syntax. 
@@ -137,7 +137,7 @@ The client checks whether it receives an answer and whether the received answer 
 The IsIn-Matcher checks whether the received status code is an expected status code. 
 The HasXPath-Matcher checks whether a received data element is an expected data element. 
 
-![](./core/src/main/resources/metamodels/restassured/RestAssured.png)
+![./core/src/main/resources/metamodels/restassured/RestAssured.png](./core/src/main/resources/metamodels/restassured/RestAssured.png)
  
 ## Demo
 1. Given is a PlantUML sequence diagram.
@@ -266,7 +266,7 @@ The name of the response datum is followed by a space, a colon, a space, and the
 In the xpath, slashes separate the path components. . 
 Example: ```(name1 : "/value/value1", name2 : "/value2")```
 
-![](./core/src/test/resources/rerouting.png)
+![./core/src/test/resources/rerouting.png](./core/src/test/resources/rerouting.png)
 
 ### Execution
 1. Create a PlantUML sequence diagram. Note the input requirements above. 
