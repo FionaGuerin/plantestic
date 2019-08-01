@@ -230,6 +230,7 @@ public void test() throws Exception {
 1. Install Java SE Development Kit 8 or higher. 
 You can find Java SE Development Kit 8 under the website [https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 2. Clone the Plantestic repository.
+3. Run `./gradlew build`.
 
 ## How to use
 ### Input requirements
