@@ -11,6 +11,26 @@ Alice sends Bob the request `GET /hello ` and Bob answers with `Hello World`.
 The corresponding test case now sends an HTTP request `GET /hello` to the backend. 
 The test case then expects a response with status `200 OK` and date `Hello World`.
 
+![](./core/src/test/resources/minimal_hello.png)
+
+```
+public void test() throws Exception {
+		try {
+			Response roundtrip1 = RestAssured.given()
+					.auth().basic(substitutor.replace("${B.username}"), substitutor.replace("${B.password}"))
+				.when()
+					.get(substitutor.replace("${B.path}") + substitutor.replace("/hello"))
+				.then()
+					.assertThat()
+					    .statusCode(IsIn.isIn(Arrays.asList(200)));
+		} catch (Exception exception) {
+			System.out.println("An error occured during evaluating the communication with testReceiver: ");
+			exception.printStackTrace();
+			throw exception;
+		}
+	}
+```
+
 ## Motivation
 The implementation of user requirements often deviates from the specification of the same user requirements. 
 Individual work, teamwork, and collaboration between teams can produce such a divergence. 
