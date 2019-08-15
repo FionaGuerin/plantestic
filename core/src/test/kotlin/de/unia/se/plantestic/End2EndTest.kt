@@ -21,27 +21,28 @@ val wireMockServer = WireMockServer(8080)
 
 class End2EndTest : StringSpec({
 
-    "End2End test works for the minimal hello" {
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
-    }
+    "Pipeline produces valid Java code for minimal hello" {
+        val outputFolder = File("$OUTPUT_PATH/minimal_hello")
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH, outputFolder)
+        printCode(outputFolder)
 
-    "End2End test produces valid Java code for the minimal hello" {
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
-
-        // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Testminimal_hello_puml", File("$OUTPUT_PATH/Testminimal_hello_puml.java").readText())
+        // Now compile the resulting code to check for syntax errors
+        val generatedSourceFile = outputFolder.listFiles().first()
+        Reflect.compile("com.plantestic.test.${generatedSourceFile.nameWithoutExtension}", generatedSourceFile.readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
     }
 
     "End2End test receives request on mock server for the minimal hello" {
         wireMockServer.stubFor(
-            get(WireMock.urlEqualTo("/testB/hello"))
+            get(urlEqualTo("/testB/hello"))
                 .willReturn(WireMock.aResponse().withStatus(200)))
 
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/minimal_hello")
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH, outputFolder)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Testminimal_hello_puml", File("$OUTPUT_PATH/Testminimal_hello_puml.java").readText())
+        val generatedSourceFile = outputFolder.listFiles().first()
+        val compiledTest = Reflect.compile("com.plantestic.test.${generatedSourceFile.nameWithoutExtension}", generatedSourceFile.readText())
             .create(MINIMAL_EXAMPLE_CONFIG_PATH)
         compiledTest.call("test")
 
@@ -51,23 +52,18 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test works for complex hello" {
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
-        val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "Testcomplex_hello_puml.java" }.size shouldBe 1
-
+    "Pipeline produces valid Java code for complex hello" {
+        val outputFolder = File("$OUTPUT_PATH/complex_hello")
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH, outputFolder)
         printCode(outputFolder)
-    }
 
-    "End2End test produces valid Java code for complex hello" {
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
-
-        // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Testcomplex_hello_puml", File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText())
+        // Now compile the resulting code to check for syntax errors
+        val generatedSourceFile = outputFolder.listFiles().first()
+        Reflect.compile("com.plantestic.test.${generatedSourceFile.nameWithoutExtension}", generatedSourceFile.readText())
             .create(COMPLEX_HELLO_CONFIG_PATH)
     }
 
-    "End2End test receives request on mock server for complex hello".config(enabled = false) {
+    "End2End test receives request on mock server for complex hello" {
         val body = """{
             |"itemA" : "value1",
             |"itemB" : "value2",
@@ -78,7 +74,8 @@ class End2EndTest : StringSpec({
                 .get(WireMock.urlPathMatching("/testB/test/123"))
                 .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/complex_hello")
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH, outputFolder)
 
         val generatedCodeText = File("$OUTPUT_PATH/Testcomplex_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Testcomplex_hello_puml", generatedCodeText)
@@ -91,20 +88,14 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End works for the rerouting example" {
-        runTransformationPipeline(REROUTE_INPUT_PATH)
-
-        val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "Testrerouting_puml.java" }.size shouldBe 1
-
+    "Pipeline produces valid Java code for the rerouting example" {
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
+        runTransformationPipeline(REROUTE_INPUT_PATH, outputFolder)
         printCode(outputFolder)
-    }
 
-    "End2End test produces valid Java code for the rerouting example" {
-        runTransformationPipeline(REROUTE_INPUT_PATH)
-
-        // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText())
+        // Now compile the resulting code to check for syntax errors
+        val generatedSourceFile = outputFolder.listFiles().first()
+        Reflect.compile("com.plantestic.test.${generatedSourceFile.nameWithoutExtension}", generatedSourceFile.readText())
             .create(REROUTE_CONFIG_PATH)
     }
 
@@ -133,7 +124,8 @@ class End2EndTest : StringSpec({
                     .withStatus(200)
                     .withBody(body_CCC_Voicemanager_voiceenabled)))
 
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
+        runTransformationPipeline(REROUTE_INPUT_PATH, outputFolder)
 
         // Now compile the resulting code and execute it
         val compiledTest = Reflect.compile("com.plantestic.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText())
@@ -171,7 +163,8 @@ class End2EndTest : StringSpec({
                     .withStatus(400))
         )
 
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
+        runTransformationPipeline(REROUTE_INPUT_PATH, outputFolder)
 
         // Now compile the resulting code and execute it
         val compiledTest = Reflect.compile("com.mdd.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText()).create(REROUTE_CONFIG_PATH)
@@ -202,7 +195,8 @@ class End2EndTest : StringSpec({
                 .willReturn(WireMock.aResponse()
                     .withStatus(404)))
 
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
+        runTransformationPipeline(REROUTE_INPUT_PATH, outputFolder)
 
         // Now compile the resulting code and execute it
         val compiledTest = Reflect.compile("com.mdd.test.Testrerouting_puml", File("$OUTPUT_PATH/Testrerouting_puml.java").readText()).create(REROUTE_CONFIG_PATH)
@@ -238,11 +232,11 @@ class End2EndTest : StringSpec({
                 .willReturn(WireMock.aResponse()
                     .withStatus(500)))
 
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
+        runTransformationPipeline(REROUTE_INPUT_PATH, outputFolder)
 
         val pumlInputModelURI = URI.createFileURI(REROUTE_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
 
@@ -256,26 +250,22 @@ class End2EndTest : StringSpec({
         wireMockServer.allServeEvents.forEach { serveEvent -> println(serveEvent.request) }
     }
 
-    "End2End test works for the xcall example" {
-        runTransformationPipeline(XCALL_INPUT_PATH)
-        val outputFolder = File(OUTPUT_PATH)
-        outputFolder.listFiles().filter { f -> f.name == "Testxcall_puml.java" }.size shouldBe 1
-
+    "Pipeline produces valid Java code for the xcall example" {
+        val outputFolder = File("$OUTPUT_PATH/xcall")
+        runTransformationPipeline(XCALL_INPUT_PATH, outputFolder)
         printCode(outputFolder)
-    }
 
-    "End2End test produces valid Java code for the xcall example" {
-        runTransformationPipeline(XCALL_INPUT_PATH)
-
-        // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Testxcall_puml", File("$OUTPUT_PATH/Testxcall_puml.java").readText())
+        // Now compile the resulting code to check for syntax errors
+        val generatedSourceFile = outputFolder.listFiles().first()
+        Reflect.compile("com.plantestic.test.${generatedSourceFile.nameWithoutExtension}", generatedSourceFile.readText())
             .create(XCALL_CONFIG_PATH)
     }
 
     "End2End test receives request on mock server for the xcall example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
-        runTransformationPipeline(XCALL_INPUT_PATH)
+        val outputFolder = File("$OUTPUT_PATH/xcall")
+        runTransformationPipeline(XCALL_INPUT_PATH, outputFolder)
 
         // Now compile the resulting code and execute it
         val compiledTest = Reflect.compile("com.plantestic.test.Testxcall_puml", File("$OUTPUT_PATH/Testxcall_puml.java").readText())

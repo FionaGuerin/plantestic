@@ -16,7 +16,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH + "/minimal_hello")
+        val outputFolder = File("$OUTPUT_PATH/minimal_hello")
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
         outputFolder.listFiles().size shouldBe 1
@@ -33,7 +33,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH + "/complex_hello")
+        val outputFolder = File("$OUTPUT_PATH/complex_hello")
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
         outputFolder.listFiles().size shouldBe 1
@@ -50,7 +50,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH + "/rerouting")
+        val outputFolder = File("$OUTPUT_PATH/rerouting")
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
         outputFolder.listFiles().size shouldBe 1
@@ -67,7 +67,7 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH + "/xcall")
+        val outputFolder = File("$OUTPUT_PATH/xcall")
 
         AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
         outputFolder.listFiles().size shouldBe 1

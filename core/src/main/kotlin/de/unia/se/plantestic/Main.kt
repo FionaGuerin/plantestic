@@ -7,10 +7,10 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        runTransformationPipeline(args[0])
+        runTransformationPipeline(args[0], File(args[0] + "/generated-code"))
     }
 
-    fun runTransformationPipeline(inputUriString: String) {
+    fun runTransformationPipeline(inputUriString: String, outputFolder: File) {
         MetaModelSetup.doSetup()
 
         val pumlDiagramModel = PumlParser.parse(inputUriString)
@@ -18,11 +18,8 @@ object Main {
         val requestResponsePairsModel = M2MTransformer.transformPuml2ReqRes(pumlDiagramModel)
         val restAssuredModel = M2MTransformer.transformReqRes2RestAssured(requestResponsePairsModel)
 
-        val IS_WINDOWS = System.getProperty("os.name").contains("indow")
-        val osAppropriatePath = if (IS_WINDOWS) inputUriString.substring(1) else inputUriString
-        val outputFolder = Paths.get(osAppropriatePath).toAbsolutePath().parent.toString() + "/generatedCode"
         println("Generating code into $outputFolder")
 
-        AcceleoCodeGenerator.generateCode(restAssuredModel, File(outputFolder))
+        AcceleoCodeGenerator.generateCode(restAssuredModel, outputFolder)
     }
 }
