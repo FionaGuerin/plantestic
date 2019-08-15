@@ -20,6 +20,7 @@ import com.moandjiezana.toml.Toml;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.junit.jupiter.api.Test;
 
 public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 
@@ -43,33 +44,35 @@ public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 		}
 	}
 
+    @Test
 	public void test() throws Exception {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
-		try {
-			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{Templating.')/]");
-			assert engine != null;
-			Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
-			if(evaluatedCondition) {
-				[testRoundtrip.generateTestRoundtrip()/]
-			}
-		} catch (ScriptException scriptException) {
-			System.out.println("Error during evaluation the alternative Condition");
-			System.out.println("The error was within: " + scriptException);
-			throw scriptException;
-		} catch (AssertionError assertionError) {
-			System.out.println("An assertion failt: " + assertionError);
-			throw assertionError;
-		} catch (Exception exception) {
-			System.out.println("An error occured: " + exception);
-			throw exception;
+		if(eval("[testRoundtrip.precondition/]")) {
+			[testRoundtrip.generateTestRoundtrip()/]
 		}
 		[/if]
 	[/for]
 	}
 
-	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
+    /// Helper method to make to templating in string variables above more clean.
+	private String subst(String source) {
+	    assert substitutor != null;
+	    return substitutor.replace(source);
+	}
+
+	/// Helper method to make evaluation of conditions more clean.
+	private boolean eval(String condition) throws ScriptException {
+	    assert engine != null;
+	    // First, run the templating engine over the condition.
+	    // This is the whole reason why we do this "evaluate a JS string at runtime" at all.
+	    String substCondition = subst(condition);
+	    // Second, we can simply pipe the string through the JavaScript engine and get a result.
+	    return (Boolean) engine.eval(substCondition);
+	}
+
+	private static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
 		Map<String, Object> resultMap = new HashMap<>();
 		for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
 			if(entry.getValue() instanceof Map){
@@ -118,16 +121,16 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
-.auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
+.auth().basic(subst("${[requestSpecification.receiver/].username}"), subst("${[requestSpecification.receiver/].password}"))
 	[if (requestSpecification.requestdatum->notEmpty())]
 		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
+.param("[requestDatum.variableName/]", subst("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
 		[/for]
 	[/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-	.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
+	.[requestSpecification.method.toLower()/](subst("${[requestSpecification.receiver/].path}") + subst("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
