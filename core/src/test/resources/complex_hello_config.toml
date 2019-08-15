@@ -1,6 +1,5 @@
-[Templating]
-    id = '123'
-    testCondition = '"SomeValue"'
+id = '123'
+testCondition = '"SomeValue"'
 
 [B]
     username = 'Test'

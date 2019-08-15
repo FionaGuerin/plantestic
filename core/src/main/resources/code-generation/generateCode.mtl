@@ -35,11 +35,10 @@ public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 		try {
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);
-			String paramsFileContent = new String(Files.readAllBytes(path));
-			paramsMap = unnestTomlMap(new Toml().read(paramsFileContent).toMap());
+
+			paramsMap = unnestTomlMap("", new Toml().read(new String(Files.readAllBytes(path))).toMap());
 			substitutor = new StringSubstitutor(paramsMap);
-			ScriptEngineManager factory = new ScriptEngineManager();
-			engine = factory.getEngineByName("JavaScript");
+			engine = new ScriptEngineManager().getEngineByName("JavaScript");
 		} catch(Exception exception) {
 			System.out.println("An Error occured, possible during reading the TOML config file: " + exception);
 			throw exception;
@@ -74,19 +73,20 @@ public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 	    return (Boolean) engine.eval(substCondition);
 	}
 
-	private static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
-		Map<String, Object> resultMap = new HashMap<>();
-		for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
-			if(entry.getValue() instanceof Map){
-				Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
-				for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
-					resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
-				}
-			} else {
-				resultMap.put(entry.getKey(), entry.getValue());
-			}
-		}
-		return resultMap;
+    /// Helper method to flatten the tree-like structure of a TOML file.
+    /// Here, we use the path of an item as the key and the item itself as the value.
+    /// The path of an item separated by dots, e.g. "A.B.item".
+	private static Map<String, Object> unnestTomlMap(String prefix, Map<String, Object> tree) {
+        Map<String, Object> resultMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : tree.entrySet()) {
+            String identifierPath = prefix + entry.getKey();
+            if(entry.getValue() instanceof Map){
+                resultMap.putAll(unnestTomlMap(identifierPath + ".", (Map<String, Object>)entry.getValue()));
+            } else {
+                resultMap.put(identifierPath, entry.getValue());
+            }
+        }
+        return resultMap;
 	}
 }
 [/file]
@@ -120,13 +120,13 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 .auth().basic(subst("${[requestSpecification.receiver/].username}"), subst("${[requestSpecification.receiver/].password}"))
 	[if (requestSpecification.requestdatum->notEmpty())]
 		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", subst("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
+.param("[requestDatum.variableName/]", subst("${[requestDatum.variableName/]}"))
 		[/for]
 	[/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-	.[requestSpecification.method.toLower()/](subst("${[requestSpecification.receiver/].path}") + subst("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
+	.[requestSpecification.method.toLower()/](subst("${[requestSpecification.receiver/].path}") + subst("[requestSpecification.url/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]

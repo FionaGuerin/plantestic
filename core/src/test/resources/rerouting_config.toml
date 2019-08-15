@@ -1,9 +1,8 @@
-[Templating]
-    id = "123"
-    countryCode1 = "Ger"
-    positionCountryCode1 = "Muc"
-    sourceEventType1 = "Hallo"
-    eventId1 = "321"
+id = "123"
+countryCode1 = "Ger"
+positionCountryCode1 = "Muc"
+sourceEventType1 = "Hallo"
+eventId1 = "321"
 
 [VM]
     username = "Test"
