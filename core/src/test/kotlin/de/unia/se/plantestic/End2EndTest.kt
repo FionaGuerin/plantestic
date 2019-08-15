@@ -301,6 +301,7 @@ class End2EndTest : StringSpec({
         private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
         private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
 
+        // FIXME: no IS_WINDOWS please
         private val IS_WINDOWS = System.getProperty("os.name").contains("indow")
         private val osAppropriatePath = if (IS_WINDOWS) MINIMAL_EXAMPLE_INPUT_PATH.substring(1) else MINIMAL_EXAMPLE_INPUT_PATH
         private val OUTPUT_PATH = Paths.get(osAppropriatePath).toAbsolutePath().parent.toString() + "/generatedCode"

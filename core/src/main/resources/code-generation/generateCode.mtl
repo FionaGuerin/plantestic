@@ -27,6 +27,8 @@ public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 	Map<String, Object> paramsMap = new HashMap();
 	ScriptEngine engine;
 	StringSubstitutor substitutor;
+
+	// FIXME: no IS_WINDOWS please
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
 	public [ 'Test'.concat(testScenario.testScenarioName) /](String configFile) throws Exception {
@@ -94,22 +96,16 @@ public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 	[if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
 [testRoundtrip.requestspecification.generadeAddRequestParams()/]
 	[/if]
-try {
-	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
-			[testRoundtrip.requestspecification.generateGivenPart()/]
-		.when()
-			[testRoundtrip.requestspecification.generateWhenPart()/]
-		.then()
-			[testRoundtrip.responsespecification.generateThenPart()/];
-	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
-    [testRoundtrip.generateExtractions()/]
+Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
+        [testRoundtrip.requestspecification.generateGivenPart()/]
+    .when()
+        [testRoundtrip.requestspecification.generateWhenPart()/]
+    .then()
+        [testRoundtrip.responsespecification.generateThenPart()/];
+[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+[testRoundtrip.generateExtractions()/]
 
 	[/if]
-} catch (Exception exception) {
-	System.out.println("An error occured during evaluating the communication with [testRoundtrip.requestspecification.receiver/]: ");
-	exception.printStackTrace();
-	throw exception;
-}
 [/template]
 
 [template private generadeAddRequestParams(requestSpecification : RequestSpecification)]
