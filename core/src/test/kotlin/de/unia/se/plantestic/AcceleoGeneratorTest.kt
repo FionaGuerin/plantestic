@@ -18,12 +18,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().filter { f -> f.name == "minimal_hello_puml.java" }.size shouldBe 1
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
+        OUTPUT_FOLDER.listFiles().filter { f -> f.name == "minimal_hello_puml.java" }.size shouldBe 1
 
-        printCode(outputFolder)
+        printCode(OUTPUT_FOLDER)
     }
 
     "Acceleo generation produces valid Java code for minimal hello".config(enabled = false) {
@@ -31,12 +30,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/minimal_hello_puml.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/minimal_hello_puml.java").readText()).create(MINIMAL_HELLO_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for minimal hello".config(enabled = false) {
@@ -46,12 +44,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(MINIMAL_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/minimal_hello_puml.java").readText()
+        val generatedCodeText = File("$OUTPUT_FOLDER/minimal_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(MINIMAL_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -67,12 +64,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
+        OUTPUT_FOLDER.listFiles().size.shouldBeGreaterThanOrEqual(1)
 
-        printCode(outputFolder)
+        printCode(OUTPUT_FOLDER)
     }
 
     /*"Acceleo generation produces valid Java code for complex hello" {
@@ -103,12 +99,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(COMPLEX_HELLO_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val generatedCodeText = File("$OUTPUT_PATH/complex_hello_puml.java").readText()
+        val generatedCodeText = File("$OUTPUT_FOLDER/complex_hello_puml.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
         val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
         compiledTestClassObject.call("test")
@@ -124,12 +119,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
+        OUTPUT_FOLDER.listFiles().size.shouldBeGreaterThanOrEqual(1)
 
-        printCode(outputFolder)
+        printCode(OUTPUT_FOLDER)
     }
 
     "Acceleo generation produces valid Java code for rerouting".config(enabled = false) {
@@ -137,12 +131,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for rerouting - voiceEstablished == true".config(enabled = false) {
@@ -174,12 +167,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -211,12 +203,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -248,12 +239,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -285,12 +275,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(REROUTING_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(REROUTING_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -304,12 +293,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
-        outputFolder.listFiles().size.shouldBeGreaterThanOrEqual(1)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
+        OUTPUT_FOLDER.listFiles().size.shouldBeGreaterThanOrEqual(1)
 
-        printCode(outputFolder)
+        printCode(OUTPUT_FOLDER)
     }
 
     "Acceleo generation produces valid Java code for xcall".config(enabled = false) {
@@ -317,12 +305,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(XCALL_CONFIG_PATH)
     }
 
     "Acceleo generation test receives request on mock server for the xcall".config(enabled = false) {
@@ -340,12 +327,11 @@ class AcceleoGeneratorTest : StringSpec({
 
         val pumlInputModelURI = URI.createFileURI(XCALL_INPUT_PATH)
         val pumlInputModel = ResourceSetImpl().getResource(pumlInputModelURI, true).contents[0]
-        val outputFolder = File(OUTPUT_PATH)
 
-        AcceleoCodeGenerator.generateCode(pumlInputModel, outputFolder)
+        AcceleoCodeGenerator.generateCode(pumlInputModel, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText()).create(XCALL_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText()).create(XCALL_CONFIG_PATH)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -367,7 +353,7 @@ class AcceleoGeneratorTest : StringSpec({
         private val XCALL_INPUT_PATH = Resources.getResource("xcall_restassured.xmi").path
         private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
 
-        private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
+        private val OUTPUT_FOLDER = File(Resources.getResource("code-generation").path + "/generatedCode")
 
         fun printCode(folder: File) {
             folder.listFiles().forEach { file ->

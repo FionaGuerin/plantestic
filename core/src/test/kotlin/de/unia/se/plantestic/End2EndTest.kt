@@ -19,15 +19,15 @@ val wireMockServer = WireMockServer(8080)
 class End2EndTest : StringSpec({
 
     "End2End test works for the minimal hello".config(enabled = true) {
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_FILE, OUTPUT_FOLDER)
     }
 
     "End2End test produces valid Java code for the minimal hello".config(enabled = false) {
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/testScenario.java").readText())
-            .create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/testScenario.java").readText())
+            .create(MINIMAL_EXAMPLE_CONFIG_FILE)
     }
 
     "End2End test receives request on mock server for the minimal hello".config(enabled = false) {
@@ -35,11 +35,11 @@ class End2EndTest : StringSpec({
         wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/testReceiver/test/123?variableName=%24%7BvariableName%7D&variableName2=%24%7BvariableName2%7D")).willReturn(
                 WireMock.aResponse().withStatus(404).withBody(body)))
 
-        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_PATH)
+        runTransformationPipeline(MINIMAL_EXAMPLE_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(MINIMAL_EXAMPLE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(MINIMAL_EXAMPLE_CONFIG_FILE)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -49,15 +49,15 @@ class End2EndTest : StringSpec({
     }
 
     "End2End test works for complex hello".config(enabled = true) {
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_FILE, OUTPUT_FOLDER)
     }
 
     "End2End test produces valid Java code for complex hello".config(enabled = false) {
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(COMPLEX_HELLO_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(COMPLEX_HELLO_CONFIG_FILE)
     }
 
     "End2End test receives request on mock server for complex hello".config(enabled = false) {
@@ -71,11 +71,11 @@ class End2EndTest : StringSpec({
                 .get(WireMock.urlPathMatching("/testReceiver/test/123"))
                 .willReturn(WireMock.aResponse().withStatus(200).withBody(body)))
 
-        runTransformationPipeline(COMPLEX_HELLO_INPUT_PATH)
+        runTransformationPipeline(COMPLEX_HELLO_INPUT_FILE, OUTPUT_FOLDER)
 
-        val generatedCodeText = File("$OUTPUT_PATH/scenario.java").readText()
+        val generatedCodeText = File("$OUTPUT_FOLDER/scenario.java").readText()
         val compiledTestClass = Reflect.compile("com.plantestic.test.Test", generatedCodeText)
-        val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_PATH)
+        val compiledTestClassObject = compiledTestClass.create(COMPLEX_HELLO_CONFIG_FILE)
         compiledTestClassObject.call("test")
 
         // Check if we received a correct request
@@ -85,25 +85,25 @@ class End2EndTest : StringSpec({
     }
 
     "End2End works for the rerouting example".config(enabled = false) {
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        runTransformationPipeline(REROUTE_INPUT_FILE, OUTPUT_FOLDER)
     }
 
     "End2End test produces valid Java code for the rerouting example".config(enabled = false) {
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        runTransformationPipeline(REROUTE_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(REROUTE_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(REROUTE_CONFIG_FILE)
     }
 
     "End2End test receives request on mock server for the rerouting example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
-        runTransformationPipeline(REROUTE_INPUT_PATH)
+        runTransformationPipeline(REROUTE_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(REROUTE_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(REROUTE_CONFIG_FILE)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -113,25 +113,25 @@ class End2EndTest : StringSpec({
     }
 
     "End2End test works for the xcall example".config(enabled = false) {
-        runTransformationPipeline(XCALL_INPUT_PATH)
+        runTransformationPipeline(XCALL_INPUT_FILE, OUTPUT_FOLDER)
     }
 
     "End2End test produces valid Java code for the xcall example".config(enabled = false) {
-        runTransformationPipeline(XCALL_INPUT_PATH)
+        runTransformationPipeline(XCALL_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code
-        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(XCALL_CONFIG_PATH)
+        Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(XCALL_CONFIG_FILE)
     }
 
     "End2End test receives request on mock server for the xcall example".config(enabled = false) {
         wireMockServer.stubFor(get(urlEqualTo("/hello/123")).willReturn(aResponse().withBody("test")))
 
-        runTransformationPipeline(XCALL_INPUT_PATH)
+        runTransformationPipeline(XCALL_INPUT_FILE, OUTPUT_FOLDER)
 
         // Now compile the resulting code and execute it
-        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_PATH/scenario.java").readText())
-            .create(XCALL_CONFIG_PATH)
+        val compiledTest = Reflect.compile("com.plantestic.test.Test", File("$OUTPUT_FOLDER/scenario.java").readText())
+            .create(XCALL_CONFIG_FILE)
         compiledTest.call("test")
 
         // Check if we received a correct request
@@ -141,19 +141,19 @@ class End2EndTest : StringSpec({
     }
 }) {
     companion object {
-        private val MINIMAL_EXAMPLE_INPUT_PATH = Resources.getResource("minimal_hello.puml").path
-        private val MINIMAL_EXAMPLE_CONFIG_PATH = Resources.getResource("minimal_hello_config.toml").path
+        private val MINIMAL_EXAMPLE_INPUT_FILE = File(Resources.getResource("minimal_hello.puml").path)
+        private val MINIMAL_EXAMPLE_CONFIG_FILE = File(Resources.getResource("minimal_hello_config.toml").path)
 
-        private val COMPLEX_HELLO_INPUT_PATH = Resources.getResource("complex_hello.puml").path
-        private val COMPLEX_HELLO_CONFIG_PATH = Resources.getResource("complex_hello_config.toml").path
+        private val COMPLEX_HELLO_INPUT_FILE = File(Resources.getResource("complex_hello.puml").path)
+        private val COMPLEX_HELLO_CONFIG_FILE = File(Resources.getResource("complex_hello_config.toml").path)
 
-        private val REROUTE_INPUT_PATH = Resources.getResource("rerouting.puml").path
-        private val REROUTE_CONFIG_PATH = Resources.getResource("rerouting_config.toml").path
+        private val REROUTE_INPUT_FILE = File(Resources.getResource("rerouting.puml").path)
+        private val REROUTE_CONFIG_FILE = File(Resources.getResource("rerouting_config.toml").path)
 
-        private val XCALL_INPUT_PATH = Resources.getResource("xcall.puml").path
-        private val XCALL_CONFIG_PATH = Resources.getResource("xcall_config.toml").path
+        private val XCALL_INPUT_FILE = File(Resources.getResource("xcall.puml").path)
+        private val XCALL_CONFIG_FILE = File(Resources.getResource("xcall_config.toml").path)
 
-        private val OUTPUT_PATH = Resources.getResource("code-generation").path + "/generatedCode"
+        private val OUTPUT_FOLDER = File(Resources.getResource("code-generation").path + "/generatedCode")
     }
 
     override fun beforeTest(description: Description) {
