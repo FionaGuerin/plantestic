@@ -84,9 +84,9 @@ object Main {
             val inputFile = File(input).normalize()
             val outputFolder = File(output).normalize()
 
-            if(!inputFile.exists()) {
+            if (!inputFile.exists()) {
                 echo("Input file ${inputFile.absolutePath} does not exist.")
-                return;
+                return
             }
 
             runTransformationPipeline(inputFile, outputFolder)
