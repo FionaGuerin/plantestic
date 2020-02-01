@@ -48,8 +48,8 @@ repositories {
     google()
     mavenCentral()
 
-    // Making qvt work without Eclipse
-    maven { url "https://dist.wso2.org/maven2/" }
+    // Most qvt-related packages are hosted on WSO2:
+    maven { url "https://maven.wso2.org/nexus/content/groups/wso2-public/" }
     maven { url "https://repo.eclipse.org/content/groups/releases/" }
 }
 
