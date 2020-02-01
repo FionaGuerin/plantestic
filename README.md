@@ -277,6 +277,11 @@ Example: ```(name1 : "/value/value1", name2 : "/value2")```
 ### Output expectation
 The generated test cases are in `<path/to/sequence/diagram/generatedCode/<diagramName>.java>`.
 
+## Limitations
+- In some PlantUML diagrams, objects send themselves a request. Plantestic does not support such communication.
+- Plantestic neither supports options nor loops.
+- Plantestic can handle alternatives as long as they are not nested.
+
 ## Credits
 ### Contributors 
 - [Stefan Grafberger](https://github.com/stefan-grafberger) *
