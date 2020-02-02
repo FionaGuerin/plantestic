@@ -113,9 +113,11 @@ Example: ```(name1 : "/value/value1", name2 : "/value2")```
 The generated test cases are in `<path/to/sequence/diagram/generatedCode/<diagramName>.java>`.
 
 ## Limitations
-- In some PlantUML diagrams, objects send themselves a request. Plantestic does not support such communication.
+- When actor A sends actor B a request, Plantestic expects actor B to send actor A a response. 
+    Actors A and B must be different actors.
 - Plantestic neither supports options nor loops.
 - Plantestic can handle alternatives as long as they are not nested.
+- We only support authenticated requests with username and password.
 
 ## Credits
 ### Contributors 
