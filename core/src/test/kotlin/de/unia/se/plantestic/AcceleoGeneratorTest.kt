@@ -97,12 +97,4 @@ class AcceleoGeneratorTest : StringSpec({
             file.readLines().forEach { line -> println(line) }
         }
     }
-
-    override fun beforeTest(description: Description) {
-        wireMockServer.start()
-    }
-
-    override fun afterTest(description: Description, result: TestResult) {
-        wireMockServer.stop()
-    }
 }
