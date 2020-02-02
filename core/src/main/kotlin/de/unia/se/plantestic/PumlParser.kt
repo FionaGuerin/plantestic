@@ -10,15 +10,15 @@ object PumlParser {
 
     /**
      * Parses a resource specified by an URI and returns the resulting object tree root element.
-     * @param fileUriString URI of resource to be parsed as String
+     * @param inputUri URI of resource to be parsed as String
      * @return Root model object
      */
-    fun parse(fileUriString: String): UmlDiagram {
+    fun parse(inputUri: String): UmlDiagram {
         require(EPackage.Registry.INSTANCE["http://www.eclipse.plantuml/Puml"] != null) {
             "Please run MetaModelSetup.doSetup() first!"
         }
 
-        val uri = URI.createFileURI(fileUriString)
+        val uri = URI.createFileURI(inputUri)
         val resource = ResourceSetImpl().getResource(uri, true)
 
         // Resolve cross references
