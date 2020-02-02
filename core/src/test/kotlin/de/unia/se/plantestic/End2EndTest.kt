@@ -44,9 +44,9 @@ class End2EndTest : StringSpec({
 
     "End2End test receives request on mock server for complex hello" {
         val body = """{
-            |"itemA" : "value1",
-            |"itemB" : "value2",
-            |}""".trimMargin()
+              "itemA" : "value1",
+              "itemB" : "value2",
+            }"""
 
         wireMockServer.stubFor(
             WireMock
@@ -71,15 +71,15 @@ class End2EndTest : StringSpec({
 
     "End2End test receives request on mock server for rerouting - voiceEstablished == true" {
         val body_CCC_CRS = """{
-            |"uiswitch" : "UISWITCH",
-            |"reroute" : "REROUTE",
-            |"warmhandover" : "WARMHANDOVER",
-            |}""".trimMargin()
+              "uiswitch" : "UISWITCH",
+              "reroute" : "REROUTE",
+              "warmhandover" : "WARMHANDOVER",
+            }""".trimMargin()
         val body_CCC_Voicemanager_voiceenabled = """{
-            |"eventid1" : "/VoiceStatus/eventId1",
-            |"agent1" : "/VoiceStatus/agent1/connectionstatus",
-            |"agent2" : "/VoiceStatus/agent2/connectionstatus",
-            |}""".trimMargin()
+              "eventid1" : "/VoiceStatus/eventId1",
+              "agent1" : "/VoiceStatus/agent1/connectionstatus",
+              "agent2" : "/VoiceStatus/agent2/connectionstatus",
+            }""".trimMargin()
 
         wireMockServer.stubFor(
             WireMock
@@ -112,10 +112,10 @@ class End2EndTest : StringSpec({
 
     "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 400" {
         val body_CCC_CRS = """{
-            |"uiswitch" : "UISWITCH",
-            |"reroute" : "REROUTE",
-            |"warmhandover" : "WARMHANDOVER",
-            |}""".trimMargin()
+              "uiswitch" : "UISWITCH",
+              "reroute" : "REROUTE",
+              "warmhandover" : "WARMHANDOVER",
+            }""".trimMargin()
 
         wireMockServer.stubFor(
             WireMock
@@ -153,10 +153,10 @@ class End2EndTest : StringSpec({
 
     "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 404" {
         val body_CCC_CRS = """{
-            |"uiswitch" : "UISWITCH",
-            |"reroute" : "REROUTE",
-            |"warmhandover" : "WARMHANDOVER",
-            |}""".trimMargin()
+              "uiswitch" : "UISWITCH",
+              "reroute" : "REROUTE",
+              "warmhandover" : "WARMHANDOVER",
+            }""".trimMargin()
 
         wireMockServer.stubFor(
             WireMock
@@ -188,10 +188,10 @@ class End2EndTest : StringSpec({
 
     "End2End test receives request on mock server for rerouting - voiceEstablished == false, return 500" {
         val body_CCC_CRS = """{
-            |"uiswitch" : "UISWITCH",
-            |"reroute" : "REROUTE",
-            |"warmhandover" : "WARMHANDOVER",
-            |}""".trimMargin()
+              "uiswitch" : "UISWITCH",
+              "reroute" : "REROUTE",
+              "warmhandover" : "WARMHANDOVER",
+            }""".trimMargin()
 
         wireMockServer.stubFor(
             WireMock
