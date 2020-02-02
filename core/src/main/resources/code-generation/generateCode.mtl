@@ -3,7 +3,7 @@
 
 [template public generateTestScenario(testScenario : TestScenario) post(trim())]
 [comment @main /]
-[file (testScenario.testScenarioName.concat('.java'), false, 'UTF-8')]
+[file ('Test'.concat(testScenario.testScenarioName.concat('.java')), false, 'UTF-8')]
 package com.plantestic.test;
 
 import java.util.Arrays;
@@ -20,68 +20,73 @@ import com.moandjiezana.toml.Toml;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.junit.jupiter.api.Test;
 
-public class Test {
+public class [ 'Test'.concat(testScenario.testScenarioName) /] {
 
 	Map<String, Object> paramsMap = new HashMap();
 	ScriptEngine engine;
 	StringSubstitutor substitutor;
+
+	// FIXME: no IS_WINDOWS please
 	private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
 
-	public Test(String configFile) throws Exception {
+	public [ 'Test'.concat(testScenario.testScenarioName) /](String configFile) throws Exception {
 		try {
 			String osAppropriatePath = IS_WINDOWS ? configFile.substring(1) : configFile;
 			Path path = Paths.get(osAppropriatePath);
-			String paramsFileContent = new String(Files.readAllBytes(path));
-			paramsMap = unnestTomlMap(new Toml().read(paramsFileContent).toMap());
+
+			paramsMap = unnestTomlMap("", new Toml().read(new String(Files.readAllBytes(path))).toMap());
 			substitutor = new StringSubstitutor(paramsMap);
-			ScriptEngineManager factory = new ScriptEngineManager();
-			engine = factory.getEngineByName("JavaScript");
+			engine = new ScriptEngineManager().getEngineByName("JavaScript");
 		} catch(Exception exception) {
 			System.out.println("An Error occured, possible during reading the TOML config file: " + exception);
 			throw exception;
 		}
 	}
 
+    @Test
 	public void test() throws Exception {
 	[for (testRoundtrip : TestRoundtrip | testScenario.testroundtrip) separator('\n\n') ]
 		[if (testRoundtrip.precondition->isEmpty())][testRoundtrip.generateTestRoundtrip()/][/if]
 		[if (testRoundtrip.precondition->notEmpty())]
-		try {
-			String evaluatableAltConditionString = substitutor.replace("[testRoundtrip.precondition.replaceAll('"', '\\\\"').replaceAll('\\$\\{', '\\$\\{Templating.')/]");
-			assert engine != null;
-			Boolean evaluatedCondition = (Boolean) engine.eval(evaluatableAltConditionString);
-			if(evaluatedCondition) {
-				[testRoundtrip.generateTestRoundtrip()/]
-			}
-		} catch (ScriptException scriptException) {
-			System.out.println("Error during evaluation the alternative Condition");
-			System.out.println("The error was within: " + scriptException);
-			throw scriptException;
-		} catch (AssertionError assertionError) {
-			System.out.println("An assertion failt: " + assertionError);
-			throw assertionError;
-		} catch (Exception exception) {
-			System.out.println("An error occured: " + exception);
-			throw exception;
+		if(eval("[testRoundtrip.precondition/]")) {
+			[testRoundtrip.generateTestRoundtrip()/]
 		}
 		[/if]
 	[/for]
 	}
 
-	public static Map<String, Object> unnestTomlMap(Map<String, Object> tomlMap) {
-		Map<String, Object> resultMap = new HashMap<>();
-		for (Map.Entry<String, Object> entry : tomlMap.entrySet()){
-			if(entry.getValue() instanceof Map){
-				Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
-				for (Map.Entry<String, Object> nestedEntry : innerMap.entrySet()){
-					resultMap.put(entry.getKey() + "." + nestedEntry.getKey(), nestedEntry.getValue());
-				}
-			} else {
-				resultMap.put(entry.getKey(), entry.getValue());
-			}
-		}
-		return resultMap;
+    /// Helper method to make to templating in string variables above more clean.
+	private String subst(String source) {
+	    assert substitutor != null;
+	    return substitutor.replace(source);
+	}
+
+	/// Helper method to make evaluation of conditions more clean.
+	private boolean eval(String condition) throws ScriptException {
+	    assert engine != null;
+	    // First, run the templating engine over the condition.
+	    // This is the whole reason why we do this "evaluate a JS string at runtime" at all.
+	    String substCondition = subst(condition);
+	    // Second, we can simply pipe the string through the JavaScript engine and get a result.
+	    return (Boolean) engine.eval(substCondition);
+	}
+
+    /// Helper method to flatten the tree-like structure of a TOML file.
+    /// Here, we use the path of an item as the key and the item itself as the value.
+    /// The path of an item separated by dots, e.g. "A.B.item".
+	private static Map<String, Object> unnestTomlMap(String prefix, Map<String, Object> tree) {
+        Map<String, Object> resultMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : tree.entrySet()) {
+            String identifierPath = prefix + entry.getKey();
+            if(entry.getValue() instanceof Map){
+                resultMap.putAll(unnestTomlMap(identifierPath + ".", (Map<String, Object>)entry.getValue()));
+            } else {
+                resultMap.put(identifierPath, entry.getValue());
+            }
+        }
+        return resultMap;
 	}
 }
 [/file]
@@ -91,22 +96,16 @@ public class Test {
 	[if (testRoundtrip.requestspecification.requestdatum->notEmpty())]
 [testRoundtrip.requestspecification.generadeAddRequestParams()/]
 	[/if]
-try {
-	Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
-			[testRoundtrip.requestspecification.generateGivenPart()/]
-		.when()
-			[testRoundtrip.requestspecification.generateWhenPart()/]
-		.then()
-			[testRoundtrip.responsespecification.generateThenPart()/];
-	[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
-    [testRoundtrip.generateExtractions()/]
+Response [testRoundtrip.testRoundtripName/] = RestAssured.given()
+        [testRoundtrip.requestspecification.generateGivenPart()/]
+    .when()
+        [testRoundtrip.requestspecification.generateWhenPart()/]
+    .then()
+        [testRoundtrip.responsespecification.generateThenPart()/];
+[if (testRoundtrip.responsespecification.responsedatum->notEmpty())]
+[testRoundtrip.generateExtractions()/]
 
 	[/if]
-} catch (Exception exception) {
-	System.out.println("An error occured during evaluating the communication with testReceiver: ");
-	exception.printStackTrace();
-	throw exception;
-}
 [/template]
 
 [template private generadeAddRequestParams(requestSpecification : RequestSpecification)]
@@ -118,16 +117,16 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
 [/template]
 
 [template private generateGivenPart(requestSpecification : RequestSpecification) post(trim())]
-.auth().basic(substitutor.replace("${[requestSpecification.receiver/].username}"), substitutor.replace("${[requestSpecification.receiver/].password}"))
+.auth().basic(subst("${[requestSpecification.receiver/].username}"), subst("${[requestSpecification.receiver/].password}"))
 	[if (requestSpecification.requestdatum->notEmpty())]
 		[for (requestDatum : RequestDatum | requestSpecification.requestdatum)]
-.param("[requestDatum.variableName/]", substitutor.replace("${[requestDatum.variableName.replaceAll('\\$\\{', '\\$\\{Templating.')/]}"))
+.param("[requestDatum.variableName/]", subst("${[requestDatum.variableName/]}"))
 		[/for]
 	[/if]
 [/template]
 
 [template private generateWhenPart(requestSpecification : RequestSpecification) post(trim())]
-	.[requestSpecification.method.toLower()/](substitutor.replace("${[requestSpecification.receiver/].path}") + substitutor.replace("[requestSpecification.url.replaceAll('\\$\\{', '\\$\\{Templating.')/]"))
+	.[requestSpecification.method.toLower()/](subst("${[requestSpecification.receiver/].path}") + subst("[requestSpecification.url/]"))
 [/template]
 
 [template private generateThenPart(responseSpecification : ResponseSpecification) post(trim())]
@@ -135,9 +134,7 @@ paramsMap.put("[requestDatum.variableName/]", "[requestDatum.value/]");
     [responseSpecification.generateExpectStatusCode()/][if (responseSpecification.bodymatchergroup->notEmpty())]
         [responseSpecification.generateExpectations()/]
     [/if]
-	[if (responseSpecification.responsedatum->notEmpty())]
 	.and().extract().response()
-	[/if]
 [/template]
 
 [template private generateExpectStatusCode(responseSpecification : ResponseSpecification) post(trim())]

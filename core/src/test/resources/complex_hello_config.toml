@@ -1,8 +1,7 @@
-[Templating]
-    id = '123'
-    testCondition = '"SomeValue"'
+id = '123'
+testCondition = '"SomeValue"'
 
-[TestReceiver]
+[B]
     username = 'Test'
     password = 'password'
-    path = '/testReceiver'
+    path = '/testB'

@@ -1,20 +1,20 @@
-[Templating]
-    id = "123"
-    countrycode = "Ger"
-    positionCountryCode = "Muc"
-    sourceEventType = "Hallo"
+id = "123"
+countryCode1 = "Ger"
+positionCountryCode1 = "Muc"
+sourceEventType1 = "Hallo"
+eventId1 = "321"
 
-[Voicemanager]
+[VM]
     username = "Test"
-    password = "123test"
+    password = "password"
     path = "/Voicemanager"
 
 [CRS]
     username = "Test"
-    password = "123test"
+    password = "password"
     path = "/CRS"
 
 [CCC]
     username = "Test"
-    password = "123test"
+    password = "password"
     path = "/CCC"
