@@ -13,9 +13,6 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import org.joor.Reflect
 import java.io.File
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import java.nio.file.Paths
 
 val wireMockServer = WireMockServer(8080)
 
@@ -101,7 +98,7 @@ class End2EndTest : StringSpec({
             "com.plantestic.test.${generatedSourceFile.nameWithoutExtension}",
             generatedSourceFile.readText()
         ).create(REROUTE_CONFIG_FILE.path)
-        try {compiledTest.call("test")}catch (e: Exception) {}
+        try { compiledTest.call("test") } catch (e: Exception) { }
 
         // Check if we received a correct request
         // TODO: more assertions

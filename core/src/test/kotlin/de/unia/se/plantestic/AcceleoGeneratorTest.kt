@@ -6,8 +6,6 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.joor.Reflect
 import java.io.File
-import io.kotlintest.Description
-import io.kotlintest.TestResult
 
 class AcceleoGeneratorTest : StringSpec({
     "Transform a Rest Assured EObject input to Java Code for minimal hello" {
