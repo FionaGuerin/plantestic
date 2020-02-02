@@ -7,7 +7,7 @@ participant CCC
 == Rerouting preparation ==
 
 '##### CCC checks VoiceManager connection status
-CCC -[#5B57FF]> CRS : POST "/ccc/rerouteOptions" (countryCode : "${countryCode}", positionCountryCode : "${positionCountryCode}", sourceEventType : "${sourceEventType}")
+CCC -[#5B57FF]> CRS : POST "/ccc/rerouteOptions" (countryCode : "${countryCode1}", positionCountryCode : "${positionCountryCode1}", sourceEventType : "${sourceEventType1}")
 activate CCC
 activate CRS
 CRS -> CCC : 200 - (uiswitch : "/UISWITCH", reroute : "/REROUTE", warmhandover : "/WARMHANDOVER")

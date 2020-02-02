@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RestAssured:TestScenario xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="rerouting_puml">
+    xmlns:RestAssured="http://www.example.org/RestAssured" testScenarioName="rerouting">
   <testroundtrip testRoundtripName="roundtrip1">
     <requestspecification method="POST" url="/ccc/rerouteOptions" receiver="CRS">
       <requestdatum variableName="countryCode" value="${countryCode}"/>
